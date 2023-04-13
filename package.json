@@ -4,24 +4,31 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "beautiful": "lint-staged",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "lint-staged": {
+    "**/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.0-rc.1",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
     "react-redux": "^8.0.5",
-    "react-router-dom": "^6.10.0",
-    "react-toastify": "^9.1.2"
+    "react-router-dom": "^6.10.0"
   },
   "devDependencies": {
     "concurrently": "^8.0.1",
-    "nodemon": "^2.0.22"
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.7"
   }
 }

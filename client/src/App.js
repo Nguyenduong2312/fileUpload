@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Layout from './components/layout';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import FileUpload from './components/Upload/fileUpload';
 import Login from './components/Account/login';
