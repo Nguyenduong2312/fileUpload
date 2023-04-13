@@ -12,13 +12,14 @@
 .login_tag{
     margin: auto;
     width: 400px;
-    height: 600px;
+    height: fit-content;
     border-radius: 20px;
     border: black solid;
     background-color: #1E1E1E;
 }
 .login_tag_text{
-    padding: 100px 0px;
+    padding: 20px 0px;
+    padding-top: 30px;
 }
 
 .login_tag_text p{
@@ -26,6 +27,7 @@
     font-weight: bolder;
     text-align: center;
     color: white;
+    margin-top: 50px;
 }
 
 .login_tag form{
@@ -35,7 +37,6 @@
 .inputField{
     margin-left: 17%;
     margin-top: 20px;
-
 }
 
 input{
@@ -66,6 +67,7 @@ label{
 .message{
     width: 80%;
     margin:auto;
+    margin-top: 30px;
 }
 
 @media all and (max-width: 1024px) {

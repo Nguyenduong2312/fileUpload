@@ -54,12 +54,12 @@ export default function Login(props) {
             <div class="login_img">
                 <img src="image/img_login.png" alt=""/>
             </div>
-            <div class="login_tag_cover">
+            <div class="login_tag_cover" style={{marginTop:'30px'}}>
                 <div class="login_tag">
-                    <div className='login_tag_text'>
+                    <div className='login_tag_text' style={{padding: '50px 0px'}}>
                         <p>LOGIN</p>
                         <section>
-                            <form onSubmit={onSubmit} style={{marginBottom: "50px"}}>
+                            <form onSubmit={onSubmit}>
                                 <div className="inputField">
                                 <label>Username:<br></br>
                                 <input 

@@ -18,6 +18,19 @@ app.post('/login', (req, res) => {
     res.json({status: false})
 });
 
+// register
+app.post('/register', (req, res) => {
+    if (req.username === null) {
+        return res.status(400).json({ msg: 'No file uploaded' });
+    }
+    const { username, password1, password2 } = req.body  //lấy được username & password
+    //Xử lý 
+
+    //Nếu user hợp lệ return true
+    res.json({status: false})
+});
+
+
 
 // Upload Endpoint
 app.post('/upload', (req, res) => {
@@ -41,6 +54,7 @@ app.post('/upload', (req, res) => {
         res.json({ fileName: file.name });
     });
 });
+
 
 //  Download Endpoint
 app.listen(5000, () => console.log('Server Started...'));

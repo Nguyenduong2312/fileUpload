@@ -34,7 +34,12 @@ export default function Register(props) {
                 'Content-Type': 'multipart/form-data'
             },
         });
-          
+        // 
+        console.log(password1,password2);
+        if (password1 !== password2){
+            setMessage('Password không giống nhau')
+        }
+
         } catch (err) {
         if (err.response.status === 500) {
             setMessage('There was a problem with the server');
@@ -46,7 +51,6 @@ export default function Register(props) {
 
   return (
     <div>
-        {message ? <Message msg={message}/> : null}
         <div class="login_layout">
             <div class="login_img">
                 <img src="image/img_login.png" alt=""/>
@@ -54,8 +58,8 @@ export default function Register(props) {
             <div class="login_tag_cover">
                 <div class="login_tag">
                     <div className='login_tag_text'>
-                    <p>REGISTER</p>
-                    <section>
+                        <p>REGISTER</p>
+                        <section>
                             <form onSubmit={onSubmit}>
                                 <div className="inputField">
                                     <label>Username:<br></br>
@@ -92,7 +96,10 @@ export default function Register(props) {
                                 </div>
                                 <input className="submit" type="submit" />
                             </form>
-                            </section>
+                            <div className='message'>
+                                {message ? <Message msg={message} /> : null}
+                            </div>
+                        </section>
 
                     </div>
                 </div>
