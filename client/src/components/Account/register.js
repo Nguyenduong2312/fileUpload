@@ -1,5 +1,6 @@
 import './login.css';
 import { useState, useEffect } from "react";
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 import Message from '../Message';
@@ -94,6 +95,7 @@ export default function Register(props) {
                                         />
                                     </label>
                                 </div>
+                                <p className='login'>Already have an account?<Link style={{textDecoration: 'none'}} to="/login"><span> Login</span> </Link></p>
                                 <input className="submit" type="submit" />
                             </form>
                             <div className='message'>

@@ -82,6 +82,7 @@ export default function Login(props) {
                                     />
                                     </label>
                                 </div>
+                                <p className='login'>Don't have account?<Link style={{textDecoration: 'none'}} to="/register"><span> Register</span> </Link></p>
                                 <input className="submit" type="submit" />
                             </form>
                             <div className='message'>

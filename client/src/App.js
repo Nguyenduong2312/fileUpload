@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FileUpload from './components/Upload/fileUpload';
 import Login from './components/Account/login';
 import Register from './components/Account/register';
+import Home from './components/pages/home';
 
 
 const App = () => (
@@ -13,7 +14,7 @@ const App = () => (
   <BrowserRouter>
     <Routes> 
       <Route path="/" element={<Layout/>}>
-        <Route index element={<FileUpload/>} />
+        <Route index element={<Home/>} />
         <Route path="upload" element={<FileUpload/>}/>
         <Route path="login" element={<Login/>}/>
         <Route path="register" element={<Register/>}/>
