@@ -1,6 +1,8 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
+const route = require('./routes');
+const db = require('./config/db');
 
 app.use(fileUpload());
 
