@@ -21,7 +21,7 @@ export default function Bar() {
               <Link to="/"><img src="image/logoEHR.png" alt=""/></Link>  
             </div>
             <div class="bar_menu">
-                <li><Link to="/dashboard">Dashbooard</Link></li>
+                <li><Link to="/dashboard">Dashboard</Link></li>
                 <li><Link to="/aboutUs">About Us</Link></li>
                 <li className = {`is${auth}`}><DropUser></DropUser></li>
             </div>

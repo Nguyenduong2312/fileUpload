@@ -89,7 +89,6 @@ export default function Login(props) {
                                 {message ? <Message msg={message} /> : null}
                             </div>
                             </section>
-
                     </div>
                 </div>
             </div>
