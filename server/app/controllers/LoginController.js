@@ -1,20 +1,42 @@
-const Course = require('../models/Account');
+const Account = require('../models/Account');
 
 class LoginController {
-    // [GET] /me/stored/courses
-    storedCourses(req, res, next) {
-        Course.find({})
-            .lean()
-            .then((courses) => res.render('me/stored-courses', { courses }))
-            .catch(next);
+    checklogin(req, res) {
+        var user = req.session.user;
+        console.log(user);
+        if (user == null) {
+            return false;
+        } else {
+            //req.user = user;
+            return true;
+        }
     }
-
-    // [GET] /me/trash/courses
-    trashCourses(req, res, next) {
-        Course.findDeleted({})
+    // [POST] /login
+    login(req, res, next) {
+        if (this.checklogin(req, res)) {
+            console.log('Logged in');
+        }
+        if (req.username === null) {
+            res.status(400).json({ status: false });
+        } else if (req.password === null) {
+            res.status(400).json({ status: false });
+        }
+        const { username, password } = req.body; //lấy được username & password
+        console.log(username);
+        //Xử lý
+        Account.findOne({ username: username })
             .lean()
-            .then((courses) => res.render('me/trash-courses', { courses }))
+            .then((account) => {
+                if (!account) {
+                    res.status(400).json({ status: false });
+                } else if (account.password !== password) {
+                    res.status(400).json({ status: false });
+                } else {
+                    res.status(200).json({ status: true });
+                }
+            })
             .catch(next);
+        //Nếu user hợp lệ return true
     }
 }
 
