@@ -1,6 +1,6 @@
 const Course = require('../models/Account');
 
-class MeController {
+class LoginController {
     // [GET] /me/stored/courses
     storedCourses(req, res, next) {
         Course.find({})
@@ -18,4 +18,4 @@ class MeController {
     }
 }
 
-module.exports = new MeController();
+module.exports = new LoginController();

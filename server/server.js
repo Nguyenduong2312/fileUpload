@@ -3,33 +3,37 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const route = require('./routes');
 const db = require('./config/db');
+const port = 5000;
 
 app.use(fileUpload());
 
+// Connect to DB
+db.connect();
+
 //login
 
-app.post('/login', (req, res) => {
-    if (req.username === null) {
-        return res.status(400).json({ msg: 'No file uploaded' });
-    }
-    const { username, password } = req.body; //lấy được username & password
-    //Xử lý
+// app.post('/login', (req, res) => {
+//     if (req.username === null) {
+//         return res.status(400).json({ msg: 'No file uploaded' });
+//     }
+//     const { username, password } = req.body; //lấy được username & password
+//     //Xử lý
 
-    //Nếu user hợp lệ return true
-    res.json({ status: false });
-});
+//     //Nếu user hợp lệ return true
+//     res.json({ status: false });
+// });
 
 // register
-app.post('/register', (req, res) => {
-    if (req.username === null) {
-        return res.status(400).json({ msg: 'No file uploaded' });
-    }
-    const { username, password1, password2 } = req.body; //lấy được username & password
-    //Xử lý
+// app.post('/register', (req, res) => {
+//     if (req.username === null) {
+//         return res.status(400).json({ msg: 'No file uploaded' });
+//     }
+//     const { username, password1, password2 } = req.body; //lấy được username & password
+//     //Xử lý
 
-    //Nếu user hợp lệ return true
-    res.json({ status: false });
-});
+//     //Nếu user hợp lệ return true
+//     res.json({ status: false });
+// });
 
 // Upload Endpoint
 app.post('/upload', (req, res) => {
@@ -52,5 +56,8 @@ app.post('/upload', (req, res) => {
     });
 });
 
+// Routes init
+route(app);
+
 //  Download Endpoint
-app.listen(5000, () => console.log('Server Started...'));
+app.listen(port, () => console.log(`Server started on port ${port}...`));
