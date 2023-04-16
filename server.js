@@ -38,22 +38,20 @@ app.post('/upload', (req, res) => {
         return res.status(400).json({ msg: 'No file uploaded' });
     }
     const id = req.body.name
-    const file = req.files.file;
     console.log('id:',id);
 
-    //1. Đọc f
-    //1. Đọc file
-    //2. Mã hóa file
-    //3. Generate key + mã hóa k
-    //
+    res.json({ status: true });
+});
 
-    file.mv(`${__dirname}/client/public/uploads/${file.name}`, (err) => {
-        if (err) {
-            return res.status(500).send(err);
-        }
+// Upload Endpoint
+app.post('/request', (req, res) => {
+    if (req.body === null) {
+        return res.status(400).json({ msg: '' });
+    }
+    const {id} = req.body
+    console.log('id:',id);
+    res.json({ status: true });
 
-        res.json({ fileName: file.name });
-    });
 });
 
 
