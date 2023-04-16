@@ -1,21 +1,19 @@
 const Account = require('../models/Account');
 
 class LoginController {
-    checklogin(req, res) {
-        var user = req.session.user;
-        console.log(user);
-        if (user == null) {
-            return false;
-        } else {
-            //req.user = user;
-            return true;
-        }
-    }
+    // checklogin(req, res) {
+    //     var user = req.session.user;
+    //     console.log(user);
+    //     if (user == null) {
+    //         return false;
+    //     } else {
+    //         //req.user = user;
+    //         return true;
+    //     }
+    // }
+
     // [POST] /login
     login(req, res, next) {
-        if (this.checklogin(req, res)) {
-            console.log('Logged in');
-        }
         if (req.username === null) {
             res.status(400).json({ status: false });
         } else if (req.password === null) {
