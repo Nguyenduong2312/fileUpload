@@ -1,12 +1,18 @@
 import React, { Fragment, useState } from 'react';
-import Message from '../Message';
+import Message from '../../../Message';
 import axios from 'axios';
 
-const FileUpload = () => {
+import './uploadRecord.css';
+
+const UploadRecord = () => {
     const [file, setFile] = useState('');
     const [filename, setFilename] = useState('Choose File');
     const [message, setMessage] = useState('');
+    const [id, setId] = useState('');
 
+    const handleChange = (event) => {
+        setId(event.target.value);
+    };
     const onChange = (e) => {
         setFile(e.target.files[0]);
         setFilename(e.target.files[0].name);
@@ -16,23 +22,23 @@ const FileUpload = () => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('name', id);
+        try {
+            await axios.post('/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
-    try {
-      await axios.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-      });
-      
-      setMessage(`File "${filename}" Uploaded`);
-    } catch (err) {
-      if (err.response.status === 500) {
-        setMessage('There was a problem with the server');
-      } else {
-        setMessage(err.response.data.msg);
-      }
-    }
-  };
+            setMessage(`File "${filename}" Uploaded`);
+        } catch (err) {
+            if (err.response.status === 500) {
+                setMessage('There was a problem with the server');
+            } else {
+                setMessage(err.response.data.msg);
+            }
+        }
+    };
 
     return (
         <div className="container mt-4">
@@ -41,6 +47,18 @@ const FileUpload = () => {
             <Fragment>
                 {message ? <Message msg={message} /> : null}
                 <form onSubmit={onSubmit}>
+                    <div className="inputField id">
+                        <label>
+                            Patient id:<br></br>
+                            <input
+                                type="text"
+                                id="id"
+                                name="id"
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
+
                     <div className="custom-file mb-3">
                         <input
                             type="file"
@@ -66,4 +84,4 @@ const FileUpload = () => {
     );
 };
 
-export default FileUpload;
+export default UploadRecord;
