@@ -23,13 +23,13 @@ const UploadRecord = () => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('name', id);
+
         try {
-            await axios.post('/upload', formData, {
+            await axios.post('/uploadRecord', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
             setMessage(`File "${filename}" Uploaded`);
         } catch (err) {
             if (err.response.status === 500) {

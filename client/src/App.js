@@ -18,7 +18,7 @@ const App = () => (
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
 
-                    <Route path="upload" element={<UploadRecord />} />
+                    <Route path="uploadRecord" element={<UploadRecord />} />
                     <Route path="request" element={<RequestRecord />} />
                     <Route path="accepted_list" element={<RecordList />} />
 
