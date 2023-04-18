@@ -8,7 +8,7 @@ var publicKeyB = eccrypto.getPublic(privateKeyB);
 
 
 class UploadFileController {
-    login(req, res){
+    upload(req, res){
         if (req.files === null) {
             return res.status(400).json({ msg: 'No file uploaded' });
         }
