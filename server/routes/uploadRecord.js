@@ -4,5 +4,4 @@ const router = express.Router();
 const UploadRecordController = require('../app/controllers/UploadRecordController');
 
 router.post('/', UploadRecordController.upload);
-console.log('ab');
 module.exports = router;
