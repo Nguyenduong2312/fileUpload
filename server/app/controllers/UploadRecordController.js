@@ -6,45 +6,51 @@ var publicKeyA = eccrypto.getPublic(privateKeyA);
 var privateKeyB = eccrypto.generatePrivate();
 var publicKeyB = eccrypto.getPublic(privateKeyB);
 
+const EncyptAES = require('./EncryptAES');
+const ECC = require("./ECC");
+
+
 class UploadFileController {
     upload(req, res) {
         if (req.files === null) {
+            console.log('lỗi');
             return res.status(400).json({ msg: 'No file uploaded' });
         }
 
+        //uploadFile
         const file = req.files.file;
-        //lưu file vào public/uploads
+            //lưu file vào public/uploads
         const path = `${process.cwd()}/client/public/uploads/`;
         file.mv(path + file.name, (err) => {
             if (err) {
                 console.error(err);
                 return res.status(500).send(err);
             }
-            fs.readFile(path + file.name, 'utf8', (err, data) => {
-                if (err) {
+            try {
+                const data = fs.readFileSync(path + file.name, 'utf8');
+                //generate khóa k và mã hóa nội dung tập tin
+                const {key, en_data} = EncyptAES.AES(data)
+                try {
+                    fs.writeFileSync(path + 'en_' + file.name,en_data);
+                    // file written successfully
+                } catch (err) {
                     console.error(err);
-                    return;
                 }
-                const en = eccrypto.encrypt(publicKeyB, Buffer.from(data));
-                en.then(function (encrypted) {
-                    //tạo en_file
-                    try {
-                        fs.writeFileSync(
-                            path + 'en_' + file.name,
-                            JSON.stringify(encrypted),
-                        );
-                        // file written successfully
-                    } catch (err) {
-                        console.error(err);
-                    }
-                    //upload en_file to cloud
-
-                    //xóa tất cả file trong folder upload
-                });
-            });
-        });
-        console.log('1111');
-        res.json({ status: true });
+                //mã hóa k bằng ECC
+                    //1. Lấy public key từ id BN
+                const idBN = req.body.name
+                console.log(idBN);
+                    //2. Mã hóa khóa k
+                ECC.encrypt(key, publicKeyB).then(function(en_data) {
+                    console.log(en_data);// en_key
+                    // 
+                })
+            } catch (err) {
+                console.error(err);
+            }
+    
+        })
+    res.json({ status: true });
     }
 }
 
