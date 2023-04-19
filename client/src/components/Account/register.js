@@ -1,6 +1,6 @@
 import './login.css';
 import { useState, useEffect } from "react";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 import Message from '../Message';
@@ -13,6 +13,7 @@ export default function Register(props) {
       })  
     const [message, setMessage] = useState('');
     const { username, password1, password2 } = formData
+    const navigate = useNavigate();
 
     const onChange = e => {
         setFormData((prevState) => ({
@@ -23,24 +24,23 @@ export default function Register(props) {
     
     const onSubmit = async e => {
         if (password1 !== password2){
-            setMessage('Password không giống nhau. Vui lòng nhập lại')
+            setMessage('Password không giống nhau.')
         }
 
         e.preventDefault();
     
         try {
             console.log();
-            await axios.post('/register', formData, {
+            const res = await axios.post('/register', formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
             },
         });
         // 
-        console.log(password1,password2);
-        if (password1 !== password2){
-            setMessage('Password không giống nhau')
+        if (res.data.status === true) {
+            navigate('/myProfile');
         }
-
+        setMessage('Lỗi')
         } catch (err) {
         if (err.response.status === 500) {
             setMessage('There was a problem with the server');
@@ -85,7 +85,7 @@ export default function Register(props) {
                                     </label>
                                 </div>
                                 <div className="inputField">
-                                    <label>Password:<br></br>
+                                    <label>Repeat Password:<br></br>
                                         <input 
                                         type="password"
                                         name="password2" 

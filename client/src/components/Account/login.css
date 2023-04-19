@@ -36,7 +36,7 @@
 
 .inputField{
     margin-left: 17%;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 input{
@@ -59,7 +59,7 @@ input.submit{
     color: white;
     height: 40px;
     margin-left: 17%;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 label{
     color: white;

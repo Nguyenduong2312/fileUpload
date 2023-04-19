@@ -33,8 +33,8 @@ export default function Login(props) {
             console.log(res.data);
 
             //check logined -> home
-            if (res.data === true) {
-                navigate('/register');
+            if (res.data.status === true) {
+                navigate('/');
             } else {
                 setMessage('Username và password không hợp lệ');
             }

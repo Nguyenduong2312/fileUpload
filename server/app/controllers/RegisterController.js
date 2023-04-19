@@ -1,4 +1,5 @@
 const Account = require('../models/Account');
+var eccrypto = require('eccrypto');
 
 class RegisterController {
     // [POST] /register
@@ -17,9 +18,14 @@ class RegisterController {
         //Xử lý
         const account = new Account();
         account.username = username;
+        console.log(account.username);
         account.password = password1;
         account.role = 'patient';
 
+        const privateKey = eccrypto.generatePrivate()
+        account.privateKey = JSON.stringify(privateKey);
+        account.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
+        console.log(account.publicKey,account.privateKey);
         account
             .save()
             .then(() => res.json({ status: true }))
