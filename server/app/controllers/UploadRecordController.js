@@ -9,6 +9,7 @@ const publicKeyB = eccrypto.getPublic(privateKeyB);
 const EncryptAES = require('./EncryptAES');
 const ECC = require('./ECC');
 const convertString = require('./convertString');
+const Account = require('../models/Account');
 
 class UploadFileController {
     upload(req, res) {
@@ -62,6 +63,16 @@ class UploadFileController {
         });
 
         res.json({ status: true });
+    }
+
+    // [GET] /uploadRecord/find
+    findKey(req, res, next) {
+        Account.findOne({ _id: req.body._id })
+            .lean()
+            .then((account) => {
+                res.json({ publicKey: account.publicKey });
+            })
+            .catch(next);
     }
 }
 
