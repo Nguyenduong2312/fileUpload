@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const Account = new Schema(
     {
+        _id: { type: Number },
         name: { type: String, default: '' },
         address: { type: String, default: '' },
         email: { type: String, default: '' },
@@ -16,6 +17,7 @@ const Account = new Schema(
         role: { type: String, required: true },
     },
     {
+        _id: false,
         timestamps: true,
     },
 );
