@@ -1,13 +1,11 @@
-var eccrypto = require("eccrypto");
+var eccrypto = require('eccrypto');
 
 class ECC {
-    encrypt(data, publicKey){
-        return eccrypto.encrypt(publicKey, Buffer.from(data)).then(token => { return token } )
+    async encrypt(data, publicKey) {
+        return await eccrypto.encrypt(publicKey, Buffer.from(data));
     }
-    decrypt(en_data, privateKey){
-        eccrypto.decrypt(privateKey, en_data).then(function(de_data){
-            return de_data.toString()
-        })
+    async decrypt(en_data, privateKey) {
+        return (await eccrypto.decrypt(privateKey, en_data)).toString();
     }
 }
 

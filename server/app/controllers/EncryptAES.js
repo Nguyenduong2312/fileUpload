@@ -11,6 +11,10 @@ class EncryptAES {
     }
     decrypt(data, key) {
         //decrypt data
+        console.log(typeof data);
+        var bytes = cryptojs.AES.decrypt(data, key);
+        var originalText = bytes.toString(cryptojs.enc.Utf8);
+        return originalText;
     }
 }
 
