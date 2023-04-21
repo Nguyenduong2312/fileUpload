@@ -1,8 +1,6 @@
 class convertString {
     bytesToHex(byteArray) {
-        return Array.from(byteArray, function (byte) {
-            return ('0' + (byte & 0xff).toString(16)).slice(-2);
-        }).join('');
+        return byteArray.toString('hex');
     }
     hexToBytes(hex) {
         let bytes = [];

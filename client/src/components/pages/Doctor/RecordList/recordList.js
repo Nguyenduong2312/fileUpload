@@ -20,7 +20,7 @@ export default function RecordList() {
         <div>
             <Bar />
             <div className="main_tag">
-                <h4>Accepted Lits</h4>
+                <h4>Accepted List</h4>
                 <div className="record_tag">
                     <p>
                         Patient: <span>{`${patient_id}`}</span>

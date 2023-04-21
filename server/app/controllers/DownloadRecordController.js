@@ -26,19 +26,8 @@ const ECC = require('./ECC');
 const convertString = require('./convertString');
 const Account = require('../models/Account');
 
-class UploadFileController {
-    upload(req, res) {
-        if (req.files === null) {
-            console.log('lỗi');
-            return res.status(400).json({ msg: 'No file uploaded' });
-        }
-
-        //uploadFile
-        const file = req.files.file;
-
-        //lưu file vào public/uploads
-        const path = `${process.cwd()}/client/public/uploads/`;
-
+class DownloadRecordController {
+    download(req, res) {
         file.mv(path + file.name, async (err) => {
             if (err) {
                 console.error(err);
@@ -76,7 +65,7 @@ class UploadFileController {
                 // console.log("TEXT")
                 try {
                     // file written successfully
-                    fs.writeFileSync(path + 'de_' + file.name, originalText);
+                    //   fs.writeFileSync(path +"de_"+ file.name, originalText);
                     console.log(originalText);
                 } catch (err) {
                     console.error(err);
@@ -88,16 +77,6 @@ class UploadFileController {
 
         res.json({ status: true });
     }
-
-    // [GET] /uploadRecord/find
-    findKey(req, res, next) {
-        Account.findOne({ _id: req.body._id })
-            .lean()
-            .then((account) => {
-                res.json({ publicKey: account.publicKey });
-            })
-            .catch(next);
-    }
 }
 
-module.exports = new UploadFileController();
+module.exports = new DownloadRecordController();
