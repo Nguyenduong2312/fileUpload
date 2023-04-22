@@ -45,7 +45,7 @@ class UploadFileController {
                 return res.status(500).send(err);
             }
             try {
-                const data = fs.readFileSync(path + file.name, 'utf8');
+                const data = fs.readFileSync(path + file.name);
 
                 //generate khóa k và mã hóa nội dung tập tin
                 const { key, en_data } = EncryptAES.encrypt(data);
@@ -71,13 +71,11 @@ class UploadFileController {
                 const aesKey = await ECC.decrypt(token, privateKeyB);
                 console.log('AES Key');
                 console.log('en_data');
-                console.log(typeof en_data);
                 const originalText = EncryptAES.decrypt(en_data, aesKey);
                 // console.log("TEXT")
                 try {
                     // file written successfully
                     fs.writeFileSync(path + 'de_' + file.name, originalText);
-                    console.log(originalText);
                 } catch (err) {
                     console.error(err);
                 }
