@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import './recordList.css';
 import Bar from '../../bar/bar';
+
 export default function RecordList() {
     const [patient_id, , setPatient_id] = useState('123');
     const onButtonClick = () => {
