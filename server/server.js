@@ -1,12 +1,14 @@
 const express = require('express');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
+const corn = require('cors')
 const app = express();
 const route = require('./routes');
 const db = require('./config/db');
 const port = 5000;
 
 app.use(fileUpload());
+app.use(corn())
 
 app.use(
     session({
@@ -16,6 +18,8 @@ app.use(
         cookie: { maxAge: 60000 },
     }),
 );
+app.use(express.json())
+app.use(express.urlencoded({ extended: false}))
 
 // Connect to DB
 db.connect();
