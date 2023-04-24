@@ -11,6 +11,8 @@ const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
 const eccrypto = require('eccrypto');
 const fs = require('fs');
 const convertString = require('./convertString');
+const Record = require('../models/Record');
+
 
 // const privateKeyA = eccrypto.generatePrivate();
 // const publicKeyA = eccrypto.getPublic(privateKeyA);
@@ -43,6 +45,13 @@ const ECC = require('./ECC');
 const Account = require('../models/Account');
 
 class UploadFileController {
+    getRecord(req,res) {
+        Record.find().then(function(rc){
+            res.status(200).json(rc)
+        })
+    }
+
+    
     upload(req, res) {
         if (req.files === null) {
             console.log('lỗi');
@@ -53,12 +62,12 @@ class UploadFileController {
         const file = req.files.file;
 
         //lưu file vào public/uploads
-        const path = `${process.cwd()}/client/public/uploads/`;
+        const path = `${process.cwd()}/server/public/uploads/`;
 
         file.mv(path + file.name, async (err) => {
             if (err) {
                 console.error(err);
-                return res.status(500).send(err);
+               // return res.status(500).send(err);
             }
             try {
                 const data = fs.readFileSync(path + file.name);
@@ -76,11 +85,22 @@ class UploadFileController {
                 //1. Lấy public key từ id BN
 
                 const idBN = req.body.name;
-                console.log(idBN);
+                const acc = await Account.findOne({ username: idBN })
+                .then(function(acc) {
+                    const record = new Record();
+                    record._idBN = idBN
+                    record._idbs = "142" //get userId
+                    record.name = file.name
+                    record
+                        .save()
+                        //.then(() => res.json({ status: true }))
+                        //.catch(() => res.json({ status: false }));
+                })
+                console.log('pk', acc);
+                console.log('keyB', publicKeyB);
 
                 //2. Mã hóa khóa k
                 const token = await ECC.encrypt(key, publicKeyB);
-
                 // transaction data
                 const owner = accountB.address;
                 const ehrLink = file.name;
@@ -133,16 +153,6 @@ class UploadFileController {
         });
 
         res.json({ status: true });
-    }
-
-    // [GET] /uploadRecord/find
-    findKey(req, res, next) {
-        Account.findOne({ _id: req.body._id })
-            .lean()
-            .then((account) => {
-                res.json({ publicKey: account.publicKey });
-            })
-            .catch(next);
     }
 }
 
