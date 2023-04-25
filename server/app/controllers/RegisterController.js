@@ -4,6 +4,7 @@ var eccrypto = require('eccrypto');
 class RegisterController {
     // [POST] /register
     createAccount(req, res) {
+        const account = new Account();
         // Check input data
         if (
             req.username === null ||
@@ -15,30 +16,30 @@ class RegisterController {
             res.status(400).json({ status: false });
         }
         //Xử lý
-        req.body.password = req.body.password1;
-        req.body.role = 'patient';
+        account.role = 'patient';
 
         const privateKey = eccrypto.generatePrivate();
-        req.body.privateKey = JSON.stringify(privateKey);
-        req.body.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
-
+        account.privateKey = JSON.stringify(privateKey);
+        account.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
+        
         Account.findOne({})
             .lean()
             .sort({ id: 'desc' })
             .then((lastAccount) => {
-                if (lastAccount) {
-                    req.body._id = lastAccount._id + 1;
-                } else {
-                    req.body._id = 1;
-                }
 
-                const account = new Account(req.body);
+                if (lastAccount) {
+                    account.id = lastAccount.id + 1;
+                } else {
+                    account.id = 1;
+                }
+                account.username = req.body.username
+                account.password = req.body.password1
                 account
                     .save()
-                    .then(() => res.json({ status: true }))
-                    .catch(() => res.json({ status: false }));
+                    .then(()  => {res.json({ status: true })})
+                    .catch(() => {res.json({ status: false })})
             })
-            .catch(() => res.json({ status: false }));
+            .catch(() => res.json({ statusx: false }));
         //Nếu user hợp lệ return true
     }
 }

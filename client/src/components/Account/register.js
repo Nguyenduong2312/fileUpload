@@ -30,17 +30,15 @@ export default function Register(props) {
         e.preventDefault();
     
         try {
-            console.log();
+            console.log('abbbb');
             const res = await axios.post('/register', formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
-            },
-        });
-        // 
-        if (res.data.status === true) {
-            navigate('/myProfile');
-        }
-        setMessage('Lỗi')
+            },});
+            console.log(res.data.status);
+            if (res.data.status === true) {
+                navigate('/myProfile');
+            }
         } catch (err) {
         if (err.response.status === 500) {
             setMessage('There was a problem with the server');

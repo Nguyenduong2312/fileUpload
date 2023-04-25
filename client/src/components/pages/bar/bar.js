@@ -26,6 +26,9 @@ export default function Bar() {
                         <Link to="/dashboard">Dashboard</Link>
                     </li>
                     <li>
+                        <Link to="/uploadRecord">Upload Record</Link>
+                    </li>
+                    <li>
                         <Link to="/aboutUs">About Us</Link>
                     </li>
                     <li className={`is${auth}`}>

@@ -1,8 +1,9 @@
 import React, { Fragment, useState } from 'react';
-import Message from '../../../Message';
+import Message from '../../Message';
 import axios from 'axios';
 
 import './uploadRecord.css';
+import Bar from '../bar/bar';
 
 const UploadRecord = () => {
     const [file, setFile] = useState('');
@@ -41,6 +42,8 @@ const UploadRecord = () => {
     };
 
     return (
+        <div>
+        <Bar></Bar>
         <div className="container mt-4">
             <h4 className="display-4 text-center mb-4">File Upload</h4>
 
@@ -81,6 +84,8 @@ const UploadRecord = () => {
                 </form>
             </Fragment>
         </div>
+        </div>
+    
     );
 };
 

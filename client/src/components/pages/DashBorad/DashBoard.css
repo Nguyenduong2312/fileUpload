@@ -1,0 +1,46 @@
+.dashboard_content{
+    width: 80%;
+    margin: auto;
+}
+h3{
+    padding: 20px;
+    margin-left: 150px;
+    font-weight: 600;
+}
+.dashboard_menu{
+    display: flex;
+    position: relative;
+}
+.dashboard_menu_button{
+    border: 2px solid black;
+    border-radius:  10px 10px 0px 0px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.dashboard_menu_button.newRequest{
+    position: absolute;
+    right: 0px;
+    color: black;
+    background-color: white;
+}
+
+.dashboard_menu_button.newRequest:hover{
+    background-color: green;
+    text-decoration: none;
+}
+.dashboard_menu_button.true{
+    background-color: yellow;
+}
+.dashboard_menu_button.false{
+    background-color: rgb(255, 255, 255);
+}
+.dashboard_tag{
+    height: fit-content;
+    padding: 20px 0px 50px 0px;
+    background-color: yellow;
+    border: 2px solid black;
+    border-radius: 0px 20px 20px 20px;
+    max-height: 450px;
+    overflow-y: scroll;
+}
