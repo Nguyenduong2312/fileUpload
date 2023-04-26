@@ -219,7 +219,7 @@ class UploadFileController {
                         path + 'de_' + txRecord.ehrLink,
                         originalText,
                     );
-                    res.status(200).json({ status: true });
+                    res.status(200).download(path + 'de_' + txRecord.ehrLink);
                 } catch (err) {
                     console.error(err);
                     res.status(500);
