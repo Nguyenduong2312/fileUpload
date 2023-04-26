@@ -43,49 +43,48 @@ const UploadRecord = () => {
 
     return (
         <div>
-        <Bar></Bar>
-        <div className="container mt-4">
-            <h4 className="display-4 text-center mb-4">File Upload</h4>
+            <Bar></Bar>
+            <div className="container mt-4">
+                <h4 className="display-4 text-center mb-4">File Upload</h4>
 
-            <Fragment>
-                {message ? <Message msg={message} /> : null}
-                <form onSubmit={onSubmit}>
-                    <div className="inputField id">
-                        <label>
-                            Patient id:<br></br>
+                <Fragment>
+                    {message ? <Message msg={message} /> : null}
+                    <form onSubmit={onSubmit}>
+                        <div className="inputField id">
+                            <label>
+                                Patient id:<br></br>
+                                <input
+                                    type="text"
+                                    id="id"
+                                    name="id"
+                                    onChange={handleChange}
+                                />
+                            </label>
+                        </div>
+
+                        <div className="custom-file mb-3">
                             <input
-                                type="text"
-                                id="id"
-                                name="id"
-                                onChange={handleChange}
+                                type="file"
+                                className="custom-file-input"
+                                id="customFile"
+                                onChange={onChange}
                             />
-                        </label>
-                    </div>
-
-                    <div className="custom-file mb-3">
+                            <label
+                                className="custom-file-label"
+                                htmlFor="customFile"
+                            >
+                                {filename}
+                            </label>
+                        </div>
                         <input
-                            type="file"
-                            className="custom-file-input"
-                            id="customFile"
-                            onChange={onChange}
+                            type="submit"
+                            value="Upload"
+                            className="btn btn-primary btn-block mt-4"
                         />
-                        <label
-                            className="custom-file-label"
-                            htmlFor="customFile"
-                        >
-                            {filename}
-                        </label>
-                    </div>
-                    <input
-                        type="submit"
-                        value="Upload"
-                        className="btn btn-primary btn-block mt-4"
-                    />
-                </form>
-            </Fragment>
+                    </form>
+                </Fragment>
+            </div>
         </div>
-        </div>
-    
     );
 };
 

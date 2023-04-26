@@ -20,7 +20,7 @@ const App = () => (
                     <Route path="Dashboard" element={<DashBoard />} />
                     <Route path="uploadRecord" element={<UploadRecord />} />
                     <Route path="requestRecord" element={<RequestRecord />} />
-                    
+
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="myProfile" element={<Profile />} />

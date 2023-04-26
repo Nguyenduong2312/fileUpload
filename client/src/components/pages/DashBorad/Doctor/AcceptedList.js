@@ -1,6 +1,5 @@
-import React from 'react'
-import './AcceptedList.css'
-
+import React from 'react';
+import './AcceptedList.css';
 
 export default function AcceptedList(props) {
     const onButtonClick = () => {
@@ -17,14 +16,15 @@ export default function AcceptedList(props) {
 
     return (
         <div className="record_tag">
-            <div className='text' style={{display:'block'}}>
+            <div className="text" style={{ display: 'block' }}>
                 <p>Patient: {props.idBN}</p>
                 <p>File: {props.name}</p>
             </div>
-            <div className='dashboard_buttons'>
-                <div className="button" onClick={onButtonClick}>Download</div>
+            <div className="dashboard_buttons">
+                <div className="button" onClick={onButtonClick}>
+                    Download
+                </div>
             </div>
         </div>
-)
+    );
 }
-  

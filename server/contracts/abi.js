@@ -51,6 +51,40 @@ contractAbi = [
         inputs: [
             {
                 internalType: 'uint256',
+                name: 'idx',
+                type: 'uint256',
+            },
+            {
+                internalType: 'address',
+                name: '_owner',
+                type: 'address',
+            },
+            {
+                internalType: 'string',
+                name: '_ehrLink',
+                type: 'string',
+            },
+            {
+                internalType: 'string',
+                name: '_encryptedKey',
+                type: 'string',
+            },
+        ],
+        name: 'updateEHR',
+        outputs: [
+            {
+                internalType: 'uint256',
+                name: '',
+                type: 'uint256',
+            },
+        ],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
                 name: '',
                 type: 'uint256',
             },
@@ -92,40 +126,6 @@ contractAbi = [
             },
         ],
         stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [
-            {
-                internalType: 'uint256',
-                name: 'idx',
-                type: 'uint256',
-            },
-            {
-                internalType: 'address',
-                name: '_owner',
-                type: 'address',
-            },
-            {
-                internalType: 'string',
-                name: '_ehrLink',
-                type: 'string',
-            },
-            {
-                internalType: 'string',
-                name: '_encryptedKey',
-                type: 'string',
-            },
-        ],
-        name: 'updateEHR',
-        outputs: [
-            {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-            },
-        ],
-        stateMutability: 'nonpayable',
         type: 'function',
     },
 ];

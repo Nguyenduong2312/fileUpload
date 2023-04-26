@@ -1,5 +1,4 @@
-import React from 'react'
-
+import React from 'react';
 
 export default function RecordList(props) {
     const onButtonClick = () => {
@@ -16,13 +15,14 @@ export default function RecordList(props) {
 
     return (
         <div className="record_tag">
-            <div className='text' style={{display:'block'}}>
+            <div className="text" style={{ display: 'block' }}>
                 <p>File: {props.name}</p>
             </div>
-            <div className='dashboard_buttons'>
-                <div className="button" onClick={onButtonClick}>Download</div>
+            <div className="dashboard_buttons">
+                <div className="button" onClick={onButtonClick}>
+                    Download
+                </div>
             </div>
         </div>
-)
+    );
 }
-  

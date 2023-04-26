@@ -34,7 +34,7 @@ const convertString = require('./convertString');
 const Account = require('../models/Account');
 
 class DownloadRecordController {
-    download(req, res) {
+    downloadRecord(req, res) {
         res.json({ status: true });
     }
 }
