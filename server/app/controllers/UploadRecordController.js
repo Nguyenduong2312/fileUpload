@@ -77,17 +77,18 @@ class UploadFileController {
                 //1. Lấy public key từ id BN
 
                 const idBN = req.body.name;
-                const acc = await Account.findOne({ username: idBN }).then(
-                    function (acc) {
-                        const record = new Record();
-                        record._idBN = idBN;
-                        record._idbs = '142'; //get userId
-                        record.name = file.name;
-                        record.save();
+                const acc = await Account.findOne({ id: idBN }).then(function (
+                    acc,
+                ) {
+                    const record = new Record();
+                    record._idBN = idBN;
+                    record._idbs = '142'; //get userId
+                    record.name = file.name;
+                    record
+                        .save()
                         //.then(() => res.json({ status: true }))
-                        //.catch(() => res.json({ status: false }));
-                    },
-                );
+                        .catch(() => res.json({ status: false }));
+                });
                 console.log('pk', acc);
                 console.log('keyB', publicKeyB);
                 console.log('string keyB', publicKeyB.toString('hex'));

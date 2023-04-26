@@ -3,13 +3,13 @@ import './App.css';
 import Layout from './components/layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import UploadRecord from './components/pages/Doctor/Upload/uploadRecord';
+import UploadRecord from './components/pages/Upload/uploadRecord';
 import Login from './components/Account/login';
 import Register from './components/Account/register';
 import Home from './components/pages/home/home';
-import RequestRecord from './components/pages/Doctor/RequestRecord/requestRecord';
-import RecordList from './components/pages/Doctor/RecordList/recordList';
 import Profile from './components/pages/profile/profile';
+import DashBoard from './components/pages/DashBorad/DashBoard';
+import RequestRecord from './components/pages/DashBorad/Doctor/RequestRecord';
 
 const App = () => (
     <div className="main">
@@ -17,10 +17,9 @@ const App = () => (
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
-
+                    <Route path="Dashboard" element={<DashBoard />} />
                     <Route path="uploadRecord" element={<UploadRecord />} />
-                    <Route path="request" element={<RequestRecord />} />
-                    <Route path="acceptedRecord" element={<RecordList />} />
+                    <Route path="requestRecord" element={<RequestRecord />} />
 
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
