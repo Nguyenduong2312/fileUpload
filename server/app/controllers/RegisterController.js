@@ -4,6 +4,7 @@ var eccrypto = require('eccrypto');
 class RegisterController {
     // [POST] /register
     createAccount(req, res) {
+        console.log('cv');
         const account = new Account();
         // Check input data
         if (
@@ -39,10 +40,10 @@ class RegisterController {
                         res.json({ status: true });
                     })
                     .catch(() => {
-                        res.json({ status: false });
+                        res.json({ status: 'a' });
                     });
             })
-            .catch(() => res.json({ statusx: false }));
+            .catch(() => res.json({ status: "falsel" }));
         //Nếu user hợp lệ return true
     }
 }
