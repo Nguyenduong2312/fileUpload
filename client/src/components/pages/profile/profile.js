@@ -1,16 +1,29 @@
-import { useState } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Bar from '../bar/bar';
 import Infor from './infor';
 import './profile.css';
-import InforForm from './infor_form';
-export default function Profile(props) {
+import UpdateInforForm from './UpdateInforForm';
+export default function Profile() {
     const [isEdit, setStatus] = useState(true);
+    const [infor, setInfor] = useState({
+    })
+    useEffect(() => {
+        fetch('http://localhost:5000/myProfile/1')
+        .then(res => res.json())
+        .then(account => {
+            console.log('acc: ',account);
+            setInfor(account)
+        })
+        console.log('infor');
+        console.log(infor);
+}, [])  
+
+
     function ChangeTag() {
         if (isEdit) {
-            return <Infor></Infor>;
+            return <Infor name = {infor.name} gender = {infor.gender} address = {infor.address} email = {infor.email}  ></Infor>;
         } else {
-            return <InforForm setStatus={setStatus}></InforForm>;
+            return <UpdateInforForm setStatus={setStatus}></UpdateInforForm>;
         }
     }
     return (
@@ -23,7 +36,7 @@ export default function Profile(props) {
                     </div>
                 </div>
                 <div className="tag_info">
-                    <ChangeTag />
+                    <ChangeTag/>
                     <button
                         className={`button editProfile ${isEdit}`}
                         onClick={() => setStatus(false)}

@@ -30,13 +30,11 @@ export default function Register(props) {
         e.preventDefault();
 
         try {
-            console.log('abbbb');
             const res = await axios.post('/register', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(res.data.status);
             if (res.data.status === true) {
                 navigate('/myProfile');
             }

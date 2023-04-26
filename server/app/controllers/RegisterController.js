@@ -40,10 +40,10 @@ class RegisterController {
                         res.json({ status: true });
                     })
                     .catch(() => {
-                        res.json({ status: 'a' });
+                        res.json({ status: false });
                     });
             })
-            .catch(() => res.json({ status: "falsel" }));
+            .catch(() => res.json({ status: false }));
         //Nếu user hợp lệ return true
     }
 }
