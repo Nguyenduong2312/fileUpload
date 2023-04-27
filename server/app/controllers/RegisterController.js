@@ -4,8 +4,7 @@ var eccrypto = require('eccrypto');
 class RegisterController {
     // [POST] /register
     createAccount(req, res) {
-        console.log('cv');
-        const account = new Account();
+        const tmp = new Account();
         // Check input data
         if (
             req.username === null ||
@@ -17,23 +16,25 @@ class RegisterController {
             res.status(400).json({ status: false });
         }
         //Xử lý
-        account.role = 'patient';
-
+        tmp.username = req.body.username;
+        tmp.password = req.body.password1;
         const privateKey = eccrypto.generatePrivate();
-        account.privateKey = JSON.stringify(privateKey);
-        account.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
+        tmp.privateKey = JSON.stringify(privateKey);
+        tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
+        tmp.role = 'patient';
 
         Account.findOne({})
             .lean()
             .sort({ id: 'desc' })
             .then((lastAccount) => {
                 if (lastAccount) {
-                    account.id = lastAccount.id + 1;
+                    tmp.id = lastAccount.id + 1;
                 } else {
-                    account.id = 1;
+                    tmp.id = 1;
                 }
-                account.username = req.body.username;
-                account.password = req.body.password1;
+
+                const account = new Account(tmp);
+
                 account
                     .save()
                     .then(() => {
