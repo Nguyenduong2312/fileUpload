@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
     const [auth, setAuth] = useState('true');
-
+    console.log('ab');
     function checkAuth(status_auth) {
         if (status_auth) {
             setAuth(true);

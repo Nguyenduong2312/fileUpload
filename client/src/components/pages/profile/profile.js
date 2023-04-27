@@ -7,25 +7,17 @@ export default function Profile() {
     const [isEdit, setStatus] = useState(true);
     const [infor, setInfor] = useState({
     })
+    console.log(isEdit);
     useEffect(() => {
+        console.log('get');
         fetch('http://localhost:5000/myProfile/1')
         .then(res => res.json())
         .then(account => {
             console.log('acc: ',account);
             setInfor(account)
         })
-        console.log('infor');
-        console.log(infor);
-}, [])  
+}, [isEdit])  
 
-
-    function ChangeTag() {
-        if (isEdit) {
-            return <Infor name = {infor.name} gender = {infor.gender} address = {infor.address} email = {infor.email}  ></Infor>;
-        } else {
-            return <UpdateInforForm setStatus={setStatus}></UpdateInforForm>;
-        }
-    }
     return (
         <div>
             <Bar></Bar>
@@ -36,7 +28,8 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className="tag_info">
-                    <ChangeTag/>
+                    {isEdit && <Infor name = {infor.name} gender = {infor.gender} address = {infor.address} email = {infor.email} date = {infor.birthday}  ></Infor>}
+                    {!isEdit && <UpdateInforForm setStatus={setStatus}></UpdateInforForm>}
                     <button
                         className={`button editProfile ${isEdit}`}
                         onClick={() => setStatus(false)}

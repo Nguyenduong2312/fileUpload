@@ -6,6 +6,7 @@ export default function Infor(props) {
             <p>Gender: {props.gender}</p>
             <p>Adress: {props.address}</p>
             <p>Email: {props.email}</p>
+            <p>BirthDay: {props.date}</p>
         </div>
     );
 }

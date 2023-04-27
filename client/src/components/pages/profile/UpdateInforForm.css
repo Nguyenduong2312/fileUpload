@@ -1,19 +1,37 @@
+
+.profile_form_tag{
+    border-radius: 50px;
+    margin-left: 0px;
+}
 .profile_form_tag .inputField label{
+    margin-left: 0px;
     color: black;
 }
 form{
     padding: 0px;
-    margin-bottom: 50px;
 }
-.inputField{
+.UpdateAccountForm .inputField{
+    margin-left : 0px;
+    margin-top: 10px;
     display: grid;
     grid-template-columns: 1fr 3fr;
 }
 
+.UpdateAccountForm .inputField input{
+    padding: 0px 20px;
+}
+
+.UpdateAccountForm .inputField select{
+    margin-left : 0px;
+    border-radius: 10px;
+    padding: 0px 20px;
+}
+
 input.submit.save{
     position: absolute;
+    width: 100px;
     bottom: 20px;
-    right: 20px;
-    background-color: blue;
+    right: 50px;
+    background-color: green;
 }
 

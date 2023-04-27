@@ -2,7 +2,6 @@ const Account = require("../models/Account");
 
 class UpdateAccountController {
     getInfor(req,res){
-        console.log('ad')
         Account.findOne({id: req.params.id})
         .then((account) => {
             res.status(200).json(account);
@@ -15,6 +14,8 @@ class UpdateAccountController {
             if (req.body.gender) {account.gender = req.body.gender}
             if (req.body.address) {account.address = req.body.address}
             if (req.body.email) {account.email = req.body.email}
+            if (req.body.date) {account.birthday = req.body.date}
+
             account
             .save()
             .then(() => res.json({ status: true }))

@@ -34,12 +34,11 @@
     margin-top: 50px;
 }
 
-.inputField{
+.login_tag_text .inputField{
     margin-left: 17%;
-    margin-top: 10px;
 }
 
-input{
+.login_tag_text .inputField input{
     width: 250px;
     height: 40px;
     border-radius: 10px;
@@ -54,11 +53,12 @@ input[type=password] {
     padding: 0px 20px;
 }
 
-input.submit{
-    background-color:black;
+.login_tag_text input.submit{
+    background-color: black;
     color: white;
+    width: 100px;
     height: 40px;
-    margin-left: 17%;
+    margin-left: 40%;
     margin-top: 20px;
 }
 label{

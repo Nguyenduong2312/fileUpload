@@ -65,8 +65,7 @@ export default function Register(props) {
                                             <input
                                                 type="text"
                                                 name="username"
-                                                id="email"
-                                                value={username || ''}
+                                                value={username}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -77,8 +76,7 @@ export default function Register(props) {
                                             <input
                                                 type="password"
                                                 name="password1"
-                                                id="password1"
-                                                value={password1 || ''}
+                                                value={password1}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -89,8 +87,7 @@ export default function Register(props) {
                                             <input
                                                 type="password"
                                                 name="password2"
-                                                id="password2"
-                                                value={password2 || ''}
+                                                value={password2}
                                                 onChange={onChange}
                                             />
                                         </label>
