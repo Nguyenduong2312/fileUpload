@@ -3,8 +3,8 @@ const Request = require('../models/Request');
 
 class RequestController{
     getRequest(req,res) {
-        Request.find().then(function(rc){
-            res.status(200).json(rc)
+        Request.find().then(function(request){
+            res.status(200).json(request)
         })
     }
     request(req,res){
@@ -12,11 +12,25 @@ class RequestController{
         const request = new Request()
         request.idReceiver = idReceiver
         request.idSender = '142'
-        console.log(request);
         request.save()
         .then(() => res.json({status: true}))
         .catch(()  => res.json({status: false}))
     }
+    updateRequest(req,res){
+        Request.findOne({_id: req.params.id})
+        .then((request) => {
+            request.status = 'accepted'
+            request
+            .save()
+            .then(() => res.json({ status: true }))
+            .catch(() => res.json({ status: false }));
+        })
+    }
+    deleteRequest(req,res){
+        Request.findOneAndRemove({_id: req.params.id})
+        .then(() => res.json({ status: true }))
+        .catch(() => res.json({ status: false }));
+}
 }
 
 module.exports = new RequestController();

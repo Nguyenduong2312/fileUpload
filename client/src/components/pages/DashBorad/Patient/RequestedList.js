@@ -1,12 +1,40 @@
 import React from 'react';
-const onButtonClick = () => {};
+import axios from 'axios';
 export default function RequestedList(props) {
-    const handleAcceptRequest = () =>{
+
+    const handleAcceptRequest = async (e) => {
+        e.preventDefault();
+        //cập nhật status cho api waitting -> accepted
+        try{
+            await axios.put(`/requestRecord/${props._id}`, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+        } catch(err){
+            console.log('lỗi');
+        }
+
+        //xóa api ra khỏi requested list
         
     }
 
-    const handleRejectRequest = () =>{
-        
+    const handleRejectRequest  = async (e) => {
+        e.preventDefault();
+        //xóa api ra khỏi requested list
+        try{
+            await axios.delete(`/requestRecord/${props._id}`, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            props.setLengthOfRequestList((prev) => prev - 1)
+
+        } catch(err){
+            console.log('lỗi');
+        }
+
     }
 
 

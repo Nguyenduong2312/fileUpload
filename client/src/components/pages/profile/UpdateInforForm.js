@@ -19,7 +19,6 @@ export default function InforForm(props) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         try{
             await axios.put('/myProfile/1', formData, {
                 headers: {

@@ -8,6 +8,7 @@ const Request = new Schema(
         idReceiver: { type: String, require: true },
         typeRecord: { type: String, default: '' },
         status: { type: String, default: 'Waitting' },
+        id : { type: String, require: true },
     },
     {
         timestamps: true,
