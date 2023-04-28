@@ -11,13 +11,10 @@ export default function RequestedList(props) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
+            props.setLengthOfRequestList((prev) => prev -1)
         } catch(err){
             console.log('lỗi');
-        }
-
-        //xóa api ra khỏi requested list
-        
+        }        
     }
 
     const handleRejectRequest  = async (e) => {
@@ -41,7 +38,7 @@ export default function RequestedList(props) {
     return (
         <div className="record_tag">
             <div className='text' style={{display:'block'}}>
-                <p>Id Sender: {props.id}</p>
+                <p>Id Sender: {props.idSender}</p>
                 <p>Request date :{props.name}</p>
             </div>
             <div className='dashboard_buttons'>

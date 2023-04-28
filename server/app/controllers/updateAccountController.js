@@ -15,7 +15,6 @@ class UpdateAccountController {
             if (req.body.address) {account.address = req.body.address}
             if (req.body.email) {account.email = req.body.email}
             if (req.body.date) {account.birthday = req.body.date}
-
             account
             .save()
             .then(() => res.json({ status: true }))

@@ -15,7 +15,13 @@ class RegisterController {
         } else if (req.password1 !== req.password2) {
             res.status(400).json({ status: false });
         }
-        //Xử lý
+        Account.findOne({ username: request.body.username })
+        .then((account)=> {
+            if(account){
+                res.status(422).json({ status: false });
+            }
+        })
+        
         tmp.username = req.body.username;
         tmp.password = req.body.password1;
         const privateKey = eccrypto.generatePrivate();

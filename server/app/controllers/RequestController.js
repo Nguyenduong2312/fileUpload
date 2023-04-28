@@ -2,8 +2,20 @@ const Request = require('../models/Request');
 
 
 class RequestController{
-    getRequest(req,res) {
-        Request.find().then(function(request){
+    getRequest(req, res) {
+        Request.find().then(function (request) {
+            res.status(200).json(request);
+        });
+    }
+    getRequestByReceiverId(req,res) {
+        Request.find({idReceiver: '1', status: 'Waitting'})
+        .then(function(request){
+            res.status(200).json(request)
+        })
+    }
+    getRequestBySenderId(req,res) {
+        Request.find({idSender: '142', status: 'Waitting'})
+        .then(function(request){
             res.status(200).json(request)
         })
     }
@@ -27,6 +39,7 @@ class RequestController{
         })
     }
     deleteRequest(req,res){
+        console.log();
         Request.findOneAndRemove({_id: req.params.id})
         .then(() => res.json({ status: true }))
         .catch(() => res.json({ status: false }));
