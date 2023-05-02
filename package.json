@@ -18,10 +18,10 @@
         "**/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
     },
     "dependencies": {
-        "@reduxjs/toolkit": "^1.9.0-rc.1",
-        "@types/react": "^18.0.35",
-        "@types/react-dom": "^18.0.11",
-        "axios": "^1.3.5",
+        "@reduxjs/toolkit": "^1.9.5",
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.1",
+        "axios": "^1.4.0",
         "bcrypt": "^5.1.0",
         "bootstrap": "^5.2.3",
         "corn": "^0.0.1",
@@ -30,19 +30,18 @@
         "eccrypto": "^1.1.6",
         "express": "^4.18.2",
         "express-fileupload": "^1.4.0",
-        "express-session": "^1.17.3",
         "ipfs-core": "^0.18.0",
         "ipfs-http-client": "^60.0.0",
-        "mongoose": "^7.0.3",
-        "mongoose-delete": "^0.5.4",
+        "mongoose": "^7.1.0",
         "mongoose-slug-generator": "^1.0.4",
+        "passport": "^0.6.0",
         "react": "^18.2.0",
-        "react-bootstrap": "^2.7.3",
+        "react-bootstrap": "^2.7.4",
         "react-date-picker": "^10.0.3",
         "react-dom": "^18.2.0",
         "react-icons": "^4.8.0",
         "react-redux": "^8.0.5",
-        "react-router-dom": "^6.10.0",
+        "react-router-dom": "^6.11.0",
         "react-scripts": "^5.0.1",
         "react-select": "^5.7.2",
         "web-vitals": "^3.3.1",
@@ -51,8 +50,8 @@
     "devDependencies": {
         "concurrently": "^8.0.1",
         "husky": "^8.0.3",
-        "lint-staged": "^13.2.1",
+        "lint-staged": "^13.2.2",
         "nodemon": "^2.0.22",
-        "prettier": "^2.8.7"
+        "prettier": "^2.8.8"
     }
 }

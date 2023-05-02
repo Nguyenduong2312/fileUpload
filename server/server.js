@@ -1,25 +1,36 @@
 const express = require('express');
-const session = require('express-session');
+const passport = require('passport');
 const fileUpload = require('express-fileupload');
-const corn = require('cors')
+const corn = require('corn');
 const app = express();
 const route = require('./routes');
 const db = require('./config/db');
 const port = 5000;
+const Account = require('../models/Account');
 
 app.use(fileUpload());
-app.use(corn())
+app.use(corn());
 
-app.use(
-    session({
-        resave: true,
-        saveUninitialized: true,
-        secret: 'somesecret',
-        cookie: { maxAge: 60000 },
-    }),
-);
-app.use(express.json())
-app.use(express.urlencoded({ extended: false}))
+// passport.use(new LocalStrategy(
+//     function(username, password, done) {
+//       User.findOne({ username: username }, function (err, user) {
+//         if (err) { return done(err); }
+//         if (!user) { return done(null, false); }
+//         if (!user.verifyPassword(password)) { return done(null, false); }
+//         return done(null, user);
+//       });
+//     }
+//   ));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// passport config
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 // Connect to DB
 db.connect();
