@@ -30,7 +30,13 @@ class LoginController {
                 } else if (account.password !== password) {
                     res.status(400).json({ status: false });
                 } else {
+                    req.session.User = {
+                        website: 'anonystick.com',
+                        type: 'blog javascript',
+                        like: '4550',
+                    };
                     res.status(200).json({ status: true });
+                    console.log(req.session.User);
                 }
             })
             .catch(next);
