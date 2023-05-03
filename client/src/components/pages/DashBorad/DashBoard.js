@@ -14,121 +14,73 @@ export default function DashBoard() {
     const [second, setSecond] = useState(false);
     const [recordList, setRecordList] = useState([]);
     const [requestList, setRequestList] = useState([]);
-
+    const [lengthOfRecordList, setLengthOfRecordList] = useState(0)
+    const [lengthOfRequestList, setLengthOfRequestList] = useState(0)
+    
     useEffect(() => {
-        if (role) {
-            fetch('https://jsonplaceholder.typicode.com/posts')
-                .then((res) => res.json())
-                .then((posts) => {
-                    setRequestList(posts);
-                });
-            fetch('http://localhost:5000/uploadRecord/get')
-                .then((res) => res.json())
-                .then((posts) => {
-                    setRecordList(posts);
-                });
-        } else {
-            fetch('https://jsonplaceholder.typicode.com/posts')
-                .then((res) => res.json())
-                .then((posts) => {
-                    setRequestList(posts);
-                });
-            fetch('http://localhost:5000/uploadRecord/get')
-                .then((res) => res.json())
-                .then((posts) => {
-                    setRecordList(posts);
-                });
+        if(role){
+            fetch('http://localhost:5000/requestRecord/sender')
+            .then(res => res.json())
+            .then(requests => {
+                setRequestList(requests)
+                setLengthOfRequestList(requests.length)
+            })
+            fetch('http://localhost:5000/uploadRecord/sender')
+            .then(res => res.json())
+            .then(records => {
+                setRecordList(records)
+                setLengthOfRecordList(records.length)
+            })
         }
-    }, []);
+        else{
+            fetch('http://localhost:5000/requestRecord/receiver')
+            .then(res => res.json())
+            .then(requests => {
+                setRequestList(requests)
+                setLengthOfRequestList(requests.length)
+            })
+            fetch('http://localhost:5000/uploadRecord/receiver')
+            .then(res => res.json())
+            .then(records => {
+                setRecordList(records)
+                setLengthOfRecordList(records.length)
+            })
+        }
+}, [lengthOfRecordList,lengthOfRequestList])  
 
-    const handleFirst = () => {
-        setFirst(true);
-        setSecond(false);
-    };
-
-    const handleSecond = () => {
-        setFirst(false);
-        setSecond(true);
-    };
+    const handleClick = () =>{
+        setFirst(!first)
+        setSecond(!second)    
+    }
 
     return (
         <div>
             <Bar />
             <h3>DASHBOARD</h3>
-            <div className="dashboard_content">
-                {role && (
-                    <div className="dashboard_menu">
-                        <div
-                            className={`dashboard_menu_button ${first}`}
-                            onClick={handleFirst}
-                        >
-                            Accepted Records
-                        </div>
-                        <div
-                            className={`dashboard_menu_button ${second}`}
-                            onClick={handleSecond}
-                        >
-                            Request Records
-                        </div>
-                        <Link to="/requestRecord">
-                            <div className={`dashboard_menu_button newRequest`}>
-                                New Request
-                            </div>
-                        </Link>
-                    </div>
-                )}
-                {!role && (
-                    <div className="dashboard_menu">
-                        <div
-                            className={`dashboard_menu_button ${first}`}
-                            onClick={handleFirst}
-                        >
-                            My Records
-                        </div>
-                        <div
-                            className={`dashboard_menu_button ${second}`}
-                            onClick={handleSecond}
-                        >
-                            Requested Records
-                        </div>
-                    </div>
-                )}
-                {role && (
-                    <div className="dashboard_tag">
-                        {first &&
-                            recordList.map((record) => (
-                                <AcceptedList
-                                    idBN={record._idBN}
-                                    name={record.name}
-                                />
-                            ))}
-                        {second &&
-                            requestList.map((record) => (
-                                <RequestList
-                                    idBN={record.title}
-                                    name={record.name}
-                                />
-                            ))}
-                    </div>
-                )}
-                {!role && (
-                    <div className="dashboard_tag">
-                        {first &&
-                            recordList.map((record) => (
-                                <RecordList
-                                    idBN={record._idBN}
-                                    name={record.name}
-                                />
-                            ))}
-                        {second &&
-                            requestList.map((record) => (
-                                <RequestedList
-                                    idBN={record.title}
-                                    name={record.name}
-                                />
-                            ))}
-                    </div>
-                )}
+            <div className='dashboard_content'>
+                {role && <div className='dashboard_menu'>
+                    <div className={`dashboard_menu_button ${first}`} onClick={handleClick}>Accepted Records</div>
+                    <div className={`dashboard_menu_button ${second}`} onClick={handleClick}>Request Records</div>
+                    <Link to="/requestRecord"><div className={`dashboard_menu_button newRequest`}>New Request</div></Link>
+                </div>}
+                {!role && <div className='dashboard_menu'>
+                    <div className={`dashboard_menu_button ${first}`} onClick={handleClick}>My Records</div>
+                    <div className={`dashboard_menu_button ${second}`} onClick={handleClick}>Requested List</div>
+                </div>}
+                {role && <div className='dashboard_tag'>
+                    {first && recordList.map(record => 
+                        <AcceptedList key= {record.id} id = {record.idReceiver} name = {record.fileName}/>)}
+                    {second && requestList.map(record => 
+                        <RequestList key= {record.id} idReceiver = {record.idReceiver} _id = {record._id} status = {record.status}  setLengthOfRequestList = {setLengthOfRequestList}/>
+                    )}
+                </div>}
+                {!role && <div className='dashboard_tag'>
+                    {first && recordList.map(record => 
+                        <RecordList key= {record.id} name = {record.fileName} id = {record.idSender} />)}
+                    {second && requestList.map(record => 
+                        <RequestedList key= {record.id} idSender = {record.idSender} _id = {record._id} setLengthOfRequestList = {setLengthOfRequestList}/>
+                    )}
+                </div>}
             </div>
         </div>
     );

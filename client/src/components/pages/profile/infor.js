@@ -2,10 +2,11 @@ import React from 'react';
 export default function Infor(props) {
     return (
         <div>
-            <p>Username:{props.username}</p>
-            <p>Full name:{props.name}</p>
-            <p>Age:{props.age}</p>
-            <p>Gender:{props.gender}</p>
+            <p>Full name: {props.name}</p>
+            <p>Gender: {props.gender}</p>
+            <p>Adress: {props.address}</p>
+            <p>Email: {props.email}</p>
+            <p>BirthDay: {props.date}</p>
         </div>
     );
 }

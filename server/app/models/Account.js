@@ -6,10 +6,11 @@ const Account = new Schema(
     {
         id: { type: Number },
         name: { type: String, default: '' },
+        gender: { type: String, default: '' },
         address: { type: String, default: '' },
         email: { type: String, default: '' },
         phoneNumber: { type: String, default: '' },
-        birthday: { type: Date },
+        birthday: { type: String, default: '1990-01-01' },
         username: { type: String, required: true },
         password: { type: String, required: true },
         publicKey: { type: String, required: true },

@@ -16,8 +16,8 @@ export default function AcceptedList(props) {
 
     return (
         <div className="record_tag">
-            <div className="text" style={{ display: 'block' }}>
-                <p>Patient: {props.idBN}</p>
+            <div className='text' style={{display:'block'}}>
+                <p>ID Patient: {props.id}</p>
                 <p>File: {props.name}</p>
             </div>
             <div className="dashboard_buttons">

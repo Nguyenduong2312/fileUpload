@@ -1,8 +1,12 @@
 import React, { Fragment, useState } from 'react';
 import Message from '../../../Message';
+import Bar from '../../bar/bar';
+import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 
 const RequestRecord = () => {
+    const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const [id, setId] = useState('');
     const handleChange = (event) => {
@@ -14,11 +18,14 @@ const RequestRecord = () => {
         e.preventDefault();
         try {
             console.log('fe id:', formData);
-            await axios.post('/request', formData, {
+            const res = await axios.post('/requestRecord', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            if (res.data.status === true) {
+                navigate('/dashboard');
+            }
         } catch (err) {
             if (err.response.status === 500) {
                 setMessage('There was a problem with the server');
@@ -29,9 +36,10 @@ const RequestRecord = () => {
     };
 
     return (
+        <div>
+        <Bar></Bar>
         <div className="container mt-4">
             <h4 className="display-4 text-center mb-4">Request Record</h4>
-
             <Fragment>
                 {message ? <Message msg={message} /> : null}
                 <form onSubmit={onSubmit}>
@@ -41,7 +49,6 @@ const RequestRecord = () => {
                             <input
                                 type="text"
                                 id="id"
-                                name="id"
                                 onChange={handleChange}
                             />
                         </label>
@@ -53,6 +60,7 @@ const RequestRecord = () => {
                     />
                 </form>
             </Fragment>
+        </div>
         </div>
     );
 };

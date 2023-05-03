@@ -37,13 +37,30 @@ const EncryptAES = require('./EncryptAES');
 const ECC = require('./ECC');
 const Account = require('../models/Account');
 
+const UploadDrive = require('./UploadToDrive');
+
 //lưu file vào public/uploads
 const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
+    prin(){
+        console.log('abcb');
+    }
     getRecord(req, res) {
-        Record.find().then(function (rc) {
-            res.status(200).json(rc);
+        Record.find().then(function (record) {
+            res.status(200).json(record);
+        });
+    }
+
+    getRecordByReceiverId(req, res) {
+        Record.find({idReceiver: '1'}).then(function (record) {
+            res.status(200).json(record);
+        });
+    }
+
+    getRecordBySenderId(req, res) {
+        Record.find({idSender: '2'}).then(function (record) {
+            res.status(200).json(record);
         });
     }
 
@@ -70,6 +87,9 @@ class UploadFileController {
                 try {
                     // file written successfully
                     fs.writeFileSync(path + file.name, en_data);
+                    //up defile to drive
+                    console.log(path + file.name,file.name);
+                    UploadDrive.upload(path + file.name,file.name)
                 } catch (err) {
                     console.error(err);
                 }
@@ -77,13 +97,12 @@ class UploadFileController {
                 //1. Lấy public key từ id BN
 
                 const idBN = req.body.name;
-                const acc = await Account.findOne({ id: idBN }).then(function (
-                    acc,
-                ) {
+                const acc = await Account.findOne({ id: idBN })
+                .then(function (acc) {
                     const record = new Record();
-                    record._idBN = idBN;
-                    record._idbs = '142'; //get userId
-                    record.name = file.name;
+                    record.idReceiver = idBN;
+                    record.idSender = '142'; //get userId
+                    record.fileName = file.name;
                     record
                         .save()
                         //.then(() => res.json({ status: true }))

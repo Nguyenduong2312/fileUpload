@@ -4,9 +4,10 @@ const Schema = mongoose.Schema;
 
 const Record = new Schema(
     {
-        _idBN: { type: String, default: ''  },
-        _idBS: { type: String, default: '' },
-        name: { type: String, default: '' },
+        idSender: { type: String, require: true },
+        idReceiver: { type: String, require: true },
+        fileName: { type: String, default: '' },
+        typeRecord: { type: String, default: '' },
     },
     {
         timestamps: true,
