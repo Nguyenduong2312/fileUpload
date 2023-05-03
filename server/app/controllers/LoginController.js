@@ -31,12 +31,10 @@ class LoginController {
                     res.status(400).json({ status: false });
                 } else {
                     req.session.User = {
-                        website: 'anonystick.com',
-                        type: 'blog javascript',
-                        like: '4550',
+                        _id: account._id,
+                        privateKey: account.privateKey,
                     };
                     res.status(200).json({ status: true });
-                    console.log(req.session.User);
                 }
             })
             .catch(next);
@@ -45,3 +43,11 @@ class LoginController {
 }
 
 module.exports = new LoginController();
+
+// Get the current logged in user
+// if(req.session.User){
+// Get user's id/private key
+//        var pKey = req.session.User.privateKey;
+//     return res.status(200).json({status: 'success', session: req.session.User})
+// }
+// return res.status(200).json({status: 'error', session: 'No session'})
