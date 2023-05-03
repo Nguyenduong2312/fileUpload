@@ -137,29 +137,6 @@ class UploadFileController {
                     .catch((error) => {
                         console.error('Error signing transaction:', error);
                     });
-
-                // console.log('DECRYPTING');
-
-                // //decrypt
-
-                // // chuyen string thanh buffer
-                // let encryptedContent = JSON.parse(stringToken);
-                // encryptedContent = {
-                //         iv: Buffer.from(encryptedContent.iv, 'hex'),
-                //         ciphertext: Buffer.from(encryptedContent.ciphertext, 'hex'),
-                //         mac: Buffer.from(encryptedContent.mac, 'hex'),
-                //         ephemPublicKey: Buffer.from(encryptedContent.ephemPublicKey, 'hex')
-                //     }
-
-                // const aesKey = await ECC.decrypt(encryptedContent, Buffer.from(privateKeyB,"hex"));
-                // const originalText = EncryptAES.decrypt(en_data, aesKey);
-                // // console.log("TEXT")
-                // try {
-                //     // file written successfully
-                //     fs.writeFileSync(path + 'de_' + file.name, originalText);
-                // } catch (err) {
-                //     console.error(err);
-                // }
             } catch (err) {
                 console.error(err);
             }
