@@ -37,10 +37,15 @@ const EncryptAES = require('./EncryptAES');
 const ECC = require('./ECC');
 const Account = require('../models/Account');
 
+const UploadDrive = require('./UploadToDrive');
+
 //lưu file vào public/uploads
 const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
+    prin() {
+        console.log('abcb');
+    }
     getRecord(req, res) {
         Record.find().then(function (record) {
             res.status(200).json(record);
@@ -48,13 +53,13 @@ class UploadFileController {
     }
 
     getRecordByReceiverId(req, res) {
-        Record.find({idReceiver: '1'}).then(function (record) {
+        Record.find({ idReceiver: '1' }).then(function (record) {
             res.status(200).json(record);
         });
     }
 
     getRecordBySenderId(req, res) {
-        Record.find({idSender: '2'}).then(function (record) {
+        Record.find({ idSender: '2' }).then(function (record) {
             res.status(200).json(record);
         });
     }
@@ -82,6 +87,9 @@ class UploadFileController {
                 try {
                     // file written successfully
                     fs.writeFileSync(path + file.name, en_data);
+                    //up defile to drive
+                    console.log(path + file.name, file.name);
+                    UploadDrive.upload(path + file.name, file.name);
                 } catch (err) {
                     console.error(err);
                 }
@@ -89,8 +97,9 @@ class UploadFileController {
                 //1. Lấy public key từ id BN
 
                 const idBN = req.body.name;
-                const acc = await Account.findOne({ id: idBN })
-                .then(function (acc) {
+                const acc = await Account.findOne({ id: idBN }).then(function (
+                    acc,
+                ) {
                     const record = new Record();
                     record.idReceiver = idBN;
                     record.idSender = '142'; //get userId
@@ -148,29 +157,6 @@ class UploadFileController {
                     .catch((error) => {
                         console.error('Error signing transaction:', error);
                     });
-
-                // console.log('DECRYPTING');
-
-                // //decrypt
-
-                // // chuyen string thanh buffer
-                // let encryptedContent = JSON.parse(stringToken);
-                // encryptedContent = {
-                //         iv: Buffer.from(encryptedContent.iv, 'hex'),
-                //         ciphertext: Buffer.from(encryptedContent.ciphertext, 'hex'),
-                //         mac: Buffer.from(encryptedContent.mac, 'hex'),
-                //         ephemPublicKey: Buffer.from(encryptedContent.ephemPublicKey, 'hex')
-                //     }
-
-                // const aesKey = await ECC.decrypt(encryptedContent, Buffer.from(privateKeyB,"hex"));
-                // const originalText = EncryptAES.decrypt(en_data, aesKey);
-                // // console.log("TEXT")
-                // try {
-                //     // file written successfully
-                //     fs.writeFileSync(path + 'de_' + file.name, originalText);
-                // } catch (err) {
-                //     console.error(err);
-                // }
             } catch (err) {
                 console.error(err);
             }
