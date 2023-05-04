@@ -7,8 +7,6 @@ const route = require('./routes');
 const db = require('./config/db');
 const port = 5000;
 
-app.use(fileUpload());
-app.use(corn());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
@@ -19,6 +17,8 @@ app.use(
         cookie: { maxAge: 60000 },
     }),
 );
+app.use(fileUpload());
+app.use(corn());
 
 // Connect to DB
 db.connect();
