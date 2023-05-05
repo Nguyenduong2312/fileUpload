@@ -1,6 +1,5 @@
 const registerRouter = require('./register');
 const loginRouter = require('./login');
-const logoutRouter = require('./logout');
 const uploadRecordRoute = require('./uploadRecord');
 const requestRecord = require('./requestRecord');
 const updateAccount = require('./updateAccount');
@@ -11,7 +10,6 @@ const updateAccount = require('./updateAccount');
 function route(app) {
     app.use('/register', registerRouter);
     app.use('/login', loginRouter);
-    app.use('/logout', logoutRouter);
     app.use('/uploadRecord', uploadRecordRoute);
     app.use('/requestRecord', requestRecord);
     app.use('/myProfile', updateAccount);
