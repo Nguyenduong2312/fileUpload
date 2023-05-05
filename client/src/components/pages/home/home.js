@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Bar from '../bar/bar';
 import './home.css';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
-    const [auth, setAuth] = useState('true');
-    console.log('ab');
-    function checkAuth(status_auth) {
-        if (status_auth) {
-            setAuth(true);
-        } else {
-            setAuth(false);
-        }
-    }
+    const [auth, setAuth] = useState(false);
 
+    useEffect(() => {
+        fetch('http://localhost:5000/login/checkLogin',{
+            credentials: 'include',
+            method: 'GET',
+          })
+          .then(res => res.json())
+          .then(requests => {
+              const {status} = requests
+              setAuth(status)
+          })
+  }, [auth])  
+  
     return (
         <div>
             <Bar></Bar>

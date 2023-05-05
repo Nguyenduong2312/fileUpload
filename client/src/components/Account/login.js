@@ -21,7 +21,6 @@ export default function Login(props) {
     };
 
     const onSubmit = async (e) => {
-        console.log('login');
         e.preventDefault();
         try {
             console.log();
@@ -30,7 +29,6 @@ export default function Login(props) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(res.data);
 
             //check logined -> home
             if (res.data.status === true) {

@@ -1,14 +1,18 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
-const corn = require('cors');
+const cors = require('cors');
 const app = express();
 const route = require('./routes');
 const db = require('./config/db');
 const port = 5000;
 
 app.use(fileUpload());
-app.use(corn());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
@@ -16,7 +20,7 @@ app.use(
         resave: true,
         saveUninitialized: true,
         secret: 'somesecret',
-        cookie: { maxAge: 60000 },
+        cookie: { maxAge: 600000000000000000 },
     }),
 );
 

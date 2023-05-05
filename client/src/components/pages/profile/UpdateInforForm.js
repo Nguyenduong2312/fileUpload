@@ -20,7 +20,7 @@ export default function InforForm(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         try{
-            await axios.put('/myProfile/1', formData, {
+            await axios.put(`/myProfile/${props._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './bar.css';
 import { Link } from 'react-router-dom';
-import DropUser from './dropdown';
-export default function Bar() {
-    const [auth, setAuth] = useState('true');
 
-    function checkAuth(status_auth) {
-        if (status_auth) {
-            setAuth(true);
-        } else {
-            setAuth(false);
-        }
-    }
+import DropUser from './dropdown';
+
+export default function Bar() {
+    const [auth, setAuth] = useState(false);
+    useEffect(() => {
+        fetch('http://localhost:5000/login/checkLogin',{
+            credentials: 'include',
+            method: 'GET',
+          })
+        .then(res => res.json())
+        .then(requests => {
+            const {status} = requests
+            setAuth(status)
+        })
+}, [auth])  
 
     return (
         <div>
@@ -32,7 +37,7 @@ export default function Bar() {
                         <Link to="/aboutUs">About Us</Link>
                     </li>
                     <li className={`is${auth}`}>
-                        <DropUser></DropUser>
+                        <DropUser setAuth = {setAuth}></DropUser>
                     </li>
                 </div>
             </div>

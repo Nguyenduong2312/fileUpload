@@ -1,18 +1,11 @@
 const Account = require('../models/Account');
+const user = {
+    name: "Amar",
+    Roll_number: 43,
+    Address: "Pune"
+};
 
 class LoginController {
-    // checklogin(req, res) {
-    //     var user = req.session.user;
-    //     console.log(user);
-    //     if (user == null) {
-    //         return false;
-    //     } else {
-    //         //req.user = user;
-    //         return true;
-    //     }
-    // }
-
-    // [POST] /login
     login(req, res, next) {
         if (req.username === null) {
             res.status(400).json({ status: false });
@@ -20,7 +13,6 @@ class LoginController {
             res.status(400).json({ status: false });
         }
         const { username, password } = req.body; //lấy được username & password
-        console.log(username);
         //Xử lý
         Account.findOne({ username: username })
             .lean()
@@ -30,7 +22,7 @@ class LoginController {
                 } else if (account.password !== password) {
                     res.status(400).json({ status: false });
                 } else {
-                    req.session.User = {
+                    req.session.user = {
                         _id: account._id,
                         privateKey: account.privateKey,
                     };
@@ -38,8 +30,24 @@ class LoginController {
                 }
             })
             .catch(next);
-        //Nếu user hợp lệ return true
     }
+    checkLogin(req,res){
+        if (req.session.user){
+            res.status(200).json({ status: true});
+        }
+        else{
+            res.status(400).json({ status: false});
+        }
+
+    }
+    user(req,res){
+        const sessionuser = req.session.user;
+        res.send(sessionuser);
+    }
+    logout(req,res){
+        req.session.destroy();
+    }
+
 }
 
 module.exports = new LoginController();
