@@ -32,14 +32,13 @@ class RegisterController {
             .lean()
             .sort({ id: 'desc' })
             .then((lastAccount) => {
-                if (lastAccount) {
+                if (lastAccount.id) {
                     tmp.id = lastAccount.id + 1;
                 } else {
                     tmp.id = 1;
                 }
 
                 const account = new Account(tmp);
-
                 account
                     .save()
                     .then(() => {
