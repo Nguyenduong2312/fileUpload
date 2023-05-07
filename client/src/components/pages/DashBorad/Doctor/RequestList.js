@@ -5,7 +5,6 @@ import './RequestList.css';
 export default function RequestList(props) {
     const handleRejectRequest  = async (e) => {
         e.preventDefault();
-        //xóa api ra khỏi requested list
         try{
             await axios.delete(`/requestRecord/${props._id}`, {
                 headers: {
@@ -24,7 +23,7 @@ export default function RequestList(props) {
         <div className="record_tag">
             <div className='text' style={{display:'block'}}>
                 <p>ID Patient: <span>{props.idReceiver}</span></p>
-                <p>Request date :</p>
+                <p>Request date :{props._id}</p>
             </div>
             <div className='dashboard_buttons'>
                 <div className="button green">{props.status}</div>

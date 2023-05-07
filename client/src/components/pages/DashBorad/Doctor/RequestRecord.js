@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Message from '../../../Message';
 import Bar from '../../bar/bar';
 import { useNavigate } from 'react-router-dom';
@@ -8,17 +8,28 @@ import axios from 'axios';
 const RequestRecord = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState('');
-    const [id, setId] = useState('');
+    const [idBN, setIdBN] = useState('');
     const handleChange = (event) => {
-        setId(event.target.value);
+        setIdBN(event.target.value);
     };
-    const formData = { id: id };
+    const formData = { idBN: idBN };
 
+    const [id, setId] = useState(false);
+    useEffect(() => {
+        fetch('http://localhost:5000/login/user',{
+            credentials: 'include',
+            method: 'GET',
+          })
+        .then(res => res.json())
+        .then(requests => {
+            setId(requests.id)
+        })
+    })  
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log('fe id:', formData);
-            const res = await axios.post('/requestRecord', formData, {
+            console.log('id:',id);
+            const res = await axios.post(`/requestRecord/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

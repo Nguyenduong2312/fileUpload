@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 const RequestController = require('../app/controllers/RequestController');
-const UploadDrive = require('../app/controllers/UploadToDrive');
 
-router.post('/', UploadDrive.upload);
+router.post('/:id', RequestController.request);
 router.get('/', RequestController.getRequest);
-router.get('/receiver', RequestController.getRequestByReceiverId);
-router.get('/sender', RequestController.getRequestBySenderId);
+router.get('/receiver/:id', RequestController.getRequestByReceiverId);
+router.get('/sender/:id', RequestController.getRequestBySenderId);
+router.get('/accepted/sender/:id', RequestController.getAcceptedBySenderId);
+
 router.put('/:id', RequestController.updateRequest);
 router.delete('/:id', RequestController.deleteRequest);
 module.exports = router;

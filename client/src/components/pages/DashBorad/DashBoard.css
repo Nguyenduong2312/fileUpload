@@ -1,6 +1,7 @@
 .dashboard_content{
     width: 80%;
     margin: auto;
+    position: relative;
 }
 h3{
     padding: 20px;

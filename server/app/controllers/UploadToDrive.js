@@ -7,7 +7,7 @@ class UploadDrive {
     upload(path, name) {
         try {
             const auth = new google.auth.GoogleAuth({
-                keyFile: './server/googleKey.json',
+                keyFile: './googleKey.json',
                 scopes: ['https://www.googleapis.com/auth/drive'],
             });
             const driveService = google.drive({

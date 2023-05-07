@@ -7,9 +7,10 @@ class RegisterController {
         const tmp = new Account();
         // Check input data
         if (
-            req.username === null ||
-            req.password1 === null ||
-            req.password2 === null
+            !req.body.username ||
+            !req.body.password1 ||
+            !req.body.password2 ||
+            !req.body.role
         ) {
             res.status(400).json({ status: false });
         } else if (req.password1 !== req.password2) {
@@ -26,7 +27,7 @@ class RegisterController {
         const privateKey = eccrypto.generatePrivate();
         tmp.privateKey = JSON.stringify(privateKey);
         tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
-        tmp.role = 'patient';
+        tmp.role = req.body.role;
 
         Account.findOne({})
             .lean()
@@ -43,6 +44,7 @@ class RegisterController {
                 account
                     .save()
                     .then(() => {
+                        req.session.user = account;
                         res.json({ status: true });
                     })
                     .catch(() => {

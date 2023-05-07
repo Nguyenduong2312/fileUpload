@@ -13,11 +13,12 @@
     left: 5%;
 }
 
-.main_button{
+.main_button.auth_false{
     position: absolute;
+    bottom : 150px;
+    left: 500px;
     display: flex;
-    top: 400px;
-    left: 5%;
+    background-color:yellow ;
 }
 
 .main_button.auth_true{
@@ -44,16 +45,16 @@
     background-color: rgb(255, 255, 255);
 }
 
-
 .button.register{
     background-color: #221056;
     color: #ffff;
 }
 
 .button.login{
-    margin-left: 40px;
     background-color: #221056;
     color: #ffff;
+    margin-right: 200px;
+
 }
 
 .main_img{

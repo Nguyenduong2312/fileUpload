@@ -1,5 +1,5 @@
 const Request = require('../models/Request');
-
+const Record = require('../models/Record');
 
 class RequestController{
     getRequest(req, res) {
@@ -8,22 +8,30 @@ class RequestController{
         });
     }
     getRequestByReceiverId(req,res) {
-        Request.find({idReceiver: '1', status: 'Waitting'})
+        Request.find({idReceiver: req.params.id, status: 'Waitting'})
         .then(function(request){
             res.status(200).json(request)
         })
     }
     getRequestBySenderId(req,res) {
-        Request.find({idSender: '142', status: 'Waitting'})
+        Request.find({idSender: req.params.id, status: 'Waitting'})
         .then(function(request){
             res.status(200).json(request)
         })
     }
+
+    getAcceptedBySenderId(req,res) {
+        Request.find({idSender: req.params.id, status: 'Accepted'})
+        .then(function(request){
+            res.status(200).json(request)
+        })
+    }
+
     request(req,res){
-        const idReceiver = req.body.id;
+        const idReceiver = req.body.idBN;
         const request = new Request()
         request.idReceiver = idReceiver
-        request.idSender = '142'
+        request.idSender = req.params.id
         request.save()
         .then(() => res.json({status: true}))
         .catch(()  => res.json({status: false}))
@@ -31,7 +39,7 @@ class RequestController{
     updateRequest(req,res){
         Request.findOne({_id: req.params.id})
         .then((request) => {
-            request.status = 'accepted'
+            request.status = 'Accepted'
             request
             .save()
             .then(() => res.json({ status: true }))
@@ -39,7 +47,6 @@ class RequestController{
         })
     }
     deleteRequest(req,res){
-        console.log();
         Request.findOneAndRemove({_id: req.params.id})
         .then(() => res.json({ status: true }))
         .catch(() => res.json({ status: false }));

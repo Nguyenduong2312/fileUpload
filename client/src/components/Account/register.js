@@ -92,6 +92,19 @@ export default function Register(props) {
                                             />
                                         </label>
                                     </div>
+                                    <div className="inputField">
+                                        <label>Role: </label>
+                                        <select 
+                                            name="role" 
+                                            defaultValue="Select"
+                                            onChange={onChange}>
+                                            <option>Select...</option>
+                                            <option value="Doctor">Doctor</option>
+                                            <option value="Patient">Patient</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
                                     <p className="login">
                                         Already have an account?
                                         <Link

@@ -22,10 +22,7 @@ class LoginController {
                 } else if (account.password !== password) {
                     res.status(400).json({ status: false });
                 } else {
-                    req.session.user = {
-                        _id: account._id,
-                        privateKey: account.privateKey,
-                    };
+                    req.session.user = account;
                     res.status(200).json({ status: true });
                 }
             })
@@ -36,7 +33,7 @@ class LoginController {
             res.status(200).json({ status: true});
         }
         else{
-            res.status(400).json({ status: false});
+            res.status(200).json({ status: false});
         }
 
     }
@@ -44,8 +41,16 @@ class LoginController {
         const sessionuser = req.session.user;
         res.send(sessionuser);
     }
-    logout(req,res){
-        req.session.destroy();
+    logout(req, res, next) {
+        // Destroy a session
+        req.session.destroy(function (err) {
+            return res
+                .status(200)
+                .json({
+                    status: 'success',
+                    session: 'cannot access session here',
+                });
+        });
     }
 
 }

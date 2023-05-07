@@ -21,17 +21,17 @@ export default function Home() {
     return (
         <div>
             <Bar></Bar>
-            <div class="main_layout">
-                <p class="main_title">MEDICAL HEALTH RECORD</p>
-                <div class={`main_button auth_${auth}`}>
-                    <Link class="button register" to="/register">
+            <div className="main_layout">
+                <p className="main_title">MEDICAL HEALTH RECORD</p>
+                <div className={`main_button auth_${auth}`}>
+                    <Link className="button register" to="/register">
                         Register
                     </Link>
-                    <Link class="button login" to="/login">
+                    <Link className="button login" to="/login">
                         Login
                     </Link>
                 </div>
-                <div class="main_img">
+                <div className="main_img">
                     <img src="image/img_main.png" alt="" />
                 </div>
             </div>

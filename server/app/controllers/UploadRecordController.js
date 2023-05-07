@@ -43,9 +43,6 @@ const UploadDrive = require('./UploadToDrive');
 const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
-    prin() {
-        console.log('abcb');
-    }
     getRecord(req, res) {
         Record.find().then(function (record) {
             res.status(200).json(record);
@@ -53,13 +50,13 @@ class UploadFileController {
     }
 
     getRecordByReceiverId(req, res) {
-        Record.find({ idReceiver: '1' }).then(function (record) {
+        Record.find({ idReceiver: req.params.id }).then(function (record) {
             res.status(200).json(record);
         });
     }
 
     getRecordBySenderId(req, res) {
-        Record.find({ idSender: '2' }).then(function (record) {
+        Record.find({ idSender: req.params.id }).then(function (record) {
             res.status(200).json(record);
         });
     }

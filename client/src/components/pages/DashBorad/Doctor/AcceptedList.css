@@ -10,13 +10,15 @@
 }
 .dashboard_buttons{
     position: absolute;
-    right: 20px;
+    right: 50px;
+    bottom: 40px;
 }   
 .dashboard_buttons .button{
     position: static;
     width: fit-content;
     background-color: rgb(0, 0, 255);
     cursor: pointer;
+    margin-left: 20px;
 }
 .button:hover{
     background-color:rgb(192, 192, 192);
@@ -28,6 +30,10 @@
 
 .button.green{
     background-color: green;
+}
+
+.button.yellow{
+    background-color: yellow;
 }
 
 .button.red:hover{

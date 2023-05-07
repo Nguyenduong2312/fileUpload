@@ -20,17 +20,17 @@ export default function Bar() {
 
     return (
         <div>
-            <div class={`bar auth_${auth}`}>
-                <div class="bar_logo">
+            <div className={`bar auth_${auth}`}>
+                <div className="bar_logo">
                     <Link to="/">
                         <img src="image/logoEHR.png" alt="" />
                     </Link>
                 </div>
-                <div class="bar_menu">
-                    <li>
+                <div className="bar_menu">
+                    <li className={`is${auth}`}>
                         <Link to="/dashboard">Dashboard</Link>
                     </li>
-                    <li>
+                    <li className={`is${auth}`}>
                         <Link to="/uploadRecord">Upload Record</Link>
                     </li>
                     <li>
