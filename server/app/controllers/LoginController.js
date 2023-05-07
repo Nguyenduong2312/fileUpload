@@ -1,11 +1,8 @@
 const Account = require('../models/Account');
-const user = {
-    name: "Amar",
-    Roll_number: 43,
-    Address: "Pune"
-};
+const bcrypt = require('bcrypt');
 
 class LoginController {
+    // [POST] /login
     login(req, res, next) {
         if (req.username === null) {
             res.status(400).json({ status: false });
@@ -13,31 +10,45 @@ class LoginController {
             res.status(400).json({ status: false });
         }
         const { username, password } = req.body; //lấy được username & password
+
         //Xử lý
         Account.findOne({ username: username })
             .lean()
             .then((account) => {
                 if (!account) {
                     res.status(400).json({ status: false });
-                } else if (account.password !== password) {
-                    res.status(400).json({ status: false });
                 } else {
-                    req.session.user = account;
-                    res.status(200).json({ status: true });
+                    bcrypt.compare(
+                        password,
+                        account.password,
+                        function (err, result) {
+                            if (result) {
+                                req.session.user = {
+                                    _id: account._id,
+                                    privateKey: account.privateKey,
+                                };
+                                res.status(200).json({ status: true });
+                            } else {
+                                res.status(400).json({ status: false });
+                            }
+                        },
+                    );
                 }
             })
             .catch(next);
     }
-    checkLogin(req,res){
-        if (req.session.user){
-            res.status(200).json({ status: true});
-        }
-        else{
-            res.status(200).json({ status: false});
-        }
 
+    // [GET] /login/checkLogin
+    checkLogin(req, res) {
+        if (req.session.user) {
+            res.status(200).json({ status: true });
+        } else {
+            res.status(400).json({ status: false });
+        }
     }
-    user(req,res){
+
+    // [GET] /login/user
+    user(req, res) {
         const sessionuser = req.session.user;
         res.send(sessionuser);
     }
@@ -52,7 +63,6 @@ class LoginController {
                 });
         });
     }
-
 }
 
 module.exports = new LoginController();
