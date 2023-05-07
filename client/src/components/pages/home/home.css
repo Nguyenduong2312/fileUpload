@@ -13,16 +13,10 @@
     left: 5%;
 }
 
-.main_button.auth_false{
+.main_button{
     position: absolute;
-    bottom : 150px;
-    left: 500px;
-    display: flex;
-    background-color:yellow ;
-}
-
-.main_button.auth_true{
-    display: none;
+    top: 400px;
+    left: 50px;
 }
 
 .button{

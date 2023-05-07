@@ -23,14 +23,14 @@ export default function Home() {
             <Bar></Bar>
             <div className="main_layout">
                 <p className="main_title">MEDICAL HEALTH RECORD</p>
-                <div className={`main_button auth_${auth}`}>
+                {!auth && <div className='main_button'>
                     <Link className="button register" to="/register">
                         Register
                     </Link>
                     <Link className="button login" to="/login">
                         Login
                     </Link>
-                </div>
+                </div>}
                 <div className="main_img">
                     <img src="image/img_main.png" alt="" />
                 </div>
