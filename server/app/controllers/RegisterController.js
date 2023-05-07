@@ -1,10 +1,11 @@
 const Account = require('../models/Account');
 var eccrypto = require('eccrypto');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class RegisterController {
     // [POST] /register
     createAccount(req, res) {
-        const tmp = new Account();
         // Check input data
         if (
             req.username === null ||
@@ -21,13 +22,15 @@ class RegisterController {
             }
         });
 
+        // Create temporary account object to assign value
+        const tmp = new Account();
         tmp.username = req.body.username;
-        tmp.password = req.body.password1;
         const privateKey = eccrypto.generatePrivate();
         tmp.privateKey = JSON.stringify(privateKey);
         tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
         tmp.role = 'patient';
 
+        // Increment id
         Account.findOne({})
             .lean()
             .sort({ id: 'desc' })
@@ -38,18 +41,27 @@ class RegisterController {
                     tmp.id = 1;
                 }
 
-                const account = new Account(tmp);
-                account
-                    .save()
-                    .then(() => {
-                        res.json({ status: true });
-                    })
-                    .catch(() => {
-                        res.json({ status: false });
-                    });
+                // Hash password
+                bcrypt.hash(
+                    req.body.password1,
+                    saltRounds,
+                    function (err, hash) {
+                        tmp.password = hash;
+
+                        // Create another account with assigned value and save to database
+                        const account = new Account(tmp);
+                        account
+                            .save()
+                            .then(() => {
+                                res.json({ status: true });
+                            })
+                            .catch(() => {
+                                res.json({ status: false });
+                            });
+                    },
+                );
             })
             .catch(() => res.json({ status: false }));
-        //Nếu user hợp lệ return true
     }
 }
 
