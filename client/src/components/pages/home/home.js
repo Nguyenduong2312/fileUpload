@@ -23,7 +23,7 @@ export default function Home() {
             <Bar></Bar>
             <div className="main_layout">
                 <p className="main_title">MEDICAL HEALTH RECORD</p>
-                {!auth && <div className='main_button'>
+                {!auth && <div className="main_button">
                     <Link className="button register" to="/register">
                         Register
                     </Link>

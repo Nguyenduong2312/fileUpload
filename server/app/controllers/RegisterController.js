@@ -22,7 +22,6 @@ class RegisterController {
                 res.status(422).json({ status: false });
             }
         });
-
         // Create temporary account object to assign value
         const tmp = new Account();
         tmp.username = req.body.username;
@@ -30,18 +29,16 @@ class RegisterController {
         tmp.privateKey = JSON.stringify(privateKey);
         tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
         tmp.role = req.body.role;
-
         // Increment id
         Account.findOne({})
             .lean()
             .sort({ id: 'desc' })
             .then((lastAccount) => {
-                if (lastAccount.id) {
+                if (lastAccount) {
                     tmp.id = lastAccount.id + 1;
                 } else {
                     tmp.id = 1;
                 }
-
                 // Hash password
                 bcrypt.hash(
                     req.body.password1,

@@ -1,8 +1,9 @@
 import './login.css';
-import { useState, useEffect } from 'react';
-import { Link, Routes, Route, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
 export default function Login(props) {
@@ -22,8 +23,8 @@ export default function Login(props) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        console.log('tap login')
         try {
-            console.log();
             const res = await axios.post('/login', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -46,6 +47,7 @@ export default function Login(props) {
     };
     return (
         <div>
+            <Bar></Bar>
             <div class="login_layout">
                 <div class="login_img">
                     <img src="image/img_login.png" alt="" />
