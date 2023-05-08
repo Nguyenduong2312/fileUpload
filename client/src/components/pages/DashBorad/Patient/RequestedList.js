@@ -1,12 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 export default function RequestedList(props) {
-
+    console.log('props: ', props);
+    const formData = {
+        'idSender': props.idSender,
+        'idReceiver': props.idReceiver,
+        'idRequest': props._id,
+    }
     const handleAcceptRequest = async (e) => {
         e.preventDefault();
         //cập nhật status cho api waitting -> accepted
         try{
-            await axios.put(`/requestRecord/${props._id}`, {
+            await axios.put(`/requestRecord/${props._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -101,7 +101,7 @@ export default function DashBoard() {
                     {first && recordList.map(record => 
                         <RecordList key= {record.id} name = {record.fileName} id = {record.idSender}/>)}
                     {second && requestedList.map(request => 
-                        <RequestedList key= {request.id} idSender = {request.idSender} _id = {request._id} setLengthOfRequestList = {setLengthOfRequestList}/>
+                        <RequestedList key= {request.id} idSender = {request.idSender} idReceiver = {request.idReceiver} _id = {request._id} setLengthOfRequestList = {setLengthOfRequestList}/>
                     )}
                 </div>}
             </div>

@@ -4,10 +4,13 @@ import './AcceptedRecord.css'
 export default function AcceptedRecord(props) {
     const [recordList, setRecordList] = useState([]);
     useEffect(() => {
-        fetch(`http://localhost:5000/uploadRecord/receiver/${props.idReceiver}`)
+        fetch(`http://localhost:5000/acceptedRequest/${props._id}`)
         .then(res => res.json())
         .then(records => {
-            setRecordList(records)
+            console.log(records);
+            setRecordList(records.listRecord);
+            console.log('rc',recordList);
+            //setRecordList(records)
         })
     },[])
 

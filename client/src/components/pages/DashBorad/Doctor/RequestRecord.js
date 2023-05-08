@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const RequestRecord = () => {
-    const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const [idBN, setIdBN] = useState('');
     const handleChange = (event) => {
@@ -14,7 +13,7 @@ const RequestRecord = () => {
     };
     const formData = { idBN: idBN };
 
-    const [id, setId] = useState(false);
+    const [id, setId] = useState();
     useEffect(() => {
         fetch('http://localhost:5000/login/user',{
             credentials: 'include',
@@ -28,15 +27,12 @@ const RequestRecord = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log('id:',id);
             const res = await axios.post(`/requestRecord/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            if (res.data.status === true) {
-                navigate('/dashboard');
-            }
+            setMessage(res.data);
         } catch (err) {
             if (err.response.status === 500) {
                 setMessage('There was a problem with the server');

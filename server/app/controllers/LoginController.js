@@ -23,10 +23,7 @@ class LoginController {
                         account.password,
                         function (err, result) {
                             if (result) {
-                                req.session.user = {
-                                    _id: account._id,
-                                    privateKey: account.privateKey,
-                                };
+                                req.session.user = account;
                                 res.status(200).json({ status: true });
                             } else {
                                 res.status(400).json({ status: false });
