@@ -1,6 +1,5 @@
 .login_layout{
     display: grid;
-    margin-top: 50px;
     grid-template-columns: 1.5fr 2fr;
 }
 

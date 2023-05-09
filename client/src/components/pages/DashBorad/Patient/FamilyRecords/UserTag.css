@@ -1,0 +1,34 @@
+.userTag{
+    width: 300px;
+    min-width: 250px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 50px 20px;
+    margin:auto;
+    margin-top: 20px;
+}
+
+.userTag.me{
+    background-color: green;
+}
+
+.userTag p {
+    text-align: center;
+}
+
+.icon_user img{
+    width: 70%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.infor{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.listButton .button{
+    min-width: 200px;
+    margin: auto;
+}

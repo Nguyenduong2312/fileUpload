@@ -8,6 +8,7 @@ class UpdateAccountController {
         });
     }
     update(req,res){
+        console.log(req.body);
         Account.findOne({_id: req.params.id})
         .then((account) => {
             if (req.body.name) {account.name = req.body.name}

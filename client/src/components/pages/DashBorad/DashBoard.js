@@ -7,7 +7,6 @@ import AcceptedList from './Doctor/AcceptedList';
 import RequestList from './Doctor/RequestList';
 import RecordList from './Patient/RecordList';
 import RequestedList from './Patient/RequestedList';
-import AcceptedRecordCpn from './Doctor/AcceptedRecord';
 
 export default function DashBoard() {
     const [first, setFirst] = useState(true);

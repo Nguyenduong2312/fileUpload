@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
 export default function Register(props) {
@@ -49,6 +50,7 @@ export default function Register(props) {
 
     return (
         <div>
+            <Bar></Bar>
             <div class="login_layout">
                 <div class="login_img">
                     <img src="image/img_login.png" alt="" />

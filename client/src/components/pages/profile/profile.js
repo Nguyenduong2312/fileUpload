@@ -32,11 +32,6 @@ export default function Profile() {
         <div>
             <Bar></Bar>
             <div className="profile_tag">
-                <div className="tag_img">
-                    <div className="profile_img">
-                        <img src="image/Sample_User_Icon.png" alt="" />
-                    </div>
-                </div>
                 <div className="tag_info">
                     {isEdit && <Infor name = {infor.name} gender = {infor.gender} address = {infor.address} email = {infor.email} date = {infor.birthday}  ></Infor>}
                     {!isEdit && <UpdateInforForm setStatus={setStatus} _id = {_id}></UpdateInforForm>}

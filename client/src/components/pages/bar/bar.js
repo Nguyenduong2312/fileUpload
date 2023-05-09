@@ -6,39 +6,42 @@ import DropUser from './dropdown';
 
 export default function Bar() {
     const [auth, setAuth] = useState(false);
+    const [role, setRole] = useState('')
     useEffect(() => {
-        fetch('http://localhost:5000/login/checkLogin',{
+        fetch('http://localhost:5000/login/user',{
             credentials: 'include',
             method: 'GET',
-          })
-        .then(res => res.json())
-        .then(requests => {
-            const {status} = requests
-            setAuth(status)
         })
-}, [auth])  
+        .then(res => res.json())
+        .then((requests) => {
+            if(requests){
+                setAuth(true)
+                setRole(requests.role)
+            }
+        })
+    }, [auth])  
 
     return (
         <div>
-            <div className={`bar auth_${auth}`}>
+            <div className={`bar`}>
                 <div className="bar_logo">
                     <Link to="/">
                         <img src="image/logoEHR.png" alt="" />
                     </Link>
                 </div>
                 <div className="bar_menu">
-                    <li className={`is${auth}`}>
+                    {auth && <li>
                         <Link to="/dashboard">Dashboard</Link>
-                    </li>
-                    <li className={`is${auth}`}>
+                    </li>}
+                    {auth && role === 'Doctor' && <li>
                         <Link to="/uploadRecord">Upload Record</Link>
-                    </li>
+                    </li>}
                     <li>
                         <Link to="/aboutUs">About Us</Link>
                     </li>
-                    <li className={`is${auth}`}>
-                        <DropUser setAuth = {setAuth}></DropUser>
-                    </li>
+                    {auth && <li className={`is${auth}`}>
+                        <DropUser></DropUser>
+                    </li>}
                 </div>
             </div>
         </div>

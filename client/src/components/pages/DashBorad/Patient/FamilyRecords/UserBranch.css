@@ -1,0 +1,39 @@
+.UserBranch{
+    position: relative;
+    width: 70%;
+    min-width: 600px;
+    margin: auto;
+    padding: 20px 0px;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+
+.userTags{
+    margin-top: -20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.branch_buttons{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.branch_buttons .button{
+    background-color: rgb(226, 43, 95);
+    color: aliceblue;
+}
+
+.branch_buttons .button:hover{
+    background-color: rgb(202, 2, 55);
+    color: aliceblue;
+    text-decoration: none;
+}
+
+.Back.button{
+    margin-top: 10px;
+    margin-left: 50px;
+    width: fit-content;
+    background-color: yellow;
+}

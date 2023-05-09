@@ -11,6 +11,10 @@ import Profile from './components/pages/profile/profile';
 import DashBoard from './components/pages/DashBorad/DashBoard';
 import RequestRecord from './components/pages/DashBorad/Doctor/RequestRecord';
 
+import UserBranch from './components/pages/DashBorad/Patient/FamilyRecords/UserBranch';
+import ParentBranch from './components/pages/DashBorad/Patient/FamilyRecords/ParentBranch';
+import ChildBranch from './components/pages/DashBorad/Patient/FamilyRecords/ChildBranch';
+
 const App = () => (
     <div className="main">
         <BrowserRouter>
@@ -24,6 +28,11 @@ const App = () => (
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="myProfile" element={<Profile />} />
+
+                    <Route path="mybranch" element={<UserBranch />} />
+                    <Route path="parentBranch" element={<ParentBranch />} />
+                    <Route path="childBranch" element={<ChildBranch />} />
+
                 </Route>
             </Routes>
         </BrowserRouter>

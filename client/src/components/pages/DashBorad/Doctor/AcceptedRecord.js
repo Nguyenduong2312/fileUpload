@@ -18,7 +18,7 @@ export default function AcceptedRecord(props) {
         props.setIsViewRecord(false)
     }
     return (
-        <div className={`AcceptedRecord_tag`}>
+        <div className="AcceptedRecord_tag">
             <div className='inforPatient'>
                 <p>ID Patient: {props.idReceiver}</p>
                 <p>Date: {props._id}</p>
