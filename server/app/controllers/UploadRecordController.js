@@ -12,10 +12,6 @@ const contractAbi = require('../../contracts/abi');
 const contractAddress = process.env.CONTRACT_ADDRESS;
 const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
 
-// setup ipfs node
-const { loadIpfs, saveFileToIpfs, getDataFromIpfs } = require('./IpfsHandler');
-// const node = loadIpfs()
-
 // const privateKeyA = eccrypto.generatePrivate();
 // const publicKeyA = eccrypto.getPublic(privateKeyA);
 // const privateKeyB = eccrypto.generatePrivate();
