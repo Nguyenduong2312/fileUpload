@@ -8,9 +8,12 @@ const Web3 = require('web3');
 const web3 = new Web3(
     new Web3.providers.HttpProvider(process.env.INFURA_API_KEY),
 );
-const contractAbi = require('../../contracts/abi');
-const contractAddress = process.env.CONTRACT_ADDRESS;
+const contractAbi = require('../contracts/abi');
+const contractAddress = require('../contracts/contractAddress');
 const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
+
+// const ipfs = require('../ipfs/Ipfs')
+// const node = ipfs.loadIpfs()
 
 // const privateKeyA = eccrypto.generatePrivate();
 // const publicKeyA = eccrypto.getPublic(privateKeyA);
@@ -34,6 +37,9 @@ const ECC = require('./ECC');
 const Account = require('../models/Account');
 
 const UploadDrive = require('./UploadToDrive');
+const DownloadDrive = require('./DownloadFromDrive');
+const DownloadFromDrive = require('./DownloadFromDrive');
+const { drive } = require('googleapis/build/src/apis/drive');
 
 //lưu file vào public/uploads
 const path = `${process.cwd()}/server/public/uploads/`;
@@ -76,33 +82,37 @@ class UploadFileController {
 
                 //generate khóa k và mã hóa nội dung tập tin
                 const { key, en_data } = EncryptAES.encrypt(data);
-
+                let googleFileId = null;
                 try {
                     // file written successfully
                     fs.writeFileSync(path + file.name, en_data);
                     //up defile to drive
                     console.log(path + file.name, file.name);
-                    UploadDrive.upload(path + file.name, file.name);
+                    const res = await UploadDrive.upload(
+                        path + file.name,
+                        file.name,
+                    );
+                    googleFileId = res.data.id;
                 } catch (err) {
                     console.error(err);
                 }
                 //mã hóa k bằng ECC
                 //1. Lấy public key từ id BN
 
-                const idBN = req.body.name;
-                const acc = await Account.findOne({ id: idBN }).then(function (
-                    acc,
-                ) {
-                    const record = new Record();
-                    record.idReceiver = idBN;
-                    record.idSender = '142'; //get userId
-                    record.fileName = file.name;
-                    record
-                        .save()
-                        //.then(() => res.json({ status: true }))
-                        .catch(() => res.json({ status: false }));
-                });
-                console.log('pk', acc);
+                // const idBN = req.body.name;
+                // const acc = await Account.findOne({ id: idBN }).then(function (
+                //     acc,
+                // ) {
+                //     const record = new Record();
+                //     record.idReceiver = idBN;
+                //     record.idSender = '142'; //get userId
+                //     record.fileName = file.name;
+                //     record
+                //         .save()
+                //         //.then(() => res.json({ status: true }))
+                //         .catch(() => res.json({ status: false }));
+                // });
+                // console.log('pk', acc);
                 console.log('keyB', publicKeyB);
                 console.log('string keyB', publicKeyB.toString('hex'));
 
@@ -132,24 +142,24 @@ class UploadFileController {
                         .encodeABI(),
                 };
 
-                // sign the transaction
-                console.log('Signing tracsaction');
-                web3.eth.accounts
-                    .signTransaction(txObject, accountA.privateKey)
-                    .then((signedTx) => {
-                        // send the signed transaction to the network
-                        web3.eth
-                            .sendSignedTransaction(signedTx.rawTransaction)
-                            .on('receipt', (receipt) => {
-                                console.log('Transaction receipt:', receipt);
-                            })
-                            .on('error', (error) => {
-                                console.error('Error sending EHR:', error);
-                            });
-                    })
-                    .catch((error) => {
-                        console.error('Error signing transaction:', error);
-                    });
+                // // sign the transaction
+                // console.log('Signing tracsaction');
+                // web3.eth.accounts
+                //     .signTransaction(txObject, accountA.privateKey)
+                //     .then((signedTx) => {
+                //         // send the signed transaction to the network
+                //         web3.eth
+                //             .sendSignedTransaction(signedTx.rawTransaction)
+                //             .on('receipt', (receipt) => {
+                //                 console.log('Transaction receipt:', receipt);
+                //             })
+                //             .on('error', (error) => {
+                //                 console.error('Error sending EHR:', error);
+                //             });
+                //     })
+                //     .catch((error) => {
+                //         console.error('Error signing transaction:', error);
+                //     });
             } catch (err) {
                 console.error(err);
             }
@@ -160,64 +170,75 @@ class UploadFileController {
 
     downloadRecord(req, res) {
         const { id } = req.params;
-
-        contractInstance.methods
-            .numberOfRecords()
-            .call()
-            .then(async (result) => {
-                if (id < 0 || id >= result) {
-                    return res.status(404).json({ msg: 'id out of range' });
-                }
-                const txRecord = await contractInstance.methods['ehrs'](
-                    result - 1,
-                ).call();
-                console.log('DECRYPTING');
-
-                //decrypt
-
-                // chuyen string thanh buffer
-                let encryptedContent = JSON.parse(txRecord.encryptedKey);
-                encryptedContent = {
-                    iv: Buffer.from(encryptedContent.iv, 'hex'),
-                    ciphertext: Buffer.from(encryptedContent.ciphertext, 'hex'),
-                    mac: Buffer.from(encryptedContent.mac, 'hex'),
-                    ephemPublicKey: Buffer.from(
-                        encryptedContent.ephemPublicKey,
-                        'hex',
-                    ),
-                };
-
-                const en_data = fs.readFileSync(path + txRecord.ehrLink);
-                console.log(en_data);
-
-                const aesKey = await ECC.decrypt(
-                    encryptedContent,
-                    Buffer.from(privateKeyB, 'hex'),
-                );
-                console.log(aesKey);
-
-                const originalText = EncryptAES.decrypt(
-                    en_data.toString(),
-                    aesKey,
-                );
-                console.log(originalText);
-
-                // console.log("TEXT")
-                try {
-                    // file written successfully
-                    fs.writeFileSync(
-                        path + 'de_' + txRecord.ehrLink,
-                        originalText,
-                    );
-                    res.status(200).download(path + 'de_' + txRecord.ehrLink);
-                } catch (err) {
-                    console.error(err);
-                    res.status(500);
-                }
-            })
-            .catch((error) => {
-                console.error(error);
+        DownloadFromDrive.download(
+            '1k2E7dPI09gQbTPoUXSjWh0lOdKSQuwlS',
+            'kitten.png',
+        ).then((driveService) => {
+            let buf = [];
+            driveService.data.on('data', (e) => buf.push(e));
+            driveService.data.on('end', () => {
+                const buffer = Buffer.concat(buf);
+                console.log(buffer);
+                res.status(200);
             });
+        });
+        // contractInstance.methods
+        //     .numberOfRecords()
+        //     .call()
+        //     .then(async (result) => {
+        //         if (id < 0 || id >= result) {
+        //             return res.status(404).json({ msg: 'id out of range' });
+        //         }
+        //         const txRecord = await contractInstance.methods['ehrs'](
+        //             result - 1,
+        //         ).call();
+        //         console.log('DECRYPTING');
+
+        //         //decrypt
+
+        //         // chuyen string thanh buffer
+        //         let encryptedContent = JSON.parse(txRecord.encryptedKey);
+        //         encryptedContent = {
+        //             iv: Buffer.from(encryptedContent.iv, 'hex'),
+        //             ciphertext: Buffer.from(encryptedContent.ciphertext, 'hex'),
+        //             mac: Buffer.from(encryptedContent.mac, 'hex'),
+        //             ephemPublicKey: Buffer.from(
+        //                 encryptedContent.ephemPublicKey,
+        //                 'hex',
+        //             ),
+        //         };
+
+        //         const en_data = fs.readFileSync(path + txRecord.ehrLink);
+        //         console.log(en_data);
+
+        //         const aesKey = await ECC.decrypt(
+        //             encryptedContent,
+        //             Buffer.from(privateKeyB, 'hex'),
+        //         );
+        //         console.log(aesKey);
+
+        //         const originalText = EncryptAES.decrypt(
+        //             en_data.toString(),
+        //             aesKey,
+        //         );
+        //         console.log(originalText);
+
+        //         // console.log("TEXT")
+        //         try {
+        //             // file written successfully
+        //             fs.writeFileSync(
+        //                 path + 'de_' + txRecord.ehrLink,
+        //                 originalText,
+        //             );
+        //             res.status(200).download(path + 'de_' + txRecord.ehrLink);
+        //         } catch (err) {
+        //             console.error(err);
+        //             res.status(500);
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
 
         // Record.findById(id)
         //     .then(record => {
