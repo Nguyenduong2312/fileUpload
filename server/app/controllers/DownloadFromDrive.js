@@ -3,8 +3,8 @@ const GOOGLE_API_FOLDER_ID = '1G46WOXInmLKxarhskk5jcYk5KOin4w3d';
 const fs = require('fs');
 const { google } = require('googleapis');
 
-class UploadDrive {
-    upload(path, name) {
+class DownloadDrive {
+    download(fileId) {
         try {
             const auth = new google.auth.GoogleAuth({
                 keyFile: './googleKey.json',
@@ -15,22 +15,13 @@ class UploadDrive {
                 auth,
             });
 
-            const fileMetaData = {
-                name: `${name}`,
-                parents: [GOOGLE_API_FOLDER_ID],
-            };
-
-            const media = {
-                mimeType: 'image/jpg',
-                body: fs.createReadStream(path),
-            };
-            return driveService.files.create({
-                resource: fileMetaData,
-                media: media,
-            });
+            return driveService.files.get(
+                { fileId: fileId, alt: 'media' },
+                { responseType: 'stream' },
+            );
         } catch (err) {
             console.log('Upload file error', err);
         }
     }
 }
-module.exports = new UploadDrive();
+module.exports = new DownloadDrive();

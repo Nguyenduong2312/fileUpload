@@ -8,7 +8,12 @@ contractAbi = [
             },
             {
                 internalType: 'string',
-                name: '_ehrLink',
+                name: '_cid',
+                type: 'string',
+            },
+            {
+                internalType: 'string',
+                name: '_fileName',
                 type: 'string',
             },
             {
@@ -51,40 +56,6 @@ contractAbi = [
         inputs: [
             {
                 internalType: 'uint256',
-                name: 'idx',
-                type: 'uint256',
-            },
-            {
-                internalType: 'address',
-                name: '_owner',
-                type: 'address',
-            },
-            {
-                internalType: 'string',
-                name: '_ehrLink',
-                type: 'string',
-            },
-            {
-                internalType: 'string',
-                name: '_encryptedKey',
-                type: 'string',
-            },
-        ],
-        name: 'updateEHR',
-        outputs: [
-            {
-                internalType: 'uint256',
-                name: '',
-                type: 'uint256',
-            },
-        ],
-        stateMutability: 'nonpayable',
-        type: 'function',
-    },
-    {
-        inputs: [
-            {
-                internalType: 'uint256',
                 name: '',
                 type: 'uint256',
             },
@@ -103,7 +74,12 @@ contractAbi = [
             },
             {
                 internalType: 'string',
-                name: 'ehrLink',
+                name: 'cid',
+                type: 'string',
+            },
+            {
+                internalType: 'string',
+                name: 'fileName',
                 type: 'string',
             },
             {
@@ -126,6 +102,45 @@ contractAbi = [
             },
         ],
         stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'uint256',
+                name: 'idx',
+                type: 'uint256',
+            },
+            {
+                internalType: 'address',
+                name: '_owner',
+                type: 'address',
+            },
+            {
+                internalType: 'string',
+                name: '_cid',
+                type: 'string',
+            },
+            {
+                internalType: 'string',
+                name: '_fileName',
+                type: 'string',
+            },
+            {
+                internalType: 'string',
+                name: '_encryptedKey',
+                type: 'string',
+            },
+        ],
+        name: 'updateEHR',
+        outputs: [
+            {
+                internalType: 'uint256',
+                name: '',
+                type: 'uint256',
+            },
+        ],
+        stateMutability: 'nonpayable',
         type: 'function',
     },
 ];
