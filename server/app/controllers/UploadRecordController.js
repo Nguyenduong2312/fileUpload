@@ -38,7 +38,6 @@ const Account = require('../models/Account');
 
 const UploadDrive = require('./UploadToDrive');
 const DownloadDrive = require('./DownloadFromDrive');
-const DownloadFromDrive = require('./DownloadFromDrive');
 const { drive } = require('googleapis/build/src/apis/drive');
 
 //lưu file vào public/uploads
@@ -129,7 +128,8 @@ class UploadFileController {
 
                 // transaction data
                 const owner = accountB.address;
-                const ehrLink = file.name;
+                const cid = googleFileId;
+                const fileName = file.name;
                 const encryptedKey = stringToken;
 
                 // create the transaction object
@@ -138,28 +138,28 @@ class UploadFileController {
                     to: contractAddress,
                     gas: 3000000,
                     data: contractInstance.methods
-                        .createEHR(owner, ehrLink, encryptedKey)
+                        .createEHR(owner, cid, fileName, encryptedKey)
                         .encodeABI(),
                 };
 
-                // // sign the transaction
-                // console.log('Signing tracsaction');
-                // web3.eth.accounts
-                //     .signTransaction(txObject, accountA.privateKey)
-                //     .then((signedTx) => {
-                //         // send the signed transaction to the network
-                //         web3.eth
-                //             .sendSignedTransaction(signedTx.rawTransaction)
-                //             .on('receipt', (receipt) => {
-                //                 console.log('Transaction receipt:', receipt);
-                //             })
-                //             .on('error', (error) => {
-                //                 console.error('Error sending EHR:', error);
-                //             });
-                //     })
-                //     .catch((error) => {
-                //         console.error('Error signing transaction:', error);
-                //     });
+                // sign the transaction
+                console.log('Signing tracsaction');
+                web3.eth.accounts
+                    .signTransaction(txObject, accountA.privateKey)
+                    .then((signedTx) => {
+                        // send the signed transaction to the network
+                        web3.eth
+                            .sendSignedTransaction(signedTx.rawTransaction)
+                            .on('receipt', (receipt) => {
+                                console.log('Transaction receipt:', receipt);
+                            })
+                            .on('error', (error) => {
+                                console.error('Error sending EHR:', error);
+                            });
+                    })
+                    .catch((error) => {
+                        console.error('Error signing transaction:', error);
+                    });
             } catch (err) {
                 console.error(err);
             }
@@ -170,75 +170,86 @@ class UploadFileController {
 
     downloadRecord(req, res) {
         const { id } = req.params;
-        DownloadFromDrive.download(
-            '1k2E7dPI09gQbTPoUXSjWh0lOdKSQuwlS',
-            'kitten.png',
-        ).then((driveService) => {
-            let buf = [];
-            driveService.data.on('data', (e) => buf.push(e));
-            driveService.data.on('end', () => {
-                const buffer = Buffer.concat(buf);
-                console.log(buffer);
-                res.status(200);
+
+        contractInstance.methods
+            .numberOfRecords()
+            .call()
+            .then(async (result) => {
+                if (id < 0 || id >= result) {
+                    return res.status(404).json({ msg: 'id out of range' });
+                }
+                const txRecord = await contractInstance.methods['ehrs'](
+                    result - 1,
+                ).call();
+                console.log('DECRYPTING');
+
+                //decrypt
+
+                // chuyen string thanh buffer
+                let encryptedContent = JSON.parse(txRecord.encryptedKey);
+                encryptedContent = {
+                    iv: Buffer.from(encryptedContent.iv, 'hex'),
+                    ciphertext: Buffer.from(encryptedContent.ciphertext, 'hex'),
+                    mac: Buffer.from(encryptedContent.mac, 'hex'),
+                    ephemPublicKey: Buffer.from(
+                        encryptedContent.ephemPublicKey,
+                        'hex',
+                    ),
+                };
+
+                let buffer = null;
+                // // DownloadFromDrive.download(
+                // //     txRecord.ehrLink,
+                // //     txRecord.fileName,
+                // // ).then((driveService) => {
+                // //     let buf = [];
+                // //     driveService.data.on('data', (e) => buf.push(e));
+                // //     driveService.data.on('end', () => {
+                // //         buffer = Buffer.concat(buf);
+                // //         console.log(buffer);
+                // //         res.status(200);
+                // //     });
+                // // });
+                const driveService = await DownloadDrive.download(
+                    txRecord.cid,
+                    // txRecord.fileName,
+                );
+                let buf = [];
+                driveService.data.on('data', (e) => buf.push(e));
+                driveService.data.on('end', async () => {
+                    buffer = Buffer.concat(buf);
+
+                    const aesKey = await ECC.decrypt(
+                        encryptedContent,
+                        Buffer.from(privateKeyB, 'hex'),
+                    );
+                    console.log(aesKey);
+
+                    const originalText = EncryptAES.decrypt(
+                        buffer.toString(),
+                        aesKey,
+                    );
+                    console.log(originalText);
+
+                    // console.log("TEXT")
+                    try {
+                        // file written successfully
+                        fs.writeFileSync(
+                            path + 'de_' + txRecord.fileName,
+                            originalText,
+                        );
+                        res.status(200).download(
+                            path + 'de_' + txRecord.fileName,
+                        );
+                    } catch (err) {
+                        console.error(err);
+                        res.status(500);
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error(error);
             });
-        });
-        // contractInstance.methods
-        //     .numberOfRecords()
-        //     .call()
-        //     .then(async (result) => {
-        //         if (id < 0 || id >= result) {
-        //             return res.status(404).json({ msg: 'id out of range' });
-        //         }
-        //         const txRecord = await contractInstance.methods['ehrs'](
-        //             result - 1,
-        //         ).call();
-        //         console.log('DECRYPTING');
-
-        //         //decrypt
-
-        //         // chuyen string thanh buffer
-        //         let encryptedContent = JSON.parse(txRecord.encryptedKey);
-        //         encryptedContent = {
-        //             iv: Buffer.from(encryptedContent.iv, 'hex'),
-        //             ciphertext: Buffer.from(encryptedContent.ciphertext, 'hex'),
-        //             mac: Buffer.from(encryptedContent.mac, 'hex'),
-        //             ephemPublicKey: Buffer.from(
-        //                 encryptedContent.ephemPublicKey,
-        //                 'hex',
-        //             ),
-        //         };
-
-        //         const en_data = fs.readFileSync(path + txRecord.ehrLink);
-        //         console.log(en_data);
-
-        //         const aesKey = await ECC.decrypt(
-        //             encryptedContent,
-        //             Buffer.from(privateKeyB, 'hex'),
-        //         );
-        //         console.log(aesKey);
-
-        //         const originalText = EncryptAES.decrypt(
-        //             en_data.toString(),
-        //             aesKey,
-        //         );
-        //         console.log(originalText);
-
-        //         // console.log("TEXT")
-        //         try {
-        //             // file written successfully
-        //             fs.writeFileSync(
-        //                 path + 'de_' + txRecord.ehrLink,
-        //                 originalText,
-        //             );
-        //             res.status(200).download(path + 'de_' + txRecord.ehrLink);
-        //         } catch (err) {
-        //             console.error(err);
-        //             res.status(500);
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
 
         // Record.findById(id)
         //     .then(record => {
