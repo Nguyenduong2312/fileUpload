@@ -7,10 +7,7 @@ export default function AcceptedRecord(props) {
         fetch(`http://localhost:5000/acceptedRequest/${props._id}`)
         .then(res => res.json())
         .then(records => {
-            console.log(records);
             setRecordList(records.listRecord);
-            console.log('rc',recordList);
-            //setRecordList(records)
         })
     },[])
 

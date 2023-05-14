@@ -4,8 +4,10 @@ const Schema = mongoose.Schema;
 
 const RelationshipRequest = new Schema(
     {
-        idSender: { type: String, require: true },
-        idReceiver: { type: String, require: true },
+        senderId: { type: String, require: true },
+        receiverId: { type: String, require: true },
+        senderName : { type: String, default: '' },
+        receiverName : { type: String, default: '' },
         senderRole: { type: String, require: true },
         receiverRole: { type: String, require: true },
         status: { type: String, default: 'Waitting' },

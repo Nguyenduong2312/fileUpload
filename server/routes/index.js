@@ -4,6 +4,7 @@ const uploadRecordRoute = require('./uploadRecord');
 const requestRecord = require('./requestRecord');
 const updateAccount = require('./updateAccount');
 const acceptedRequest = require('./acceptedRequest');
+const membership = require('./membership');
 
 function route(app) {
     app.use('/register', registerRouter);
@@ -12,6 +13,7 @@ function route(app) {
     app.use('/requestRecord', requestRecord);
     app.use('/myProfile', updateAccount);
     app.use('/acceptedRequest',acceptedRequest);
+    app.use('/membership',membership)
 }
 
 module.exports = route;

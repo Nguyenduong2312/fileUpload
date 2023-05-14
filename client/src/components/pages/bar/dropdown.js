@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { VscAccount } from 'react-icons/vsc';
 
+import './dropdown.css'
+
 function DropUser() {
 
   const onClick = () => {
@@ -14,13 +16,22 @@ function DropUser() {
 
   return (
     <div>
-      <Dropdown as={ButtonGroup}>
-        <Button style={{background :"none", border:"none"}}><VscAccount color="white" fontSize={30}  /></Button>
+      <Dropdown  as={ButtonGroup}>
+        <Button  style={{background :"none", border:"none"}}><VscAccount color="white" fontSize={30}  /></Button>
         <Dropdown.Toggle split variant="success" id="dropdown-split-basic" style={{background :"none", border:"none"}} />
-        <Dropdown.Menu variant="dark" style={{background :"white", color: 'black'}} >
-          <Dropdown.Item href="/myProfile" style={{color: 'black'}}> View profile </Dropdown.Item>
+        <Dropdown.Menu className = "dropdownnn" variant="dark">
+          <div className = "dropdownItemTag">
+            <Dropdown.Item className = "dropdownItem" href="/myProfile" style={{color: 'black'}}> View profile </Dropdown.Item>
+          </div>
+          <div className = "dropdownItemTag">
+            <Dropdown.Item className = "dropdownItem" href="/mybranch" style={{color: 'black'}}> Membership </Dropdown.Item>
+          </div>
+          <div className = "dropdownItemTag">
+            <Dropdown.Item className = "dropdownItem" href="/relationshipRequestForReceiver" style={{color: 'black'}}>  Request membership </Dropdown.Item>
+            <div className ="notice">+20</div>
+          </div>
           <Dropdown.Divider />
-          <Dropdown.Item href="/" style={{color: 'black'}} onClick={onClick}>Log out</Dropdown.Item>
+          <Dropdown.Item className = "dropdownItemTag"  href="/" style={{color: 'black'}} onClick={onClick}>Log out</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </div>

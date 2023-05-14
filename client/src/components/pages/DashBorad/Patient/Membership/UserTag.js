@@ -1,19 +1,20 @@
 import React from 'react'
 import './UserTag.css'
 
-export default function UserTag() {
+export default function UserTag(props) {
     return (
         <div className='userTag'>
+            <p>{props.role}</p>
             <div className='icon_user'>
                 <img src="image/user.png" alt=""/>
             </div>
             <div className='infor'>
-                <p>Name: </p>
-                <p>Id: </p>
+                <p>Name:{props.name} </p>
+                <p>Id: {props.id}</p>
             </div>
             <div className='listButton'>
                 <div className='button yellow'>View records</div>
-                <div className='button red' style={{marginTop: '20px'}}>Child records</div>
+                <div className='button red'  style={{marginTop: '20px'}}>View member family</div>
             </div>
         </div>
     )

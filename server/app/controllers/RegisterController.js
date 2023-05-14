@@ -61,6 +61,21 @@ class RegisterController {
             })
             .catch(() => res.json({ status: false }));
     }
+
+    AddRelationshipForUser(idUser,role){
+        Account.findOne({id: idUser})
+        .then((account) => {
+            for(let key in role){
+                account.relationship = {
+                    ...account.relationship,
+                    [key] : role[key]}
+            }
+            //account.relationship = {}
+            account.save()
+            .then(() => {res.json({ status: true });})
+            .catch(() => {res.json({ status: false });});
+        })
+    }
 }
 
 module.exports = new RegisterController();

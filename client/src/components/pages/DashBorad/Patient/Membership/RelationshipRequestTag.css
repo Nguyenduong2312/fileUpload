@@ -1,0 +1,30 @@
+.requestTags{
+    margin: auto;
+    background-color: aqua;
+    width: 90%;
+}
+
+.requestTag{
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+}
+
+.requestTag .buttons{
+    display: flex;
+    justify-content: end;
+}
+
+.requests{
+    background-color: none;
+    width: 80%;
+    max-height: 550px;
+    margin: auto;
+    padding: 0px 20px 50px 20px;
+    border: 2px solid black;
+    border-radius: 20px;
+    overflow-y: scroll;
+}

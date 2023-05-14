@@ -1,0 +1,50 @@
+.addMember{
+    width: 70%;
+    margin: auto;
+    margin-top: 0px;
+    display: flex;
+    min-width: 800px;
+}
+
+.addMember .button{
+    position: static;
+    margin: auto;
+    margin-top: 10px;
+    width: fit-content;
+}
+
+.listMember{
+    width: 80%;
+    min-width: 1000px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.addMember .line_input .inputField{
+    margin-left: 10px;
+    grid-template-columns: 80px 200px;
+}
+
+.addMember .inputField{
+    width: 50%;
+    margin-left : 0px;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 80px 400px;
+}
+
+.memberTags{
+    width: 90%;
+    margin: auto;
+    display: grid;
+}
+
+.parents{
+    min-width: 800px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.children{
+    min-width: 950px;
+    grid-template-columns: 1fr 1fr 1fr;
+}

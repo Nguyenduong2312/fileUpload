@@ -16,6 +16,7 @@ const Account = new Schema(
         publicKey: { type: String, required: true },
         privateKey: { type: String, required: true },
         role: { type: String, required: true },
+        relationship: { type: Object, default: {}},
     },
     {
         timestamps: true,

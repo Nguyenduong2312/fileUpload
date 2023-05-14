@@ -7,14 +7,15 @@ export default function Home() {
     const [auth, setAuth] = useState(false);
 
     useEffect(() => {
-        fetch('http://localhost:5000/login/checkLogin',{
+        fetch('http://localhost:5000/login/user',{
             credentials: 'include',
             method: 'GET',
           })
           .then(res => res.json())
-          .then(requests => {
-              const {status} = requests
-              setAuth(status)
+          .then(account => {
+            if (account){
+                setAuth(true)
+            }
           })
   }, [auth])  
   

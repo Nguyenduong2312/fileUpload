@@ -84,7 +84,7 @@ class RequestController{
         Request.findOneAndRemove({_id: req.params.id})
         .then(() => res.json({ status: true }))
         .catch(() => res.json({ status: false }));
-}
+    }
 }
 
 module.exports = new RequestController();
