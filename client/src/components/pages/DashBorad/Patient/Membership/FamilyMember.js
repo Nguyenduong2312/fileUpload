@@ -19,9 +19,7 @@ export default function FamilyMember() {
         })
         .then(res => res.json())
         .then((account) => {
-            const accRelationship = account.relationship;
-            console.log('accRelationship: ',accRelationship);
-            
+            const accRelationship = account.relationship;            
             for (let key in accRelationship){
                 fetch(`http://localhost:5000/login/${key}`,{
                     credentials: 'include',
@@ -39,7 +37,6 @@ export default function FamilyMember() {
                     }
                 })
             }
-            
         })
     }, [])  
 
@@ -69,13 +66,6 @@ export default function FamilyMember() {
         }
     };    
 
-
-    const handleBack = () =>{
-
-    }
-
-
-
     return (
         <div>
             <Bar></Bar>
@@ -88,7 +78,6 @@ export default function FamilyMember() {
                         <input
                             type="text"
                             name='receiverId'
-                            //value={fullName}
                             onChange={onChange}
                         />
                     </div>
@@ -102,11 +91,10 @@ export default function FamilyMember() {
                             <option value="Father">Father</option>
                             <option value="Mother">Mother</option>
                             <option value="Child">Child</option>
-                            <option value="Other">Other</option>
                         </select>
                     </div> 
                 </div>
-                <input className="button" type="submit" value={'Add'} />
+                <input className="button submit" type="submit" value={'Send request'} />
             </form>
 
             <div className='listMember'>
@@ -122,10 +110,6 @@ export default function FamilyMember() {
                     {childList.map(user =>
                         <UserTag id = {user.id} role = {user.roleRelationShip}></UserTag>
                     )}
-                </div>
-
-                <div className="Back button" onClick={handleBack}>
-                    Back
                 </div>
             </div>
         </div>

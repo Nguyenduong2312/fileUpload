@@ -28,7 +28,7 @@ export default function RelationshipRequest() {
     },[])
 
     return (
-        <div className = "requestsTag">
+        <div className = "requestsTags">
             <Bar></Bar>
             <h4 style={{marginLeft:'60px', marginTop:'30px'}}>RELATIONSHIP MEMBER</h4>
             <div className = "requests">

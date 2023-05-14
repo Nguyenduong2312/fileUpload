@@ -8,16 +8,14 @@ class UpdateAccountController {
         });
     }
     update(req,res){
-        console.log(req.body);
-        Account.findOne({_id: req.params.id})
+        Account.findOne({id: req.params.id})
         .then((account) => {
             if (req.body.name) {account.name = req.body.name}
             if (req.body.gender) {account.gender = req.body.gender}
             if (req.body.address) {account.address = req.body.address}
             if (req.body.email) {account.email = req.body.email}
             if (req.body.date) {account.birthday = req.body.date}
-            account
-            .save()
+            account.save()
             .then(() => res.json({ status: true }))
             .catch(() => res.json({ status: false }));
         })

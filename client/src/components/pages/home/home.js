@@ -7,13 +7,14 @@ export default function Home() {
     const [auth, setAuth] = useState(false);
 
     useEffect(() => {
-        fetch('http://localhost:5000/login/user',{
+        fetch('http://localhost:5000/login/1',{
             credentials: 'include',
             method: 'GET',
           })
           .then(res => res.json())
           .then(account => {
             if (account){
+                console.log(auth)
                 setAuth(true)
             }
           })
@@ -23,12 +24,12 @@ export default function Home() {
         <div>
             <Bar></Bar>
             <div className="main_layout">
-                <p className="main_title">MEDICAL HEALTH RECORD</p>
-                {!auth && <div className="main_button">
-                    <Link className="button register" to="/register">
+                <p className="main_title">MEDICAL HEALTH RECORD {auth}</p>
+                {auth && <div className="main_button">
+                    <Link className="button" to="/register">
                         Register
                     </Link>
-                    <Link className="button login" to="/login">
+                    <Link className="button" style= {{marginLeft:'30px'}} to="/login">
                         Login
                     </Link>
                 </div>}

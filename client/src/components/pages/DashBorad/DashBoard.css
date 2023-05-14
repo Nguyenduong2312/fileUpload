@@ -27,11 +27,11 @@ h3{
 }
 
 .dashboard_menu_button.newRequest:hover{
-    background-color: green;
+    background-color: #F7D060;
     text-decoration: none;
 }
 .dashboard_menu_button.true{
-    background-color: yellow;
+    background-color:#41644A;
 }
 .dashboard_menu_button.false{
     background-color: rgb(255, 255, 255);
@@ -39,7 +39,7 @@ h3{
 .dashboard_tag{
     height: fit-content;
     padding: 20px 0px 50px 0px;
-    background-color: yellow;
+    background-color: #E3F2C1;
     border: 2px solid black;
     border-radius: 0px 0px 20px 20px;
     max-height: 450px;

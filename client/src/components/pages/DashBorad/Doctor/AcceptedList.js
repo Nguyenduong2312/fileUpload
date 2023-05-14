@@ -34,10 +34,10 @@ export default function AcceptedList(props) {
                     <p>Date: {props._id} </p>
                 </div>
                 <div className="dashboard_buttons">
-                    <div className="button green" onClick={handleViewRecords}>
+                    <div className="button viewRecord" onClick={handleViewRecords}>
                         View Records
                     </div>
-                    <div className="button red" onClick={handleRejectRequest}>
+                    <div className="button delete" onClick={handleRejectRequest}>
                         Delete
                     </div>
                 </div>

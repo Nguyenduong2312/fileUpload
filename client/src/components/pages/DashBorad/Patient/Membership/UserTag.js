@@ -13,8 +13,8 @@ export default function UserTag(props) {
                 <p>Id: {props.id}</p>
             </div>
             <div className='listButton'>
-                <div className='button yellow'>View records</div>
-                <div className='button red'  style={{marginTop: '20px'}}>View member family</div>
+                <div className='button viewRecord'>View records</div>
+                <div className='button viewFamilyMember' style={{marginTop: '20px'}}>View family member</div>
             </div>
         </div>
     )

@@ -43,10 +43,10 @@ export default function RelationshipRequestTag(props) {
             <p>Name: {`${props.request.senderName}`}</p>
             <p>Relationship: {`${props.request.senderName}`} is your {`${props.request.senderRole}`}</p>
             <div className='buttons'>
-                <div className="button green" onClick={handleConfirm}>
+                <div className="button viewRecord" onClick={handleConfirm}>
                     Confirm
                 </div>
-                <div className="button red" onClick={handleRejectRequest}>
+                <div className="button delete" style= {{marginLeft:'30px'}}  onClick={handleRejectRequest}>
                     Delete
                 </div>
             </div>

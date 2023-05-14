@@ -20,7 +20,7 @@ export default function RecordList(props) {
                 <p>ID Sender: {props.id}</p>
             </div>
             <div className="dashboard_buttons">
-                <div className="button" onClick={onButtonClick}>
+                <div className="button download" onClick={onButtonClick}>
                     Download
                 </div>
             </div>

@@ -4,9 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 class RegisterController {
-    // [POST] /register
     createAccount(req, res) {
-        // Check input data
         if (
             !req.body.username ||
             !req.body.password1 ||

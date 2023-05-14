@@ -47,8 +47,8 @@ export default function RequestedList(props) {
                 <p>Request date :{props.name}</p>
             </div>
             <div className='dashboard_buttons'>
-                <div className="button green" onClick={handleAcceptRequest}>Accept</div>
-                <div className="button red" onClick={handleRejectRequest} style={{marginLeft: '30px'}}>Reject</div>
+                <div className="button viewRcord" onClick={handleAcceptRequest}>Accept</div>
+                <div className="button delete" onClick={handleRejectRequest} style={{marginLeft: '30px'}}>Reject</div>
             </div>
         </div>
     )

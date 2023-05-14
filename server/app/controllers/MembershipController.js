@@ -16,17 +16,19 @@ class MembershipController{
     }
 
     request(req,res){
+        console.log(req.body);
         if(req.body.id === null ||
             req.body.role === null){
             return res.send('Id and role can not be empty')
         }
         Account.findOne({id: req.body.receiverId})
         .then((account) => {
-            console.log('accoutn', account);
-            if(!account || req.body.receiverId === req.body.id){
-                return res.send('User is not exists')
+            if(!account || 
+                req.body.receiverId === req.session.user.id ||
+                account.role === 'Doctor'){
+                return res.send('User is not exists.')
             }
-            RelationshipRequest.findOne({senderId:req.body.id, receiverId:req.body.receiverId})
+            RelationshipRequest.findOne({senderId:req.session.user.id, receiverId:req.body.receiverId})
             .then((request) => {
                 if(request){
                     return res.send('Request has already sent before.')
@@ -34,9 +36,11 @@ class MembershipController{
                 else{
                     const request = new RelationshipRequest()
                     request.senderId = req.session.user.id
-                    request.senderName = req.body.name
+                    request.senderName = req.session.user.name
+
                     request.receiverName = account.name
                     request.receiverId = req.body.receiverId
+
                     request.receiverRole = req.body.receiverRole
                     if(request.receiverRole === 'Child' &&  req.session.user.gender === 'Female') {
                         request.senderRole = 'Mother'
@@ -50,6 +54,7 @@ class MembershipController{
                     else{
                         request.senderRole = 'Child'
                     }
+
                     request.save()   
                     .then(() => res.send('Sendd success' ))
                     .catch(() => res.send('Sendd fail' ));        

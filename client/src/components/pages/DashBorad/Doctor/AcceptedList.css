@@ -20,22 +20,19 @@
     cursor: pointer;
     margin-left: 20px;
 }
-.button:hover{
-    background-color:rgb(192, 192, 192);
+
+.button.viewRecord{
+    background-color: #F99417;
+}
+.viewRecord:hover{
+    background-color: #E7B10A;
 }
 
-.button.red{
-    background-color: red;
+.button.delete{
+    background-color: #CF0A0A;
+}
+.delete:hover{
+    background-color: #D82148;
 }
 
-.button.green{
-    background-color: green;
-}
 
-.button.yellow{
-    background-color: yellow;
-}
-
-.button.red:hover{
-    background-color:rgb(192, 192, 192);
-}

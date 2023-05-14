@@ -16,9 +16,9 @@
 
 .dropdownItemTag:hover{
     height:100%;
-    background-color: yellow;
+    background-color: #7D8F69;
     .dropdownItem{
-        background-color: yellow;
+        background-color: #7D8F69;
     }
 }
 .notice{

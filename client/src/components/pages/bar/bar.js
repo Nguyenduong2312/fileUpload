@@ -40,7 +40,7 @@ export default function Bar() {
                         <Link to="/aboutUs">About Us</Link>
                     </li>
                     {auth && <li className={`is${auth}`}>
-                        <DropUser></DropUser>
+                        <DropUser role = {role}></DropUser>
                     </li>}
                 </div>
             </div>

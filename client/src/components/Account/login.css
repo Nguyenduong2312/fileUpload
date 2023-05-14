@@ -52,6 +52,10 @@ input[type=password] {
     padding: 0px 20px;
 }
 
+input[type=submit] {
+    border: none;
+}
+
 .login_tag_text input.submit{
     background-color: black;
     color: white;
