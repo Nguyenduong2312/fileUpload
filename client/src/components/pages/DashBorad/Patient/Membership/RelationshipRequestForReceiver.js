@@ -16,7 +16,6 @@ export default function RelationshipRequest() {
         })
         .then(res => res.json())
         .then(account => {
-            console.log(account.id);
             fetch(`http://localhost:5000/membership/receiver/${account.id}`,{
                 credentials: 'include',
                 method: 'GET',
@@ -36,7 +35,7 @@ export default function RelationshipRequest() {
             <h4 style={{marginLeft:'60px', marginTop:'30px'}}>RELATIONSHIP MEMBER</h4>
             <div className = "requests">
                 {Requests.map(request => 
-                <RelationshipRequestTag request = {request} name = {request.senderName} role = {request.senderRole} setLengthOfRequestList = {setLengthOfRequestList}></RelationshipRequestTag>
+                    <RelationshipRequestTag request = {request} name = {request.senderName} role = {request.senderRole} setLengthOfRequestList = {setLengthOfRequestList}></RelationshipRequestTag>
             )}
             </div>
         </div>

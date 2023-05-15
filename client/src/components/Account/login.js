@@ -67,8 +67,6 @@ export default function Login(props) {
                                             <input
                                                 type="text"
                                                 name="username"
-                                                id="email"
-                                                value={username || ''}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -79,8 +77,6 @@ export default function Login(props) {
                                             <input
                                                 type="password"
                                                 name="password"
-                                                id="password"
-                                                value={password || ''}
                                                 onChange={onChange}
                                             />
                                         </label>

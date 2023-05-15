@@ -10,13 +10,12 @@ class MembershipController{
     }
 
     getRequestfromReceiver(req, res){
-        RelationshipRequest.find({receiverId:req.params.id}).then(function (request) {
+        RelationshipRequest.find({receiverId:req.params.id , status: "Waitting"}).then(function (request) {
             res.status(200).json(request);
         });
     }
 
     request(req,res){
-        console.log(req.body);
         if(req.body.id === null ||
             req.body.role === null){
             return res.send('Id and role can not be empty')
@@ -30,7 +29,7 @@ class MembershipController{
             }
             RelationshipRequest.findOne({senderId:req.session.user.id, receiverId:req.body.receiverId})
             .then((request) => {
-                if(request){
+                if(request && request.status === "Waitting"){
                     return res.send('Request has already sent before.')
                 }
                 else{
@@ -75,8 +74,7 @@ class MembershipController{
             request.status = 'Accepted';
             request.save();
         })
-        
-        res.send('abcd')
+        res.send('abc')        
     }
 
     deleteRequest(req,res){

@@ -5,27 +5,25 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
     const [auth, setAuth] = useState(false);
-
     useEffect(() => {
-        fetch('http://localhost:5000/login/1',{
+        fetch('http://localhost:5000/login/user',{
             credentials: 'include',
             method: 'GET',
           })
           .then(res => res.json())
           .then(account => {
             if (account){
-                console.log(auth)
                 setAuth(true)
             }
           })
-  }, [auth])  
+    }, [auth])  
   
     return (
         <div>
             <Bar></Bar>
             <div className="main_layout">
                 <p className="main_title">MEDICAL HEALTH RECORD {auth}</p>
-                {auth && <div className="main_button">
+                {!auth && <div className="main_button">
                     <Link className="button" to="/register">
                         Register
                     </Link>

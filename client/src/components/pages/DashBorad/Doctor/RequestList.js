@@ -23,11 +23,11 @@ export default function RequestList(props) {
         <div className="record_tag">
             <div className='text' style={{display:'block'}}>
                 <p>ID Patient: <span>{props.idReceiver}</span></p>
-                <p>Request date :{props._id}</p>
+                <p>Request date :</p>
             </div>
             <div className='dashboard_buttons'>
-                <div className="button green">{props.status}</div>
-                <div className="button red" onClick={handleRejectRequest} style={{marginLeft: '30px'}}>Cancle</div>
+                <div className="button viewRecord">{props.status}</div>
+                <div className="button delete" onClick={handleRejectRequest} style={{marginLeft: '30px'}}>Cancle</div>
             </div>
         </div>
     )

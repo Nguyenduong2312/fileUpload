@@ -49,6 +49,7 @@ class RegisterController {
                         account
                             .save()
                             .then(() => {
+                                req.session.user = account;
                                 res.json({ status: true });
                             })
                             .catch(() => {
@@ -70,8 +71,6 @@ class RegisterController {
             }
             //account.relationship = {}
             account.save()
-            .then(() => {res.json({ status: true });})
-            .catch(() => {res.json({ status: false });});
         })
     }
 }

@@ -30,7 +30,7 @@ export default function DashBoard() {
         })
         .then(res => res.json())
         .then(requests => {
-            if(requests.role === 'Doctor'){setRole(true) }
+            if(requests.role === 'Doctor'){ setRole(true) }
             else{setRole(false) }
 
             if(requests.role === 'Doctor'){

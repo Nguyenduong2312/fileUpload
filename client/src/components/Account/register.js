@@ -7,13 +7,9 @@ import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
 export default function Register(props) {
-    const [formData, setFormData] = useState({
-        username: '',
-        password1: '',
-        password2: '',
-    });
+    const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
-    const { username, password1, password2 } = formData;
+    const {username, password1, password2} = formData;
     const navigate = useNavigate();
 
     const onChange = (e) => {

@@ -31,7 +31,7 @@ export default function AcceptedList(props) {
             <div className="record_tag">
                 <div className='text' style={{display:'block'}}>
                     <p>ID Patient: {props.idReceiver}</p>
-                    <p>Date: {props._id} </p>
+                    <p>Date: </p>
                 </div>
                 <div className="dashboard_buttons">
                     <div className="button viewRecord" onClick={handleViewRecords}>

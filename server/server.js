@@ -1,6 +1,7 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
+const {createProxyMiddleware} = require('http-proxy-middleware');
 const cors = require('cors');
 const app = express();
 const route = require('./routes');
@@ -22,8 +23,15 @@ app.use(cors({
     origin: ["http://localhost:3000"],
     methods: ["GET", "POST"],
     credentials: true,
-  }));
-
+}));
+app.use(
+'/api',
+createProxyMiddleware({
+    // 👇️ make sure to update your target
+    target: 'http://localhost:5000',
+    changeOrigin: true,
+}),
+);
 // Connect to DB
 db.connect();
 

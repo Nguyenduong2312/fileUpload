@@ -2,7 +2,6 @@ import React from 'react'
 import axios from 'axios';
 import './RelationshipRequestTag.css'
 export default function RelationshipRequestTag(props) {
-    console.log('props:', props.request);
     const handleConfirm = async (e) => {
         e.preventDefault();
         //cập nhật status cho api waitting -> accepted
@@ -12,9 +11,7 @@ export default function RelationshipRequestTag(props) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            //console.log(res.data);
-            console.log('upladte for');
-            //props.setLengthOfRequestList((prev) => prev -1)
+            props.setLengthOfRequestList((prev) => prev -1)
         } catch(err){
             console.log('lỗi');
         }        
@@ -29,13 +26,10 @@ export default function RelationshipRequestTag(props) {
                 },
             });
             props.setLengthOfRequestList((prev) => prev - 1)
-            console.log('xoa thanh cong');
         } catch(err){
             console.log('lỗi');
         }
-
     }
-
 
     return (
         <div className='requestTag'>

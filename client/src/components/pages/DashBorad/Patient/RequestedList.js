@@ -44,10 +44,10 @@ export default function RequestedList(props) {
         <div className="record_tag">
             <div className='text' style={{display:'block'}}>
                 <p>Id Sender: {props.idSender}</p>
-                <p>Request date :{props.name}</p>
+                <p>Request date :</p>
             </div>
             <div className='dashboard_buttons'>
-                <div className="button viewRcord" onClick={handleAcceptRequest}>Accept</div>
+                <div className="button" style = {{'backgroundColor': '#54B435'}} onClick={handleAcceptRequest}>Accept</div>
                 <div className="button delete" onClick={handleRejectRequest} style={{marginLeft: '30px'}}>Reject</div>
             </div>
         </div>

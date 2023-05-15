@@ -46,10 +46,12 @@
 
 input[type=text] {
     padding: 0px 20px;
+    border: none;
 }
 
 input[type=password] {
     padding: 0px 20px;
+    border: none;
 }
 
 input[type=submit] {
@@ -59,11 +61,12 @@ input[type=submit] {
 .login_tag_text input.submit{
     background-color: black;
     color: white;
-    width: 100px;
+    width: 60%;
     height: 40px;
-    margin-left: 40%;
+    margin-left: 20%;
     margin-top: 20px;
 }
+
 label{
     color: white;
 }

@@ -17,14 +17,16 @@ export default function AcceptedRecord(props) {
     return (
         <div className="AcceptedRecord_tag">
             <div className='inforPatient'>
-                <p>ID Patient: {props.idReceiver}</p>
-                <p>Date: {props._id}</p>
+                <h5>ID Patient: {props.idReceiver}</h5>
+                <h5>Date: </h5>
             </div>  
+            
             <div className='recordList'>
                 {recordList.map(record => 
                     <RecordList key= {record.id} name = {record.fileName} id = {record.idSender} />)}
             </div>
-            <div className="button" onClick={handleBack}>
+
+            <div className="button back" onClick={handleBack}>
                 Back
             </div>
 

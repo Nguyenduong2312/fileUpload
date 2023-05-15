@@ -17,7 +17,7 @@ export default function RecordList(props) {
         <div className="record_tag">
             <div className="text" style={{ display: 'block' }}>
                 <p>File: {props.name}</p>
-                <p>ID Sender: {props.id}</p>
+                <p>ID Uploader: {props.id}</p>
             </div>
             <div className="dashboard_buttons">
                 <div className="button download" onClick={onButtonClick}>
