@@ -22,10 +22,14 @@ export default function Profile() {
         .then(account => {
             setUser(account);
         })
-    });
+    },[]);
 
     const onChange = (e) => {
-        setFormData((prevState) => ({
+        if (e.target.value === ''){
+            e.target.value = ' '
+        }
+        setFormData((prevState) => (
+            {
             ...prevState,
             [e.target.name]: e.target.value,
         }));
@@ -65,7 +69,7 @@ export default function Profile() {
                                 <input
                                     type="text"
                                     name="name"
-                                    value={name||user.name}
+                                    value={name || user.name}
                                     onChange={onChange}
                                 />
                             </div>
@@ -86,7 +90,7 @@ export default function Profile() {
                                     <input 
                                     type="date" 
                                     name = 'date'
-                                    value={date || user.date} 
+                                    value={date || user.birthday} 
                                     onChange={onChange} />
                                 </div> 
                             </div>
@@ -99,6 +103,7 @@ export default function Profile() {
                                     onChange={onChange}
                                 />
                             </div> 
+                            
                             <div className="inputField">
                                 <label>Email:</label>
                                 <input

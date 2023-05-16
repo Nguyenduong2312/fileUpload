@@ -10,7 +10,7 @@ const Account = new Schema(
         address: { type: String, default: '' },
         email: { type: String, default: '' },
         phoneNumber: { type: String, default: '' },
-        birthday: { type: String, default: '1990-01-01' },
+        birthday: { type: String},
         username: { type: String, required: true },
         password: { type: String, required: true },
         publicKey: { type: String, required: true },

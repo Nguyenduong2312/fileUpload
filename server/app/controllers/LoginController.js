@@ -56,8 +56,11 @@ class LoginController {
 
     // [GET] /login/user
     user(req, res) {
-        const sessionuser = req.session.user;
-        res.send(sessionuser);
+        Account.findOne({id: req.session.user.id})
+        .then((account) => {
+            res.send(account)
+        })
+
     }
 
 }
