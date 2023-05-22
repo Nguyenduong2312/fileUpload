@@ -26,7 +26,7 @@ export default function Bar() {
             <div className={`bar`}>
                 <div className="bar_logo">
                     <Link to="/">
-                        <img src="image/logoEHR.png" alt="" />
+                        <img src="../image/logoEHR.png" alt="" />
                     </Link>
                 </div>
                 <div className="bar_menu">

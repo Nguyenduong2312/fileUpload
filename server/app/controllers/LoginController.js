@@ -56,13 +56,11 @@ class LoginController {
 
     // [GET] /login/user
     user(req, res) {
-        Account.findOne({id: req.session.user.id})
+        Account.findOne({id: req.session?.user?.id})
         .then((account) => {
             res.send(account)
         })
-
     }
-
 }
 
 module.exports = new LoginController();

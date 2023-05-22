@@ -23,7 +23,6 @@ export default function Login(props) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        console.log('tap login')
         try {
             const res = await axios.post('/login', formData, {
                 headers: {

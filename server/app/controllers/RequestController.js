@@ -30,13 +30,16 @@ class RequestController{
     }
 
     request(req,res){
+        console.log('re',req.body);
         Account.findOne({id: req.body.idBN})
         .then((account) => {
-            if(!account || req.body.idBN === req.params.id){
+            if(!account || req.body.idBN === req.session.user.id){
+                console.log(account,);
+                console.log('id:',req.body.idBN, '--',req.session.user.id);
                 res.send('Patient is not exists')
             }
             else{
-                Request.findOne({idSender: req.params.id, idReceiver: req.body.idBN})
+                Request.findOne({idSender: req.session.user.id, idReceiver: req.body.idBN})
                 .then((request) => {
                     if(request){
                         res.send('Request has already sent before. Waitting sender accepted it.')
@@ -45,7 +48,7 @@ class RequestController{
                         const idReceiver = req.body.idBN;
                         const request = new Request()
                         request.idReceiver = idReceiver
-                        request.idSender = req.params.id
+                        request.idSender = req.session.user.id
                         request.save()
                         .then(() => res.send('Send request successful'))
                         .catch(()  => res.send('Send request fail'))

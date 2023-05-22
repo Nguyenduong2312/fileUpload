@@ -3,7 +3,7 @@ const router = express.Router();
 
 const RequestController = require('../app/controllers/RequestController');
 
-router.post('/:id', RequestController.request);
+router.post('/', RequestController.request);
 router.get('/', RequestController.getRequest);
 router.get('/receiver/:id', RequestController.getRequestByReceiverId);
 router.get('/sender/:id', RequestController.getRequestBySenderId);

@@ -12,6 +12,7 @@ import DashBoard from './components/pages/DashBorad/DashBoard';
 import RequestRecord from './components/pages/DashBorad/Doctor/RequestRecord';
 
 import FamilyMember from './components/pages/DashBorad/Patient/Membership/FamilyMember';
+//import FamilyMemberForUser from './components/pages/DashBorad/Patient/Membership/FamilyMember';
 import RelationshipRequestTagForSender from './components/pages/DashBorad/Patient/Membership/RelationshipRequestForSender';
 import RelationshipRequestTagForReceiver from './components/pages/DashBorad/Patient/Membership/RelationshipRequestForReceiver';
 
@@ -30,6 +31,7 @@ const App = () => (
                     <Route path="myProfile" element={<Profile />} />
 
                     <Route path="mybranch" element={<FamilyMember />} />
+                    <Route path="branch/:id" element={<FamilyMember />} />
                     <Route path="relationshipRequestForSender" element={<RelationshipRequestTagForSender />} />
                     <Route path="relationshipRequestForReceiver" element={<RelationshipRequestTagForReceiver />} />
                 </Route>

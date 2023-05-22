@@ -26,7 +26,7 @@ const RequestRecord = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`/requestRecord/${id}`, formData, {
+            const res = await axios.post(`/requestRecord`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

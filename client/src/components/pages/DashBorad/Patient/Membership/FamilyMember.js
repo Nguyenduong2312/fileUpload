@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from 'react'
+import {useParams} from "react-router-dom"
 import axios from 'axios';
 
 import Message from '../../../../Message';
@@ -12,13 +13,21 @@ export default function FamilyMember() {
     const [childList, setChildList] = useState([])
     const [parentList, setParentList] = useState([])
     const [message, setMessage] = useState('');
+    const [idUser, setIduser] = useState('')
+    let { id } = useParams(); 
     useEffect(() => {
-        fetch('http://localhost:5000/login/user',{
+        console.log('id:', id);
+        setParentList([]);
+        setChildList([]);
+        fetch(`http://localhost:5000/login/${id || 'user'}`,{
             credentials: 'include',
             method: 'GET',
         })
         .then(res => res.json())
         .then((account) => {
+            setIduser(account.id)
+            console.log('account: ', account)
+            console.log('relation: ', account.relationship);
             const accRelationship = account.relationship;            
             for (let key in accRelationship){
                 fetch(`http://localhost:5000/login/${key}`,{
@@ -38,7 +47,7 @@ export default function FamilyMember() {
                 })
             }
         })
-    }, [])  
+    }, [id])  
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -74,7 +83,7 @@ export default function FamilyMember() {
 
                 <div className='line_input'> 
                     <div className="inputField">
-                        <label>ID: </label>
+                        <label>ID:</label>
                         <input
                             type="text"
                             name='receiverId'
@@ -96,6 +105,10 @@ export default function FamilyMember() {
                 </div>
                 <input className="button submit" type="submit" value={'Send request'} />
             </form>
+
+            <div style={{marginLeft: '100px', marginTop: '50px'}}>
+                <h5>ID user: {id || idUser}</h5>
+            </div>
 
             <div className='listMember'>
                 <p style= {{fontSize: '25px', fontWeight:'700'}}>PARENTS: </p>
