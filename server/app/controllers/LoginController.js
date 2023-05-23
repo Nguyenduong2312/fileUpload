@@ -35,29 +35,26 @@ class LoginController {
             .catch(next);
     }
 
-    // [GET] /login/checkLogin
-    checkLogin(req, res) {
-        if (req.session.user) {
-            res.status(200).json({ status: true });
-        } else {
-            res.status(400).json({ status: false });
-        }
+    logout(req, res, next) {
+        // Destroy a session
+        req.session.destroy(function (err) {
+            return res.status(200).json({
+                status: 'success',
+                session: 'cannot access session here',
+            });
+        });
+    }
+
+    getUser(req, res) {
+        Account.findOne({ id: req.params.id }).then((account) => {
+            res.send(account);
+        });
     }
 
     // [GET] /login/user
     user(req, res) {
-        const sessionuser = req.session.user;
-        res.send(sessionuser);
-    }
-    logout(req, res, next) {
-        // Destroy a session
-        req.session.destroy(function (err) {
-            return res
-                .status(200)
-                .json({
-                    status: 'success',
-                    session: 'cannot access session here',
-                });
+        Account.findOne({ id: req.session?.user?.id }).then((account) => {
+            res.send(account);
         });
     }
 }

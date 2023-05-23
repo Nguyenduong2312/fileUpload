@@ -3,14 +3,11 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
 export default function Register(props) {
-    const [formData, setFormData] = useState({
-        username: '',
-        password1: '',
-        password2: '',
-    });
+    const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
     const { username, password1, password2 } = formData;
     const navigate = useNavigate();
@@ -49,6 +46,7 @@ export default function Register(props) {
 
     return (
         <div>
+            <Bar></Bar>
             <div class="login_layout">
                 <div class="login_img">
                     <img src="image/img_login.png" alt="" />
@@ -94,13 +92,18 @@ export default function Register(props) {
                                     </div>
                                     <div className="inputField">
                                         <label>Role: </label>
-                                        <select 
-                                            name="role" 
+                                        <select
+                                            name="role"
                                             defaultValue="Select"
-                                            onChange={onChange}>
+                                            onChange={onChange}
+                                        >
                                             <option>Select...</option>
-                                            <option value="Doctor">Doctor</option>
-                                            <option value="Patient">Patient</option>
+                                            <option value="Doctor">
+                                                Doctor
+                                            </option>
+                                            <option value="Patient">
+                                                Patient
+                                            </option>
                                             <option value="Other">Other</option>
                                         </select>
                                     </div>

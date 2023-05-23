@@ -1,17 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-export default function RequestedList(props) {
-    console.log('props: ', props);
-    const formData = {
-        idSender: props.idSender,
-        idReceiver: props.idReceiver,
-        idRequest: props._id,
-    };
-    const handleAcceptRequest = async (e) => {
+import './RelationshipRequestTag.css';
+export default function RelationshipRequestTag(props) {
+    const handleConfirm = async (e) => {
         e.preventDefault();
         //cập nhật status cho api waitting -> accepted
         try {
-            await axios.put(`/requestRecord/${props._id}`, formData, {
+            await axios.put(`/membership/${props.request._id}`, props.request, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -24,9 +19,8 @@ export default function RequestedList(props) {
 
     const handleRejectRequest = async (e) => {
         e.preventDefault();
-        //xóa api ra khỏi requested list
         try {
-            await axios.delete(`/requestRecord/${props._id}`, {
+            await axios.delete(`/membership/${props.request._id}`, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -38,25 +32,23 @@ export default function RequestedList(props) {
     };
 
     return (
-        <div className="record_tag">
-            <div className="text" style={{ display: 'block' }}>
-                <p>Id Sender: {props.idSender}</p>
-                <p>Request date :</p>
-            </div>
-            <div className="dashboard_buttons">
-                <div
-                    className="button"
-                    style={{ backgroundColor: '#54B435' }}
-                    onClick={handleAcceptRequest}
-                >
-                    Accept
+        <div className="requestTag">
+            <p>Sender Id: {`${props.request.senderId}`}</p>
+            <p>Name: {`${props.request.senderName}`}</p>
+            <p>
+                Relationship: {`${props.request.senderName}`} is your{' '}
+                {`${props.request.senderRole}`}
+            </p>
+            <div className="buttons">
+                <div className="button viewRecord" onClick={handleConfirm}>
+                    Confirm
                 </div>
                 <div
                     className="button delete"
-                    onClick={handleRejectRequest}
                     style={{ marginLeft: '30px' }}
+                    onClick={handleRejectRequest}
                 >
-                    Reject
+                    Delete
                 </div>
             </div>
         </div>

@@ -23,7 +23,6 @@ export default function Login(props) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        console.log('tap login')
         try {
             const res = await axios.post('/login', formData, {
                 headers: {
@@ -67,8 +66,6 @@ export default function Login(props) {
                                             <input
                                                 type="text"
                                                 name="username"
-                                                id="email"
-                                                value={username || ''}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -79,8 +76,6 @@ export default function Login(props) {
                                             <input
                                                 type="password"
                                                 name="password"
-                                                id="password"
-                                                value={password || ''}
                                                 onChange={onChange}
                                             />
                                         </label>

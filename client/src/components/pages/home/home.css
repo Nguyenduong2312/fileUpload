@@ -16,39 +16,11 @@
 .main_button{
     position: absolute;
     top: 400px;
-    left: 50px;
+    left: 100px;
 }
 
-.button{
-    padding: 10px 35px;
-    border-radius: 15px;
-    text-align: center;
-    text-decoration: none;
-    color: #221056;
-}
-
-.button.register:hover{
-    text-decoration: none;
-    color: black;
-    background-color: rgb(255, 255, 255);
-}
-
-.button.login:hover{
-    text-decoration: none;
-    color: black;
-    background-color: rgb(255, 255, 255);
-}
-
-.button.register{
-    background-color: #221056;
-    color: #ffff;
-}
-
-.button.login{
-    background-color: #221056;
-    color: #ffff;
-    margin-right: 200px;
-
+.main_button .button{
+    padding: 10px 30px;
 }
 
 .main_img{

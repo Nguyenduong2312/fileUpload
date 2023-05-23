@@ -1,0 +1,32 @@
+.dropdownnn{
+    background-color: none;
+    padding: 0px;
+    border-radius: 10px;
+}
+
+.dropdownItemTag{
+    display: flex;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.dropdownItem{
+    padding: 0px;
+}
+
+.dropdownItemTag:hover{
+    height:100%;
+    background-color: #7D8F69;
+    .dropdownItem{
+        background-color: #7D8F69;
+    }
+}
+.notice{
+    width: fit-content;
+    height: 30px;
+    margin-left: 10px;
+    text-align: center;
+    background-color: red;
+    padding: 3px;
+    border-radius: 50%;
+}

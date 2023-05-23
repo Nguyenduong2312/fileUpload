@@ -1,7 +1,5 @@
 body{
     width: 100%;
-    margin: 0px;
-    background-color: #8a2be2;
 }
 
 .bar{
@@ -10,7 +8,7 @@ body{
     padding: 0px 50px;
 }
 
-.bar.auth_false{
+.bar.false{
     grid-template-columns: 3fr 1fr;
 }
 
@@ -28,9 +26,6 @@ body{
     margin: auto;
 }
 
-li.isfalse{
-    display: none;
-}
 
 .bar_menu li a{
     color: white;

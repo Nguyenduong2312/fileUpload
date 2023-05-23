@@ -63,9 +63,11 @@ class UploadFileController {
     }
 
     upload(req, res) {
+        console.log('uplaod');
         if (req.files === null) {
-            console.log('lỗi');
-            return res.status(400).json({ msg: 'No file uploaded' });
+            return res.send('No file uploaded');
+        } else if (req.body.id === '') {
+            return res.send('Id can not be empty');
         }
 
         //uploadFile
@@ -73,10 +75,11 @@ class UploadFileController {
 
         file.mv(path + file.name, async (err) => {
             if (err) {
-                console.error(err);
-                // return res.status(500).send(err);
+                console.log('lỗi');
+                return res.status(500).send(err);
             }
             try {
+                console.log('run');
                 const data = fs.readFileSync(path + file.name);
 
                 //generate khóa k và mã hóa nội dung tập tin
@@ -98,19 +101,15 @@ class UploadFileController {
                 //mã hóa k bằng ECC
                 //1. Lấy public key từ id BN
 
-                const idBN = req.body.name;
-                const acc = await Account.findOne({ id: idBN }).then(function (
-                    acc,
-                ) {
-                    const record = new Record();
-                    record.idReceiver = idBN;
-                    record.idSender = '142'; //get userId
-                    record.fileName = file.name;
-                    record
-                        .save()
-                        //.then(() => res.json({ status: true }))
-                        .catch(() => res.json({ status: false }));
-                });
+                const acc = await Account.findOne({ id: req.body.id }).then(
+                    (account) => {
+                        const record = new Record();
+                        record.idReceiver = req.body.id;
+                        record.idSender = req.session.user.id;
+                        record.fileName = file.name;
+                        record.save().catch(() => res.json({ status: false }));
+                    },
+                );
                 console.log('pk', acc);
                 console.log('keyB', publicKeyB);
                 console.log('string keyB', publicKeyB.toString('hex'));

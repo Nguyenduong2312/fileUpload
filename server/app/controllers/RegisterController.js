@@ -4,9 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 class RegisterController {
-    // [POST] /register
     createAccount(req, res) {
-        // Check input data
         if (
             !req.body.username ||
             !req.body.password1 ||
@@ -51,6 +49,7 @@ class RegisterController {
                         account
                             .save()
                             .then(() => {
+                                req.session.user = account;
                                 res.json({ status: true });
                             })
                             .catch(() => {
@@ -60,6 +59,19 @@ class RegisterController {
                 );
             })
             .catch(() => res.json({ status: false }));
+    }
+
+    AddRelationshipForUser(idUser, role) {
+        Account.findOne({ id: idUser }).then((account) => {
+            for (let key in role) {
+                account.relationship = {
+                    ...account.relationship,
+                    [key]: role[key],
+                };
+            }
+            //account.relationship = {}
+            account.save();
+        });
     }
 }
 

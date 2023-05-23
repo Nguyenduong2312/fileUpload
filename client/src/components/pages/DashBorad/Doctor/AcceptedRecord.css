@@ -2,8 +2,8 @@
     height: fit-content;
     min-height: 300px;
     width: 100%;
-    padding: 20px 0px 100px 0px;
-    background-color: yellow;
+    padding: 20px 0px 80px 0px;
+    background-color: #E3F2C1;
     border: 2px solid black;
     border-radius: 10px;
     top: 0px;
@@ -11,24 +11,23 @@
 }
 
 .inforPatient{
-    padding-top: 20px;
-    padding-left: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 20px 50px;
 }
 
 .recordList{
     height: fit-content;
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: scroll;
     padding-bottom: 50px;
-    background-color: rgb(161, 161, 71);
+    background-color: #E3F2C1;
     padding: 10px 20px;
 }
 
-.button{
-    width: fit-content;
-    cursor: pointer;
-    background-color: green;
+.AcceptedRecord_tag .back{
     position: absolute;
-    bottom: 30px;
-    left: 30px;
+    bottom: 20px;
+    left: 70px;
+    background-color: #EAE509;
 }
