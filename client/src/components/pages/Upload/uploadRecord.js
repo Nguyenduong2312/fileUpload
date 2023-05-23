@@ -10,7 +10,7 @@ const UploadRecord = () => {
     const [filename, setFilename] = useState('Choose File');
     const [message, setMessage] = useState('');
     const [id, setId] = useState('');
-
+    //const [formData,setFormData] = useState({})
     const handleChange = (event) => {
         setId(event.target.value);
     };
@@ -23,8 +23,8 @@ const UploadRecord = () => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('name', id);
-
+        formData.append('id', id);
+        console.log(formData);
         try {
             await axios.post('/uploadRecord', formData, {
                 headers: {

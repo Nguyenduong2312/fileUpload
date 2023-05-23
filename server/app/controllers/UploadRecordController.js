@@ -103,6 +103,7 @@ class UploadFileController {
 
                 const acc = await Account.findOne({ id: req.body.id }).then(
                     (account) => {
+                        console.log('req body: ', req.body);
                         const record = new Record();
                         record.idReceiver = req.body.id;
                         record.idSender = req.session.user.id;
