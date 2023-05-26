@@ -10,14 +10,14 @@ class RequestController {
         });
     }
     getRequestByReceiverId(req, res) {
-        Request.find({ idReceiver: req.params.id, status: 'Waitting' }).then(
+        Request.find({ idReceiver: req.params.id, status: 'Waiting' }).then(
             function (request) {
                 res.status(200).json(request);
             },
         );
     }
     getRequestBySenderId(req, res) {
-        Request.find({ idSender: req.params.id, status: 'Waitting' }).then(
+        Request.find({ idSender: req.params.id, status: 'Waiting' }).then(
             function (request) {
                 res.status(200).json(request);
             },
