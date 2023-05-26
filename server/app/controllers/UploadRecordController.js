@@ -101,10 +101,11 @@ class UploadFileController {
                 //mã hóa k bằng ECC
                 //1. Lấy public key từ id BN
 
+                let record;
                 const acc = await Account.findOne({ id: req.body.id }).then(
                     (account) => {
                         console.log('req body: ', req.body);
-                        const record = new Record();
+                        record = new Record();
                         record.idReceiver = req.body.id;
                         record.idSender = req.session.user.id;
                         record.fileName = file.name;
@@ -160,6 +161,16 @@ class UploadFileController {
                     .catch((error) => {
                         console.error('Error signing transaction:', error);
                     });
+                contractInstance.methods
+                    .numberOfRecords()
+                    .call()
+                    .then(async (result) => {
+                        record.idOnChain = result;
+                        record.save();
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
             } catch (err) {
                 console.error(err);
             }
@@ -179,7 +190,7 @@ class UploadFileController {
                     return res.status(404).json({ msg: 'id out of range' });
                 }
                 const txRecord = await contractInstance.methods['ehrs'](
-                    result - 1,
+                    id,
                 ).call();
                 console.log('DECRYPTING');
 

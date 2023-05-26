@@ -9,6 +9,7 @@ const Record = new Schema(
         fileName: { type: String, default: '' },
         typeRecord: { type: String, default: '' },
         createdDate: { type: Date, default: Date.now },
+        idOnChain: { type: String, default: '' },
     },
     {
         timestamps: true,

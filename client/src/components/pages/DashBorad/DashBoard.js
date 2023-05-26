@@ -168,6 +168,7 @@ export default function DashBoard() {
                                     key={record.id}
                                     name={record.fileName}
                                     id={record.idSender}
+                                    idOnChain={record.idOnChain}
                                 />
                             ))}
                         {second &&
