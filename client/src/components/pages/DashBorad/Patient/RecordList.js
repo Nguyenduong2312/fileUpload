@@ -2,15 +2,17 @@ import React from 'react';
 
 export default function RecordList(props) {
     const onButtonClick = () => {
-        fetch('').then((response) => {
-            response.blob().then((blob) => {
-                const fileURL = window.URL.createObjectURL(blob);
-                let alink = document.createElement('a');
-                alink.href = fileURL;
-                alink.download = 'SamplePDF.pdf';
-                alink.click();
-            });
-        });
+        fetch('http://localhost:5000/uploadRecord/download/1').then(
+            (response) => {
+                response.blob().then((blob) => {
+                    const fileURL = window.URL.createObjectURL(blob);
+                    let alink = document.createElement('a');
+                    alink.href = fileURL;
+                    alink.download = 'SamplePDF.pdf';
+                    alink.click();
+                });
+            },
+        );
     };
 
     return (
