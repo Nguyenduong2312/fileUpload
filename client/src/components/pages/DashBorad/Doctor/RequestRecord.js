@@ -14,15 +14,15 @@ const RequestRecord = () => {
 
     const [id, setId] = useState();
     useEffect(() => {
-        fetch('http://localhost:5000/login/user',{
+        fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
-          })
-        .then(res => res.json())
-        .then(requests => {
-            setId(requests.id)
         })
-    })  
+            .then((res) => res.json())
+            .then((requests) => {
+                setId(requests.id);
+            });
+    });
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -43,30 +43,30 @@ const RequestRecord = () => {
 
     return (
         <div>
-        <Bar></Bar>
-        <div className="container mt-4">
-            <h4 className="display-4 text-center mb-4">Request Record</h4>
-            <Fragment>
-                {message ? <Message msg={message} /> : null}
-                <form onSubmit={onSubmit}>
-                    <div className="inputField id">
-                        <label>
-                            Patient id:<br></br>
-                            <input
-                                type="text"
-                                id="id"
-                                onChange={handleChange}
-                            />
-                        </label>
-                    </div>
-                    <input
-                        type="submit"
-                        value="Send request"
-                        className="btn btn-warning btn-block mt-4"
-                    />
-                </form>
-            </Fragment>
-        </div>
+            <Bar></Bar>
+            <div className="container mt-4">
+                <h4 className="display-4 text-center mb-4">Request Record</h4>
+                <Fragment>
+                    {message ? <Message msg={message} /> : null}
+                    <form onSubmit={onSubmit}>
+                        <div className="inputField id">
+                            <label>
+                                Patient id:<br></br>
+                                <input
+                                    type="text"
+                                    id="id"
+                                    onChange={handleChange}
+                                />
+                            </label>
+                        </div>
+                        <input
+                            type="submit"
+                            value="Send request"
+                            className="btn btn-warning btn-block mt-4"
+                        />
+                    </form>
+                </Fragment>
+            </div>
         </div>
     );
 };

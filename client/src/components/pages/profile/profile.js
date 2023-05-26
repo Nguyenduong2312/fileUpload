@@ -7,29 +7,28 @@ import Message from '../../Message';
 import './profile.css';
 
 export default function Profile() {
-    const [user,setUser] = useState({})
-    const [formData, setFormData] = useState({})
+    const [user, setUser] = useState({});
+    const [formData, setFormData] = useState({});
 
     const [message, setMessage] = useState('');
-    const { name, gender, address, email, date} = formData;
+    const { name, gender, address, email, date } = formData;
 
     useEffect(() => {
-        fetch('http://localhost:5000/login/user',{
+        fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
         })
-        .then(res => res.json())
-        .then(account => {
-            setUser(account);
-        })
-    },[]);
+            .then((res) => res.json())
+            .then((account) => {
+                setUser(account);
+            });
+    }, []);
 
     const onChange = (e) => {
-        if (e.target.value === ''){
-            e.target.value = ' '
+        if (e.target.value === '') {
+            e.target.value = ' ';
         }
-        setFormData((prevState) => (
-            {
+        setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }));
@@ -37,33 +36,31 @@ export default function Profile() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        try{
+        try {
             await axios.put(`/myProfile/${user.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setMessage('Saved!')
-        } catch(err){
+            setMessage('Saved!');
+        } catch (err) {
             if (err.response.status === 500) {
                 setMessage('There was a problem with the server');
             } else {
                 setMessage(err.response.data.msg);
             }
         }
-    };    
+    };
 
     return (
         <div>
             <Bar></Bar>
             <div className="profile">
-                {message ? <Message msg={message}  /> : null}
+                {message ? <Message msg={message} /> : null}
                 <div className="infoTag">
-
                     <div className="profile_form_tag">
-                        <form className = "UpdateAccountForm"
-                            onSubmit={onSubmit}>
-                            <p className='titleProfile'>Information:</p>
+                        <form className="UpdateAccountForm" onSubmit={onSubmit}>
+                            <p className="titleProfile">Information:</p>
                             <div className="inputField">
                                 <label>Full name:</label>
                                 <input
@@ -73,13 +70,13 @@ export default function Profile() {
                                     onChange={onChange}
                                 />
                             </div>
-                            <div className='line_input'> 
+                            <div className="line_input">
                                 <div className="inputField">
                                     <label>Gender:</label>
-                                    <select 
-                                        name="gender" 
-                                        onChange={onChange}>
-                                        <option>{user.gender || 'Select...'}</option>
+                                    <select name="gender" onChange={onChange}>
+                                        <option>
+                                            {user.gender || 'Select...'}
+                                        </option>
                                         <option value="Female">Female</option>
                                         <option value="Male">Male</option>
                                         <option value="Other">Other</option>
@@ -87,12 +84,13 @@ export default function Profile() {
                                 </div>
                                 <div className="inputField">
                                     <label>BirthDay:</label>
-                                    <input 
-                                    type="date" 
-                                    name = 'date'
-                                    value={date || user.birthday} 
-                                    onChange={onChange} />
-                                </div> 
+                                    <input
+                                        type="date"
+                                        name="date"
+                                        value={date || user.birthday}
+                                        onChange={onChange}
+                                    />
+                                </div>
                             </div>
                             <div className="inputField">
                                 <label>Address:</label>
@@ -102,8 +100,8 @@ export default function Profile() {
                                     value={address || user.address}
                                     onChange={onChange}
                                 />
-                            </div> 
-                            
+                            </div>
+
                             <div className="inputField">
                                 <label>Email:</label>
                                 <input
@@ -112,13 +110,16 @@ export default function Profile() {
                                     value={email || user.email}
                                     onChange={onChange}
                                 />
-                            </div> 
-                            <input className="button" type="submit" value={'Save'} />
+                            </div>
+                            <input
+                                className="button"
+                                type="submit"
+                                value={'Save'}
+                            />
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
     );
 }

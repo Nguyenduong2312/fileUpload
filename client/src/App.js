@@ -32,8 +32,14 @@ const App = () => (
 
                     <Route path="mybranch" element={<FamilyMember />} />
                     <Route path="branch/:id" element={<FamilyMember />} />
-                    <Route path="relationshipRequestForSender" element={<RelationshipRequestTagForSender />} />
-                    <Route path="relationshipRequestForReceiver" element={<RelationshipRequestTagForReceiver />} />
+                    <Route
+                        path="relationshipRequestForSender"
+                        element={<RelationshipRequestTagForSender />}
+                    />
+                    <Route
+                        path="relationshipRequestForReceiver"
+                        element={<RelationshipRequestTagForReceiver />}
+                    />
                 </Route>
             </Routes>
         </BrowserRouter>

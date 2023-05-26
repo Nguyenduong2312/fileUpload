@@ -38,28 +38,24 @@ class LoginController {
     logout(req, res, next) {
         // Destroy a session
         req.session.destroy(function (err) {
-            return res
-                .status(200)
-                .json({
-                    status: 'success',
-                    session: 'cannot access session here',
-                });
+            return res.status(200).json({
+                status: 'success',
+                session: 'cannot access session here',
+            });
         });
     }
 
-    getUser(req,res){
-        Account.findOne({id: req.params.id})
-        .then((account) => {
-            res.send(account)
-        })
+    getUser(req, res) {
+        Account.findOne({ id: req.params.id }).then((account) => {
+            res.send(account);
+        });
     }
 
     // [GET] /login/user
     user(req, res) {
-        Account.findOne({id: req.session?.user?.id})
-        .then((account) => {
-            res.send(account)
-        })
+        Account.findOne({ id: req.session?.user?.id }).then((account) => {
+            res.send(account);
+        });
     }
 }
 

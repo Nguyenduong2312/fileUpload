@@ -66,8 +66,7 @@ class UploadFileController {
         console.log('uplaod');
         if (req.files === null) {
             return res.send('No file uploaded');
-        }
-        else if(req.body.id === ''){
+        } else if (req.body.id === '') {
             return res.send('Id can not be empty');
         }
 
@@ -102,17 +101,16 @@ class UploadFileController {
                 //mã hóa k bằng ECC
                 //1. Lấy public key từ id BN
 
-                const acc = await Account.findOne({ id: req.body.id })
-                .then((account) =>  {
-                    console.log('req body: ', req.body);
-                    const record = new Record();
-                    record.idReceiver = req.body.id;
-                    record.idSender = req.session.user.id;
-                    record.fileName = file.name;
-                    record
-                        .save()
-                        .catch(() => res.json({ status: false }));
-                });
+                const acc = await Account.findOne({ id: req.body.id }).then(
+                    (account) => {
+                        console.log('req body: ', req.body);
+                        const record = new Record();
+                        record.idReceiver = req.body.id;
+                        record.idSender = req.session.user.id;
+                        record.fileName = file.name;
+                        record.save().catch(() => res.json({ status: false }));
+                    },
+                );
                 console.log('pk', acc);
                 console.log('keyB', publicKeyB);
                 console.log('string keyB', publicKeyB.toString('hex'));

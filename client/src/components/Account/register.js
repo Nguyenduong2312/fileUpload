@@ -9,7 +9,7 @@ import Message from '../Message';
 export default function Register(props) {
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
-    const {username, password1, password2} = formData;
+    const { username, password1, password2 } = formData;
     const navigate = useNavigate();
 
     const onChange = (e) => {
@@ -92,13 +92,18 @@ export default function Register(props) {
                                     </div>
                                     <div className="inputField">
                                         <label>Role: </label>
-                                        <select 
-                                            name="role" 
+                                        <select
+                                            name="role"
                                             defaultValue="Select"
-                                            onChange={onChange}>
+                                            onChange={onChange}
+                                        >
                                             <option>Select...</option>
-                                            <option value="Doctor">Doctor</option>
-                                            <option value="Patient">Patient</option>
+                                            <option value="Doctor">
+                                                Doctor
+                                            </option>
+                                            <option value="Patient">
+                                                Patient
+                                            </option>
                                             <option value="Other">Other</option>
                                         </select>
                                     </div>

@@ -12,8 +12,8 @@ function route(app) {
     app.use('/uploadRecord', uploadRecordRoute);
     app.use('/requestRecord', requestRecord);
     app.use('/myProfile', updateAccount);
-    app.use('/acceptedRequest',acceptedRequest);
-    app.use('/membership',membership)
+    app.use('/acceptedRequest', acceptedRequest);
+    app.use('/membership', membership);
 }
 
 module.exports = route;
