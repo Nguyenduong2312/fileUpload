@@ -1,14 +1,15 @@
 import React from 'react';
 
 export default function RecordList(props) {
-    const onButtonClick = () => {
-        fetch('http://localhost:5000/uploadRecord/download/1').then(
+    const onButtonClick = (id, filename) => {
+        fetch(`http://localhost:5000/uploadRecord/download/${id}`).then(
             (response) => {
                 response.blob().then((blob) => {
+                    console.log(id);
                     const fileURL = window.URL.createObjectURL(blob);
                     let alink = document.createElement('a');
                     alink.href = fileURL;
-                    alink.download = 'SamplePDF.pdf';
+                    alink.download = filename;
                     alink.click();
                 });
             },
@@ -22,7 +23,10 @@ export default function RecordList(props) {
                 <p>ID Uploader: {props.id}</p>
             </div>
             <div className="dashboard_buttons">
-                <div className="button download" onClick={onButtonClick}>
+                <div
+                    className="button download"
+                    onClick={() => onButtonClick(props.idOnChain, props.name)}
+                >
                     Download
                 </div>
             </div>
