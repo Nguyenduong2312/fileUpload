@@ -46,11 +46,14 @@ class LoginController {
                 });
         });
     }
-
+    //login/:id
     getUser(req,res){
         Account.findOne({id: req.params.id})
         .then((account) => {
             res.send(account)
+        })
+        .catch(() => {
+            res.send('null')
         })
     }
 
@@ -59,6 +62,24 @@ class LoginController {
         Account.findOne({id: req.session?.user?.id})
         .then((account) => {
             res.send(account)
+        })
+    }
+
+    checkPatient(req,res){
+        console.log('req1:', req.body);
+        console.log('req pra', req.params.id);
+        Account.findOne({id: req.params.id, role: "Patient"})
+        .then((account) => {
+            console.log(account);
+            if(account){
+                res.send(true)
+            }
+            else{
+                res.send(false)
+            }
+        })
+        .catch(() => {
+            res.send(false)
         })
     }
 }

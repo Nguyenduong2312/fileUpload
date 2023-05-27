@@ -1,19 +1,16 @@
 import React from 'react';
-import './AcceptedList.css';
+import './AcceptedRecordTag.css';
 import axios from 'axios';
-import AcceptedRecordCpn from './AcceptedRecord';
 
-export default function AcceptedList(props) {
-    console.log(props.status);
-    const handleViewRecords  = async (e) => {
-        console.log('set');
-        props.setIsViewRecord(true)
+export default function AcceptedRecordTag (props) {
+    
+    const handleDownload  = async (e) => {
     }
 
     const handleRejectRequest  = async (e) => {
         e.preventDefault();
         try{
-            await axios.delete(`/requestRecord/${props._id}`, {
+            await axios.delete(`/requestRecord/${props.request._id}`, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -30,20 +27,18 @@ export default function AcceptedList(props) {
         <div>
             <div className="record_tag">
                 <div className='text' style={{display:'block'}}>
-                    <p>ID Patient: {props.idReceiver}</p>
-                    <p>Date: </p>
+                    <p>Patient id: {props.request.idReceiver}</p>
+                    <p>Name: {props.request.nameRecord}</p>
                 </div>
                 <div className="dashboard_buttons">
-                    <div className="button viewRecord" onClick={handleViewRecords}>
-                        View Records
+                    <div className="button download" onClick={handleDownload}>
+                        Download
                     </div>
                     <div className="button delete" onClick={handleRejectRequest}>
                         Delete
                     </div>
                 </div>
             </div>
-            {props.status && <AcceptedRecordCpn _id = {props._id} idReceiver = {props.idReceiver} status = {props.status} setIsViewRecord = {props.setIsViewRecord}></AcceptedRecordCpn>}
-
         </div>
     );
 }

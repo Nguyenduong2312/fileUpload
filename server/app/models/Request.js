@@ -6,7 +6,8 @@ const Request = new Schema(
     {
         idSender: { type: String, require: true },
         idReceiver: { type: String, require: true },
-        typeRecord: { type: String, default: '' },
+        idRecord: { type: String, require: true },
+        nameRecord: { type: String, require: true },
         status: { type: String, default: 'Waitting' },
         id : { type: String, require: true },
         createdDate: { type: Date, default: Date.now },

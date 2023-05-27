@@ -44,26 +44,14 @@ const { drive } = require('googleapis/build/src/apis/drive');
 const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
-    getRecord(req, res) {
-        Record.find().then(function (record) {
-            res.status(200).json(record);
-        });
-    }
-
-    getRecordByReceiverId(req, res) {
-        Record.find({ idReceiver: req.params.id }).then(function (record) {
-            res.status(200).json(record);
-        });
-    }
-
-    getRecordBySenderId(req, res) {
-        Record.find({ idSender: req.params.id }).then(function (record) {
+    getRecordById(req, res) {
+        Record.find({ idSender: '1'})
+        .then(record => {
             res.status(200).json(record);
         });
     }
 
     upload(req, res) {
-        console.log('uplaod');
         if (req.files === null) {
             return res.send('No file uploaded');
         }

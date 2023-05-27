@@ -1,0 +1,15 @@
+.input-group{
+    width: 70%;
+    margin: auto;   
+}
+
+.search-button{
+    background-color: #263A29;
+    border-radius: 0px 10px 10px 0px;
+    padding: 0px 10px;
+    color: white;
+}
+
+.search-button:hover{
+    background-color: green;
+}

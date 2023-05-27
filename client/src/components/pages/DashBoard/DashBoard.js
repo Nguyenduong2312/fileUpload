@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom';
 import './DashBoard.css';
 
 import Bar from '../bar/bar';
-import AcceptedList from './Doctor/AcceptedList';
-import RequestList from './Doctor/RequestList';
-import RecordList from './Patient/RecordList';
-import RequestedList from './Patient/RequestedList';
+import AcceptedRecordTag from '../Doctor/AcceptedRecordTag';
+import RequestList from '../Doctor/SendingRequestTag';
+import RecordTag from '../Patient/RecordTag';
+import RequestedTag from '../Patient/RequestedTag';
 
 export default function DashBoard() {
     const [first, setFirst] = useState(true);
     const [second, setSecond] = useState(false);
-    const [isViewRecord, setIsViewRecord]  = useState(false);
 
     const [requestList, setRequestList] = useState([]);
     const [acceptedList, setAcceptedList] = useState([]);
@@ -29,18 +28,18 @@ export default function DashBoard() {
             method: 'GET',
         })
         .then(res => res.json())
-        .then(requests => {
-            if(requests.role === 'Doctor'){ setRole(true) }
+        .then(account => {
+            if(account.role === 'Doctor'){ setRole(true) }
             else{setRole(false) }
 
-            if(requests.role === 'Doctor'){
-                fetch(`http://localhost:5000/requestRecord/sender/${requests.id}`)
+            if(account.role === 'Doctor'){
+                fetch(`http://localhost:5000/requestRecord/sender/${account.id}`)
                 .then(res => res.json())
                 .then(requests => {
                     setRequestList(requests)
                     setLengthOfRequestList(requests.length)
                 })
-                fetch(`http://localhost:5000/requestRecord/accepted/sender/${requests.id}`)
+                fetch(`http://localhost:5000/requestRecord/accepted/sender/${account.id}`)
                 .then(res => res.json())
                 .then(requests => {
                     setAcceptedList(requests)
@@ -48,13 +47,13 @@ export default function DashBoard() {
                 })
             }
             else{
-                fetch(`http://localhost:5000/requestRecord/receiver/${requests.id}`)
+                fetch(`http://localhost:5000/requestRecord/receiver/${account.id}`)
                 .then(res => res.json())
                 .then(requests => {
                     setRequestedList(requests)
                     setLengthOfRequestedList(requests.length)
                 })
-                fetch(`http://localhost:5000/uploadRecord/receiver/${requests.id}`)
+                fetch(`http://localhost:5000/record/${account.id}`)
                 .then(res => res.json())
                 .then(records => {
                     setRecordList(records)
@@ -82,25 +81,24 @@ export default function DashBoard() {
             <div className='dashboard_content'>
                 {role && <div className='dashboard_menu'>
                     <div className={`dashboard_menu_button ${first}`} onClick={handleClickFirst}>Accepted Records</div>
-                    <div className={`dashboard_menu_button ${second}`} onClick={handleClickSecond}>Request Records</div>
-                    <Link to="/requestRecord"><div className={`dashboard_menu_button newRequest`}>New Request</div></Link>
+                    <div className={`dashboard_menu_button ${second}`} onClick={handleClickSecond}>Sending Request</div>
                 </div>}
                 {!role && <div className='dashboard_menu'>
                     <div className={`dashboard_menu_button ${first}`} onClick={handleClickFirst}>My Records</div>
-                    <div className={`dashboard_menu_button ${second}`} onClick={handleClickSecond}>Requested List</div>
+                    <div className={`dashboard_menu_button ${second}`} onClick={handleClickSecond}>Request List</div>
                 </div>}
                 {role && <div className='dashboard_tag'>
                     {first && acceptedList.map(request => 
-                        <AcceptedList key= {request.id} _id = {request._id} idReceiver = {request.idReceiver} name = {request.fileName} setLengthOfAcceptedList = {setLengthOfAcceptedList}  status = {isViewRecord} setIsViewRecord = {setIsViewRecord}/>)}
+                        <AcceptedRecordTag request = {request} setLengthOfAcceptedList = {setLengthOfAcceptedList}/>)}
                     {second && requestList.map(request => 
-                        <RequestList key= {request.id} _id = {request._id} idReceiver = {request.idReceiver} status = {request.status}  setLengthOfRequestList = {setLengthOfRequestList}/>
+                        <RequestList request = {request} setLengthOfRequestList = {setLengthOfRequestList}/>
                     )}
                 </div>}
                 {!role && <div className='dashboard_tag'>
                     {first && recordList.map(record => 
-                        <RecordList key= {record.id} name = {record.fileName} id = {record.idSender}/>)}
+                        <RecordTag record = {record} status = {true}/>)}
                     {second && requestedList.map(request => 
-                        <RequestedList key= {request.id} idSender = {request.idSender} idReceiver = {request.idReceiver} _id = {request._id} setLengthOfRequestList = {setLengthOfRequestList}/>
+                        <RequestedTag request = {request} setLengthOfRequestList = {setLengthOfRequestList}/>
                     )}
                 </div>}
             </div>

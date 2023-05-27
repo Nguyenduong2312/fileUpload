@@ -1,6 +1,6 @@
 const registerRouter = require('./register');
 const loginRouter = require('./login');
-const uploadRecordRoute = require('./uploadRecord');
+const uploadRecordRoute = require('./record');
 const requestRecord = require('./requestRecord');
 const updateAccount = require('./updateAccount');
 const acceptedRequest = require('./acceptedRequest');
@@ -9,7 +9,7 @@ const membership = require('./membership');
 function route(app) {
     app.use('/register', registerRouter);
     app.use('/login', loginRouter);
-    app.use('/uploadRecord', uploadRecordRoute);
+    app.use('/record', uploadRecordRoute);
     app.use('/requestRecord', requestRecord);
     app.use('/myProfile', updateAccount);
     app.use('/acceptedRequest',acceptedRequest);

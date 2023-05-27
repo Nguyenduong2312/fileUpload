@@ -1,13 +1,14 @@
 .AcceptedRecord_tag{
     height: fit-content;
     min-height: 300px;
-    width: 100%;
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
     padding: 20px 0px 80px 0px;
     background-color: #E3F2C1;
     border: 2px solid black;
     border-radius: 10px;
-    top: 0px;
-    position: absolute;
+    position: relative;
 }
 
 .inforPatient{

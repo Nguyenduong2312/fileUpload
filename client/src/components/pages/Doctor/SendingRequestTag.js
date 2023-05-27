@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import './RequestList.css';
+import './SendingRequestTag.css';
 
 export default function RequestList(props) {
     const handleRejectRequest  = async (e) => {
         e.preventDefault();
         try{
-            await axios.delete(`/requestRecord/${props._id}`, {
+            await axios.delete(`/requestRecord/${props.request._id}`, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -22,12 +22,11 @@ export default function RequestList(props) {
     return (
         <div className="record_tag">
             <div className='text' style={{display:'block'}}>
-                <p>ID Patient: <span>{props.idReceiver}</span></p>
-                <p>Request date :</p>
+                <p>Patient id: <span>{props.request.idReceiver}</span></p>
+                <p>File name: {props.request.nameRecord} </p>
             </div>
             <div className='dashboard_buttons'>
-                <div className="button viewRecord">{props.status}</div>
-                <div className="button delete" onClick={handleRejectRequest} style={{marginLeft: '30px'}}>Cancle</div>
+                <div className="button delete" onClick={handleRejectRequest} style={{marginLeft: '30px'}}>Delete</div>
             </div>
         </div>
     )

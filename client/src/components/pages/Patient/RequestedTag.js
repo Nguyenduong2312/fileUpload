@@ -1,17 +1,15 @@
 import React from 'react';
 import axios from 'axios';
-export default function RequestedList(props) {
-    console.log('props: ', props);
+export default function RequestedTag(props) {
+    console.log('props:',props.request._id);
     const formData = {
-        'idSender': props.idSender,
-        'idReceiver': props.idReceiver,
-        'idRequest': props._id,
+        'idSender': props.request.idSender,
     }
     const handleAcceptRequest = async (e) => {
         e.preventDefault();
         //cập nhật status cho api waitting -> accepted
         try{
-            await axios.put(`/requestRecord/${props._id}`, formData, {
+            await axios.put(`/requestRecord/${props.request._id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -36,15 +34,13 @@ export default function RequestedList(props) {
         } catch(err){
             console.log('lỗi');
         }
-
     }
-
 
     return (
         <div className="record_tag">
             <div className='text' style={{display:'block'}}>
-                <p>Id Sender: {props.idSender}</p>
-                <p>Request date :</p>
+                <p>Id Sender: {props.request.idSender}</p>
+                <p>File name: {props.request.nameRecord}</p>
             </div>
             <div className='dashboard_buttons'>
                 <div className="button" style = {{'backgroundColor': '#54B435'}} onClick={handleAcceptRequest}>Accept</div>

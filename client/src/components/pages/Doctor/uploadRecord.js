@@ -26,7 +26,7 @@ const UploadRecord = () => {
         formData.append('id', id);
         console.log(formData);
         try {
-            await axios.post('/uploadRecord', formData, {
+            await axios.post('/record', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

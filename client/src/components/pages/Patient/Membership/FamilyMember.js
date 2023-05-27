@@ -2,8 +2,8 @@ import React, {useState,useEffect} from 'react'
 import {useParams} from "react-router-dom"
 import axios from 'axios';
 
-import Message from '../../../../Message';
-import Bar from '../../../bar/bar';
+import Message from '../../../Message';
+import Bar from '../../bar/bar';
 import UserTag from './UserTag';
 
 import './FamilyMember.css'
@@ -16,7 +16,6 @@ export default function FamilyMember() {
     const [idUser, setIduser] = useState('')
     let { id } = useParams(); 
     useEffect(() => {
-        console.log('id:', id);
         setParentList([]);
         setChildList([]);
         fetch(`http://localhost:5000/login/${id || 'user'}`,{
@@ -79,7 +78,7 @@ export default function FamilyMember() {
         <div>
             <Bar></Bar>
             <div style={{width: '60%', margin: 'auto'}}>{message ? <Message msg={message}  /> : null}</div>
-            <form className='addMember' onSubmit={onSubmit}>
+            {!id && <form className='addMember' onSubmit={onSubmit}>
 
                 <div className='line_input'> 
                     <div className="inputField">
@@ -104,7 +103,7 @@ export default function FamilyMember() {
                     </div> 
                 </div>
                 <input className="button submit" type="submit" value={'Send request'} />
-            </form>
+            </form>}
 
             <div style={{marginLeft: '100px', marginTop: '50px'}}>
                 <h5>ID user: {id || idUser}</h5>

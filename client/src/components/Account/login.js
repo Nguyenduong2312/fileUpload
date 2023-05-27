@@ -7,12 +7,8 @@ import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
 export default function Login(props) {
-    const [formData, setFormData] = useState({
-        username: '',
-        password: '',
-    });
+    const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
-    const { username, password } = formData;
     const navigate = useNavigate();
     const onChange = (e) => {
         setFormData((prevState) => ({

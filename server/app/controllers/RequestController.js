@@ -30,56 +30,35 @@ class RequestController{
     }
 
     request(req,res){
-        console.log('re',req.body);
-        Account.findOne({id: req.body.idBN})
-        .then((account) => {
-            if(!account || req.body.idBN === req.session.user.id){
-                console.log(account,);
-                console.log('id:',req.body.idBN, '--',req.session.user.id);
-                res.send('Patient is not exists')
+        const {idReceiver, idRecord, nameRecord} = req.body
+        Request.findOne({idSender: req.session.user.id, idReceiver: idReceiver, idRecord: idRecord, status: "Waitting"})
+        .then((request) => {
+            if(request){
+                res.send('Request has already sent before. Waitting receiver accepted it.')
             }
-            else{
-                Request.findOne({idSender: req.session.user.id, idReceiver: req.body.idBN})
-                .then((request) => {
-                    if(request){
-                        res.send('Request has already sent before. Waitting sender accepted it.')
-                    }
-                    else {
-                        const idReceiver = req.body.idBN;
-                        const request = new Request()
-                        request.idReceiver = idReceiver
-                        request.idSender = req.session.user.id
-                        request.save()
-                        .then(() => res.send('Send request successful'))
-                        .catch(()  => res.send('Send request fail'))
-                    }
-                })
-                }
+            else {
+                const request = new Request()
+                request.idReceiver = idReceiver
+                request.idSender = req.session.user.id
+                request.idRecord = idRecord
+                request.nameRecord = nameRecord
+                request.save()
+                .then(() => res.send('Send request successful'))
+                .catch(()  => res.send('Send request fail'))
+            }
         })
     }
     updateRequest(req,res){
         Request.findOne({_id: req.params.id})
         .then((request) => {
-            //
-            console.log('body:', req.body);
-            const acceptedRequest = new AcceptedRequest()
-            acceptedRequest.idSender = req.body.idSender
-            acceptedRequest.idReceiver = req.body.idReceiver
-            acceptedRequest.idRequest = req.body.idRequest
-            ///
-            Record.find()
-            .then(function (record) {
-                console.log('records: ', record);
-                acceptedRequest.listRecord = record
-                acceptedRequest.save()
-            })
-            //
-            console.log(request);
             request.status = 'Accepted'
-            request
-            .save()
-            .then(() => res.json({ status: true }))
-            .catch(() => res.json({ status: false }));
+            request.save()
+            .then(() => 
+                res.send(`Accepted request from ${req.body.idSender}`)
+            )
+            .catch(() => 
+                res.send(`Error!`)
+            );
         })
         //
     }

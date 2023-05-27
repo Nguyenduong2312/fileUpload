@@ -1,0 +1,42 @@
+.userInfor{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 65%;
+    min-width: 700px;
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 20px;
+    border: 2px solid black;
+    padding: 20px 0px;
+}
+
+.img_buttons{
+    margin: auto;
+}
+
+.userInfor img{
+    margin: auto;
+    width: 250px;
+}
+
+.img_buttons .buttons{
+    margin: auto;
+    margin-top: -40px;
+    width: fit-content;
+    padding: 20px 0px;
+}
+
+.buttons .button{
+    width: 180px;
+}
+
+.inforTag{
+    background-color: white;
+    width: 90%;
+    padding: 20px 40px;
+    border-radius: 20px;
+}
+
+.inforContent{
+    margin: 20px;
+}
