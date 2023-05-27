@@ -3,7 +3,6 @@ const loginRouter = require('./login');
 const uploadRecordRoute = require('./record');
 const requestRecord = require('./requestRecord');
 const updateAccount = require('./updateAccount');
-const acceptedRequest = require('./acceptedRequest');
 const membership = require('./membership');
 
 function route(app) {
@@ -12,8 +11,7 @@ function route(app) {
     app.use('/record', uploadRecordRoute);
     app.use('/requestRecord', requestRecord);
     app.use('/myProfile', updateAccount);
-    app.use('/acceptedRequest',acceptedRequest);
-    app.use('/membership',membership)
+    app.use('/membership', membership);
 }
 
 module.exports = route;

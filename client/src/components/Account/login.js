@@ -6,7 +6,7 @@ import axios from 'axios';
 import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
-export default function Login(props) {
+export default function Login() {
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
     const navigate = useNavigate();

@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 export default function RequestedTag(props) {
-    console.log('props:',props.request._id);
     const formData = {
         'idSender': props.request.idSender,
     }

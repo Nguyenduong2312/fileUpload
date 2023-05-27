@@ -150,6 +150,17 @@ class UploadFileController {
                     .catch((error) => {
                         console.error('Error signing transaction:', error);
                     });
+                contractInstance.methods
+                    .numberOfRecords()
+                    .call()
+                    .then(async (result) => {
+                        record.idOnChain = result;
+                        record.save();
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+
             } catch (err) {
                 console.error(err);
             }

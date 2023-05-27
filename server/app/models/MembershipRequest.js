@@ -6,8 +6,8 @@ const RelationshipRequest = new Schema(
     {
         senderId: { type: String, require: true },
         receiverId: { type: String, require: true },
-        senderName : { type: String, default: '' },
-        receiverName : { type: String, default: '' },
+        senderName: { type: String, default: '' },
+        receiverName: { type: String, default: '' },
         senderRole: { type: String, require: true },
         receiverRole: { type: String, require: true },
         status: { type: String, default: 'Waitting' },

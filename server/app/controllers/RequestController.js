@@ -1,7 +1,4 @@
 const Request = require('../models/Request');
-const Record = require('../models/Record');
-const Account = require('../models/Account');
-const AcceptedRequest = require('../models/AcceptedRequest');
 
 class RequestController{
     getRequest(req, res) {
