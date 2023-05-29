@@ -25,9 +25,19 @@ export default function RecordTag(props) {
         })
     },[])
 
-    const handleDownload = () => {
-    };
-
+    const handleDownload = (id, filename) => {
+        fetch(`http://localhost:5000/uploadRecord/download/${id}`).then(
+            (response) => {
+                response.blob().then((blob) => {
+                    console.log(id);
+                    const fileURL = window.URL.createObjectURL(blob);
+                    let alink = document.createElement('a');
+                    alink.href = fileURL;
+                    alink.download = filename;
+                    alink.click();
+                });
+            })
+    }
     const handleRequestRecord = async (e) => {
         e.preventDefault();
         try {
@@ -56,7 +66,7 @@ export default function RecordTag(props) {
                 <p>ID Uploader: {props.record.idSender}</p>
             </div>
             <div className="dashboard_buttons">
-                {auth && <div className="button download" onClick={handleDownload}>
+                {auth && <div className="button download" onClick={() => handleDownload(props.record.idOnChain, props.record.fileName)}>
                     Download
                 </div>}
                 {!auth && <div className="button viewRecord" onClick={handleRequestRecord}>

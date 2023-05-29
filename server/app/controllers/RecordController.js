@@ -70,7 +70,6 @@ class UploadFileController {
             try {
                 console.log('run');
                 const data = fs.readFileSync(path + file.name);
-
                 //generate khóa k và mã hóa nội dung tập tin
                 const { key, en_data } = EncryptAES.encrypt(data);
                 let googleFileId = null;
@@ -90,24 +89,26 @@ class UploadFileController {
                 //mã hóa k bằng ECC
                 //1. Lấy public key từ id BN
 
-                const acc = await Account.findOne({ id: req.body.id })
-                .then((account) =>  {
-                    console.log('req body: ', req.body);
-                    const record = new Record();
-                    record.idReceiver = req.body.id;
-                    record.idSender = req.session.user.id;
-                    record.fileName = file.name;
-                    record
-                        .save()
-                        .catch(() => res.json({ status: false }));
+                let record;
+                console.log('req body: ', req.body);
+                record = new Record();
+                record.idReceiver = req.body.id;
+                record.idSender = req.session.user.id;
+                record.fileName = file.name;
+                console.log('record: ', record);
+                record.save()
+                .then(() => {
+                    console.log('saved');
+                })
+                .catch(() => {
+                    console.log('lỗi save đầu');
+                    res.json({ status: false })
                 });
-                console.log('pk', acc);
+
                 console.log('keyB', publicKeyB);
                 console.log('string keyB', publicKeyB.toString('hex'));
-
                 //2. Mã hóa khóa k
                 const token = await ECC.encrypt(key, publicKeyB);
-
                 // chuyen token thanh string de luu len blockchain
                 const stringToken = JSON.stringify({
                     iv: token.iv.toString('hex'),
@@ -115,13 +116,11 @@ class UploadFileController {
                     mac: token.mac.toString('hex'),
                     ephemPublicKey: token.ephemPublicKey.toString('hex'),
                 });
-
                 // transaction data
                 const owner = accountB.address;
                 const cid = googleFileId;
                 const fileName = file.name;
                 const encryptedKey = stringToken;
-
                 // create the transaction object
                 const txObject = {
                     from: accountA.address,
@@ -131,7 +130,6 @@ class UploadFileController {
                         .createEHR(owner, cid, fileName, encryptedKey)
                         .encodeABI(),
                 };
-
                 // sign the transaction
                 console.log('Signing tracsaction');
                 web3.eth.accounts
@@ -154,24 +152,22 @@ class UploadFileController {
                     .numberOfRecords()
                     .call()
                     .then(async (result) => {
+                        console.log('result:', result);
                         record.idOnChain = result;
                         record.save();
                     })
                     .catch((error) => {
                         console.error(error);
                     });
-
             } catch (err) {
                 console.error(err);
             }
         });
-
         res.status(200).json({ status: true });
     }
 
     downloadRecord(req, res) {
         const { id } = req.params;
-
         contractInstance.methods
             .numberOfRecords()
             .call()
@@ -180,12 +176,11 @@ class UploadFileController {
                     return res.status(404).json({ msg: 'id out of range' });
                 }
                 const txRecord = await contractInstance.methods['ehrs'](
-                    result - 1,
+                    id,
                 ).call();
                 console.log('DECRYPTING');
 
                 //decrypt
-
                 // chuyen string thanh buffer
                 let encryptedContent = JSON.parse(txRecord.encryptedKey);
                 encryptedContent = {
