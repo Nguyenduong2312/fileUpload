@@ -45,8 +45,7 @@ const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
     getRecordById(req, res) {
-        Record.find({ idSender: '1'})
-        .then(record => {
+        Record.find({ idSender: '1' }).then((record) => {
             res.status(200).json(record);
         });
     }
@@ -54,8 +53,7 @@ class UploadFileController {
     upload(req, res) {
         if (req.files === null) {
             return res.send('No file uploaded');
-        }
-        else if(req.body.id === ''){
+        } else if (req.body.id === '') {
             return res.send('Id can not be empty');
         }
 
@@ -90,17 +88,17 @@ class UploadFileController {
                 //mã hóa k bằng ECC
                 //1. Lấy public key từ id BN
 
-                const acc = await Account.findOne({ id: req.body.id })
-                .then((account) =>  {
-                    console.log('req body: ', req.body);
-                    const record = new Record();
-                    record.idReceiver = req.body.id;
-                    record.idSender = req.session.user.id;
-                    record.fileName = file.name;
-                    record
-                        .save()
-                        .catch(() => res.json({ status: false }));
-                });
+                let record;
+                const acc = await Account.findOne({ id: req.body.id }).then(
+                    (account) => {
+                        console.log('req body: ', req.body);
+                        record = new Record();
+                        record.idReceiver = req.body.id;
+                        record.idSender = req.session.user.id;
+                        record.fileName = file.name;
+                        record.save().catch(() => res.json({ status: false }));
+                    },
+                );
                 console.log('pk', acc);
                 console.log('keyB', publicKeyB);
                 console.log('string keyB', publicKeyB.toString('hex'));
@@ -160,7 +158,6 @@ class UploadFileController {
                     .catch((error) => {
                         console.error(error);
                     });
-
             } catch (err) {
                 console.error(err);
             }
@@ -180,7 +177,7 @@ class UploadFileController {
                     return res.status(404).json({ msg: 'id out of range' });
                 }
                 const txRecord = await contractInstance.methods['ehrs'](
-                    result - 1,
+                    id,
                 ).call();
                 console.log('DECRYPTING');
 
