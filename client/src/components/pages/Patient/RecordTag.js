@@ -25,7 +25,7 @@ export default function RecordTag(props) {
     }, []);
 
     const handleDownload = (id, filename) => {
-        fetch(`http://localhost:5000/uploadRecord/download/${id}`).then(
+        fetch(`http://localhost:5000/record/download/${id}`).then(
             (response) => {
                 response.blob().then((blob) => {
                     console.log(id);
