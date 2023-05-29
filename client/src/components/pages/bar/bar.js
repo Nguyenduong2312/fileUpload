@@ -30,35 +30,26 @@ export default function Bar() {
                     </Link>
                 </div>
                 <div className="bar_menu">
-                    {auth && (
-                        <li>
+                    {auth && 
+                        <li className={`is${auth}`}>
                             <Link to="/dashboard">Dashboard</Link>
                         </li>
-                    )}
-                    {auth && role === 'Doctor' && (
-                        <li>
-                            <Link to="/uploadRecord">Upload Record</Link>
-                        </li>
-                    )}
-                    {auth && role === 'Doctor' && (
-                        <li>
-                            <Link to="/searchUser">Search User</Link>
-                        </li>
-                    )}
-                    {auth && (
-                        <li className={`is${auth}`}>
-                            <DropUser role={role}></DropUser>
-                        </li>
-                    )}
-                    {!auth && (
+
+                    }
+                    {auth && role === 'Doctor' && 
                         <div style={{ display: 'flex' }}>
                             <li className={`is${auth}`}>
-                                <Link to="/login">Login</Link>
+                            <Link to="/uploadRecord">Upload Record</Link>
                             </li>
                             <li className={`is${auth}`}>
-                                <Link to="/register">Register</Link>
+                            <Link to="/searchUser">Search User</Link>
                             </li>
                         </div>
+                    }
+                    {auth && (
+                        <li className={`is${auth}`}>
+                            <DropUser role={role} className ="iconUser"></DropUser>
+                        </li>
                     )}
                 </div>
             </div>

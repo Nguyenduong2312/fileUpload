@@ -17,15 +17,15 @@ function DropUser(props) {
         <div>
             <Dropdown as={ButtonGroup}>
                 <Button style={{ background: 'none', border: 'none' }}>
-                    <VscAccount color="white" fontSize={30} />
+                    <VscAccount color="#191825" fontSize={30} />
                 </Button>
                 <Dropdown.Toggle
                     split
                     variant="success"
                     id="dropdown-split-basic"
-                    style={{ background: 'none', border: 'none' }}
+                    style={{ color: 'black', background: 'none', border: 'none' }}
                 />
-                <Dropdown.Menu className="dropdownnn" variant="dark">
+                <Dropdown.Menu className="dropdown" variant="dark">
                     <div className="dropdownItemTag">
                         <Dropdown.Item
                             className="dropdownItem"
@@ -60,11 +60,9 @@ function DropUser(props) {
                             </Dropdown.Item>
                         </div>
                     )}
-                    <Dropdown.Divider />
                     <Dropdown.Item
                         className="dropdownItemTag"
                         href="/"
-                        style={{ color: 'black' }}
                         onClick={onClick}
                     >
                         Log out

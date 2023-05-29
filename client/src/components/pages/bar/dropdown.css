@@ -1,13 +1,15 @@
-.dropdownnn{
+.dropdown{
     background-color: none;
     padding: 0px;
     border-radius: 10px;
+    border: none;
 }
 
 .dropdownItemTag{
     display: flex;
     padding: 10px 20px;
     border-radius: 10px;
+
 }
 
 .dropdownItem{
@@ -21,6 +23,11 @@
         background-color: #7D8F69;
     }
 }
+.iconUser{
+    background-color: #7D8F69;
+    color: #7D8F69;
+}
+
 .notice{
     width: fit-content;
     height: 30px;
