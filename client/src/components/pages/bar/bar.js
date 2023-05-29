@@ -42,6 +42,19 @@ export default function Bar() {
                     {auth && <li className={`is${auth}`}>
                         <DropUser role = {role}></DropUser>
                     </li>}
+                    {!auth && 
+                    <div style={{display: 'flex'}}>
+                        <li className={`is${auth}`}>
+                            <Link to="/login">Login</Link>
+                        </li>
+                        <li className={`is${auth}`}>
+                            <Link to="/register">Register</Link>
+                        </li>
+                    </div>
+                    }
+
+
+
                 </div>
             </div>
         </div>

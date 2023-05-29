@@ -52,7 +52,7 @@ export default function RecordTag(props) {
     return (
         <div className="record_tag">
             <div className="text" style={{ display: 'block' }}>
-                <p>File: {props.record.nameRecord}</p>
+                <p>File: {props.record.fileName}</p>
                 <p>ID Uploader: {props.record.idSender}</p>
             </div>
             <div className="dashboard_buttons">

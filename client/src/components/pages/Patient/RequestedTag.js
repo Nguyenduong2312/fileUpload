@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'
+
+
 export default function RequestedTag(props) {
     const formData = {
         'idSender': props.request.idSender,
@@ -38,7 +41,7 @@ export default function RequestedTag(props) {
     return (
         <div className="record_tag">
             <div className='text' style={{display:'block'}}>
-                <p>Id Sender: {props.request.idSender}</p>
+                <p>Id Sender: {props.request.idSender} <Link to= {`/userDetail/${props.request.idSender}`} style={{textDecorationLine: 'none'}}>[Xem thông tin]</Link></p>
                 <p>File name: {props.request.nameRecord}</p>
             </div>
             <div className='dashboard_buttons'>

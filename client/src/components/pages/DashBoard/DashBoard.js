@@ -88,8 +88,8 @@ export default function DashBoard() {
                     <div className={`dashboard_menu_button ${second}`} onClick={handleClickSecond}>Request List</div>
                 </div>}
                 {role && <div className='dashboard_tag'>
-                    {first && acceptedList.map(request => 
-                        <AcceptedRecordTag request = {request} setLengthOfAcceptedList = {setLengthOfAcceptedList}/>)}
+                    {first && acceptedList.map(record => 
+                        <AcceptedRecordTag record = {record} setLengthOfAcceptedList = {setLengthOfAcceptedList}/>)}
                     {second && requestList.map(request => 
                         <RequestList request = {request} setLengthOfRequestList = {setLengthOfRequestList}/>
                     )}

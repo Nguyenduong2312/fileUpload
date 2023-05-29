@@ -10,7 +10,7 @@ export default function AcceptedRecordTag (props) {
     const handleRejectRequest  = async (e) => {
         e.preventDefault();
         try{
-            await axios.delete(`/requestRecord/${props.request._id}`, {
+            await axios.delete(`/requestRecord/${props.record._id}`, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -27,8 +27,8 @@ export default function AcceptedRecordTag (props) {
         <div>
             <div className="record_tag">
                 <div className='text' style={{display:'block'}}>
-                    <p>Patient id: {props.request.idReceiver}</p>
-                    <p>Name: {props.request.nameRecord}</p>
+                    <p>Patient id: {props.record.idReceiver}</p>
+                    <p>Name: {props.record.nameRecord}</p>
                 </div>
                 <div className="dashboard_buttons">
                     <div className="button download" onClick={handleDownload}>
