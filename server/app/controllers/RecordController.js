@@ -45,8 +45,7 @@ const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
     getRecordById(req, res) {
-        Record.find({ idSender: '1'})
-        .then(record => {
+        Record.find({ idSender: '1' }).then((record) => {
             res.status(200).json(record);
         });
     }
@@ -54,8 +53,7 @@ class UploadFileController {
     upload(req, res) {
         if (req.files === null) {
             return res.send('No file uploaded');
-        }
-        else if(req.body.id === ''){
+        } else if (req.body.id === '') {
             return res.send('Id can not be empty');
         }
 
@@ -96,14 +94,15 @@ class UploadFileController {
                 record.idSender = req.session.user.id;
                 record.fileName = file.name;
                 console.log('record: ', record);
-                record.save()
-                .then(() => {
-                    console.log('saved');
-                })
-                .catch(() => {
-                    console.log('lỗi save đầu');
-                    res.json({ status: false })
-                });
+                record
+                    .save()
+                    .then(() => {
+                        console.log('saved');
+                    })
+                    .catch(() => {
+                        console.log('lỗi save đầu');
+                        res.json({ status: false });
+                    });
 
                 console.log('keyB', publicKeyB);
                 console.log('string keyB', publicKeyB.toString('hex'));

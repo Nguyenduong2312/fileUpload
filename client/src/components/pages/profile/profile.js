@@ -60,7 +60,7 @@ export default function Profile() {
                     <div className="profile_form_tag">
                         <form className="UpdateAccountForm" onSubmit={onSubmit}>
                             <p className="titleProfile">Information:</p>
-                            <p style={{fontWeight:'600'}}>Id: {user.id}</p>
+                            <p style={{ fontWeight: '600' }}>Id: {user.id}</p>
                             <div className="inputField">
                                 <label>Full name:</label>
                                 <input
