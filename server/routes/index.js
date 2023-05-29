@@ -4,6 +4,7 @@ const uploadRecordRoute = require('./record');
 const requestRecord = require('./requestRecord');
 const updateAccount = require('./updateAccount');
 const membership = require('./membership');
+const ipfs = require('./ipfs');
 
 function route(app) {
     app.use('/register', registerRouter);
@@ -12,6 +13,7 @@ function route(app) {
     app.use('/requestRecord', requestRecord);
     app.use('/myProfile', updateAccount);
     app.use('/membership', membership);
+    app.use('/ipfs', ipfs);
 }
 
 module.exports = route;

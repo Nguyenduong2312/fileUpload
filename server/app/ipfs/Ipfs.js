@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 class Ipfs {
     loadIpfs = async () => {
         const { create } = await import('ipfs-http-client');
@@ -22,6 +24,16 @@ class Ipfs {
             content += data;
         }
         return content;
+    };
+
+    uploadFile = async (node, filePath) => {
+        let data = fs.readFileSync(filePath);
+        let options = {
+            warpWithDirectory: false,
+            progress: (prog) => console.log(`Saved :${prog}`),
+        };
+        let result = await node.add(data, options);
+        return result;
     };
 }
 module.exports = new Ipfs();
