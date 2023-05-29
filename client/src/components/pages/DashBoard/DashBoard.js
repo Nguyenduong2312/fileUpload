@@ -21,88 +21,147 @@ export default function DashBoard() {
     const [lengthOfRequestedList, setLengthOfRequestedList] = useState(0);
     const [lengthOfRequestList, setLengthOfRequestList] = useState(0);
     const [lengthOfAcceptedList, setLengthOfAcceptedList] = useState(0);
-    const [role,setRole] = useState(true)
+    const [role, setRole] = useState(true);
     useEffect(() => {
-        fetch('http://localhost:5000/login/user',{
+        fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
         })
-        .then(res => res.json())
-        .then(account => {
-            if(account.role === 'Doctor'){ setRole(true) }
-            else{setRole(false) }
+            .then((res) => res.json())
+            .then((account) => {
+                if (account.role === 'Doctor') {
+                    setRole(true);
+                } else {
+                    setRole(false);
+                }
 
-            if(account.role === 'Doctor'){
-                fetch(`http://localhost:5000/requestRecord/sender/${account.id}`)
-                .then(res => res.json())
-                .then(requests => {
-                    setRequestList(requests)
-                    setLengthOfRequestList(requests.length)
-                })
-                fetch(`http://localhost:5000/requestRecord/accepted/sender/${account.id}`)
-                .then(res => res.json())
-                .then(requests => {
-                    setAcceptedList(requests)
-                    setLengthOfAcceptedList(requests.length)
-                })
-            }
-            else{
-                fetch(`http://localhost:5000/requestRecord/receiver/${account.id}`)
-                .then(res => res.json())
-                .then(requests => {
-                    setRequestedList(requests)
-                    setLengthOfRequestedList(requests.length)
-                })
-                fetch(`http://localhost:5000/record/${account.id}`)
-                .then(res => res.json())
-                .then(records => {
-                    setRecordList(records)
-                    setLengthOfRecordList(records.length)
-                })
-            }
-                
-        })
-    },[lengthOfRecordList,lengthOfRequestedList,lengthOfRequestList,lengthOfAcceptedList])
+                if (account.role === 'Doctor') {
+                    fetch(
+                        `http://localhost:5000/requestRecord/sender/${account.id}`,
+                    )
+                        .then((res) => res.json())
+                        .then((requests) => {
+                            setRequestList(requests);
+                            setLengthOfRequestList(requests.length);
+                        });
+                    fetch(
+                        `http://localhost:5000/requestRecord/accepted/sender/${account.id}`,
+                    )
+                        .then((res) => res.json())
+                        .then((requests) => {
+                            setAcceptedList(requests);
+                            setLengthOfAcceptedList(requests.length);
+                        });
+                } else {
+                    fetch(
+                        `http://localhost:5000/requestRecord/receiver/${account.id}`,
+                    )
+                        .then((res) => res.json())
+                        .then((requests) => {
+                            setRequestedList(requests);
+                            setLengthOfRequestedList(requests.length);
+                        });
+                    fetch(`http://localhost:5000/record/${account.id}`)
+                        .then((res) => res.json())
+                        .then((records) => {
+                            setRecordList(records);
+                            setLengthOfRecordList(records.length);
+                        });
+                }
+            });
+    }, [
+        lengthOfRecordList,
+        lengthOfRequestedList,
+        lengthOfRequestList,
+        lengthOfAcceptedList,
+    ]);
 
-    const handleClickFirst = () =>{
-        setFirst(true)
-        setSecond(false)    
-    }
-    const handleClickSecond = () =>{
-        setFirst(false)
-        setSecond(true)    
-    }
-
+    const handleClickFirst = () => {
+        setFirst(true);
+        setSecond(false);
+    };
+    const handleClickSecond = () => {
+        setFirst(false);
+        setSecond(true);
+    };
 
     return (
         <div>
             <Bar />
             <h3>DASHBOARD</h3>
-            <div className='dashboard_content'>
-                {role && <div className='dashboard_menu'>
-                    <div className={`dashboard_menu_button ${first}`} onClick={handleClickFirst}>Accepted Records</div>
-                    <div className={`dashboard_menu_button ${second}`} onClick={handleClickSecond}>Sending Request</div>
-                </div>}
-                {!role && <div className='dashboard_menu'>
-                    <div className={`dashboard_menu_button ${first}`} onClick={handleClickFirst}>My Records</div>
-                    <div className={`dashboard_menu_button ${second}`} onClick={handleClickSecond}>Request List</div>
-                </div>}
-                {role && <div className='dashboard_tag'>
-                    {first && acceptedList.map(request => 
-                        <AcceptedRecordTag request = {request} setLengthOfAcceptedList = {setLengthOfAcceptedList}/>)}
-                    {second && requestList.map(request => 
-                        <RequestList request = {request} setLengthOfRequestList = {setLengthOfRequestList}/>
-                    )}
-                </div>}
-                {!role && <div className='dashboard_tag'>
-                    {first && recordList.map(record => 
-                        <RecordTag record = {record} status = {true}/>)}
-                    {second && requestedList.map(request => 
-                        <RequestedTag request = {request} setLengthOfRequestList = {setLengthOfRequestList}/>
-                    )}
-                </div>}
+            <div className="dashboard_content">
+                {role && (
+                    <div className="dashboard_menu">
+                        <div
+                            className={`dashboard_menu_button ${first}`}
+                            onClick={handleClickFirst}
+                        >
+                            Accepted Records
+                        </div>
+                        <div
+                            className={`dashboard_menu_button ${second}`}
+                            onClick={handleClickSecond}
+                        >
+                            Sending Request
+                        </div>
+                    </div>
+                )}
+                {!role && (
+                    <div className="dashboard_menu">
+                        <div
+                            className={`dashboard_menu_button ${first}`}
+                            onClick={handleClickFirst}
+                        >
+                            My Records
+                        </div>
+                        <div
+                            className={`dashboard_menu_button ${second}`}
+                            onClick={handleClickSecond}
+                        >
+                            Request List
+                        </div>
+                    </div>
+                )}
+                {role && (
+                    <div className="dashboard_tag">
+                        {first &&
+                            acceptedList.map((record) => (
+                                <AcceptedRecordTag
+                                    record={record}
+                                    setLengthOfAcceptedList={
+                                        setLengthOfAcceptedList
+                                    }
+                                />
+                            ))}
+                        {second &&
+                            requestList.map((request) => (
+                                <RequestList
+                                    request={request}
+                                    setLengthOfRequestList={
+                                        setLengthOfRequestList
+                                    }
+                                />
+                            ))}
+                    </div>
+                )}
+                {!role && (
+                    <div className="dashboard_tag">
+                        {first &&
+                            recordList.map((record) => (
+                                <RecordTag record={record} status={true} />
+                            ))}
+                        {second &&
+                            requestedList.map((request) => (
+                                <RequestedTag
+                                    request={request}
+                                    setLengthOfRequestList={
+                                        setLengthOfRequestList
+                                    }
+                                />
+                            ))}
+                    </div>
+                )}
             </div>
-
         </div>
     );
 }

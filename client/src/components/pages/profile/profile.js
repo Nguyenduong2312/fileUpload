@@ -11,7 +11,7 @@ export default function Profile() {
     const [formData, setFormData] = useState({});
 
     const [message, setMessage] = useState('');
-    const { name, gender, address, email, date } = formData;
+    const { name, address, email, date } = formData;
 
     useEffect(() => {
         fetch('http://localhost:5000/login/user', {
@@ -42,7 +42,6 @@ export default function Profile() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setMessage('Saved!');
         } catch (err) {
             if (err.response.status === 500) {
                 setMessage('There was a problem with the server');
@@ -61,6 +60,7 @@ export default function Profile() {
                     <div className="profile_form_tag">
                         <form className="UpdateAccountForm" onSubmit={onSubmit}>
                             <p className="titleProfile">Information:</p>
+                            <p style={{ fontWeight: '600' }}>Id: {user.id}</p>
                             <div className="inputField">
                                 <label>Full name:</label>
                                 <input
