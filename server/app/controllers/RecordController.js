@@ -1,5 +1,6 @@
 const eccrypto = require('eccrypto');
 const fs = require('fs');
+
 const Record = require('../models/Record');
 
 // setup web3 environment
@@ -11,9 +12,6 @@ const web3 = new Web3(
 const contractAbi = require('../contracts/abi');
 const contractAddress = require('../contracts/contractAddress');
 const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
-
-// const ipfs = require('../ipfs/Ipfs')
-// const node = ipfs.loadIpfs()
 
 // const privateKeyA = eccrypto.generatePrivate();
 // const publicKeyA = eccrypto.getPublic(privateKeyA);
@@ -32,12 +30,11 @@ const publicKeyB = eccrypto.getPublic(Buffer.from(privateKeyB, 'hex'));
 // private key: dd9f05bb8788eb238be1f0d5dfe0bc8102536810babb78962a595abb33de4ba5 (64 hex charaters, 256 bit-value)
 // public key: 0xf5742F47DeB2943D550A65C95Bfa4fA6957B59b5 (64 hex characters, 512-bit (64 byte-value))
 
-const EncryptAES = require('./EncryptAES');
-const ECC = require('./ECC');
-const Account = require('../models/Account');
+const EncryptAES = require('../custom_modules/EncryptAES');
+const ECC = require('../custom_modules/ECC');
 
-const UploadDrive = require('./UploadToDrive');
-const DownloadDrive = require('./DownloadFromDrive');
+const UploadDrive = require('../custom_modules/UploadToDrive');
+const DownloadDrive = require('../custom_modules/DownloadFromDrive');
 const { drive } = require('googleapis/build/src/apis/drive');
 
 //lưu file vào public/uploads
@@ -193,18 +190,6 @@ class UploadFileController {
                 };
 
                 let buffer = null;
-                // // DownloadFromDrive.download(
-                // //     txRecord.ehrLink,
-                // //     txRecord.fileName,
-                // // ).then((driveService) => {
-                // //     let buf = [];
-                // //     driveService.data.on('data', (e) => buf.push(e));
-                // //     driveService.data.on('end', () => {
-                // //         buffer = Buffer.concat(buf);
-                // //         console.log(buffer);
-                // //         res.status(200);
-                // //     });
-                // // });
                 const driveService = await DownloadDrive.download(
                     txRecord.cid,
                     // txRecord.fileName,
@@ -245,22 +230,6 @@ class UploadFileController {
             .catch((error) => {
                 console.error(error);
             });
-
-        // Record.findById(id)
-        //     .then(record => {
-        //         if (!record) {
-        //             return res.status(404).send('Record not found');
-        //         }
-        //         console.log(record);
-        //         const file = record.name;
-        //         const path = `${process.cwd()}/server/public/uploads/`;
-        //         const filePath = path + file;
-        //         res.status(200).download(filePath);
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //         res.status(500).send('Server error');
-        //     });
     }
 }
 

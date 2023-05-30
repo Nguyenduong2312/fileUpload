@@ -1,22 +1,16 @@
 const Request = require('../models/Request');
-const eccrypto = require('eccrypto');
-
-const Web3 = require('web3');
-const web3 = new Web3(
-    new Web3.providers.HttpProvider(process.env.INFURA_API_KEY),
-);
-
-const contractAbi = require('../contracts/abi');
-const contractAddress = require('../contracts/contractAddress');
-const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
-
-const privateKeyA = process.env.PRIVATE_KEY_A;
-const accountA = web3.eth.accounts.privateKeyToAccount(privateKeyA);
-const publicKeyA = eccrypto.getPublic(Buffer.from(privateKeyA, 'hex'));
-
-const privateKeyB = process.env.PRIVATE_KEY_B;
-const accountB = web3.eth.accounts.privateKeyToAccount(privateKeyB);
-const publicKeyB = eccrypto.getPublic(Buffer.from(privateKeyB, 'hex'));
+const Record = require('../models/Record');
+const ECC = require('../custom_modules/ECC');
+const {
+    stringEncryptedKeyToBuffer,
+    getTxRecord,
+    createRecordOnBlockchain,
+    bufferEncryptedKeyToString,
+    privateKeyB,
+    publicKeyA,
+    addressA,
+    addressB,
+} = require('../custom_modules/contractModules');
 
 class RequestController {
     getRequest(req, res) {
@@ -81,6 +75,49 @@ class RequestController {
                     res.send(`Accepted request from ${req.body.idSender}`),
                 )
                 .catch(() => res.send(`Error!`));
+
+            Record.findById(request.idRecord).then(async (record) => {
+                const copyRecord = await Record.create({
+                    idReceiver: request.idSender,
+                    idSender: request.idReceiver,
+                    fileName: record.fileName,
+                });
+
+                // Get record on blockchain
+                const txRecord = await getTxRecord(record.idOnChain);
+
+                // Get buffer encrypted AES key
+                const token = await stringEncryptedKeyToBuffer(
+                    txRecord.encryptedKey,
+                );
+
+                // Decrypt AES key with patient private key
+                const aesKey = await ECC.decrypt(
+                    token,
+                    Buffer.from(privateKeyB, 'hex'),
+                );
+                // Encrypt AES key
+                const encryptedAESKey = await ECC.encrypt(aesKey, publicKeyA);
+                console.log(encryptedAESKey);
+                // Conver AES key from buffer to string
+                const stringToken = await bufferEncryptedKeyToString(
+                    encryptedAESKey,
+                );
+
+                console.log(addressA);
+
+                await createRecordOnBlockchain(
+                    stringToken,
+                    addressB,
+                    addressA,
+                    txRecord.cid,
+                    txRecord.fileName,
+                    copyRecord,
+                    privateKeyB,
+                );
+
+                // res.json({ status: true })
+            });
         });
         //
     }
