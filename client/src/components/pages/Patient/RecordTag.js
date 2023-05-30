@@ -3,10 +3,12 @@ import { useState } from 'react';
 import axios from 'axios';
 
 export default function RecordTag(props) {
+    console.log('pr:', props);
     const auth = props.status;
     const [formData, setFormData] = useState({
         idReceiver: props.record.idReceiver,
         idRecord: props.record._id,
+        idOnChain: props.record.idOnChain,
         nameRecord: props.record.fileName,
     });
 
@@ -40,6 +42,7 @@ export default function RecordTag(props) {
     };
     const handleRequestRecord = async (e) => {
         e.preventDefault();
+        console.log('form:', formData);
         try {
             const res = await axios.post('/requestRecord', formData, {
                 headers: {

@@ -30,13 +30,21 @@ export default function RelationshipRequest() {
     },[lengthOfRequestList])
 
     return (
-        <div className = "requestsTag">
+        <div className='requestMember'>
             <Bar></Bar>
-            <h4 style={{marginLeft:'60px', marginTop:'30px'}}>RELATIONSHIP MEMBER</h4>
-            <div className = "requests">
-                {Requests.map(request => 
-                    <RelationshipRequestTag request = {request} name = {request.senderName} role = {request.senderRole} setLengthOfRequestList = {setLengthOfRequestList}></RelationshipRequestTag>
-            )}
+            <h4 style={{marginLeft:'60px', marginTop:'30px', fontWeight: '600'}}>RELATIONSHIP MEMBER</h4>
+            <div className='requestsTag'>
+                {lengthOfRequestList <= 1 && <div className = "request">
+                {lengthOfRequestList < 1 && <p className='empty'>No request</p>}
+                    {Requests.map(request => 
+                        <RelationshipRequestTag request = {request} name = {request.senderName} role = {request.senderRole} setLengthOfRequestList = {setLengthOfRequestList}></RelationshipRequestTag>
+                    )}
+                </div>}
+                {lengthOfRequestList > 1 && <div className = "requests">
+                    {Requests.map(request => 
+                        <RelationshipRequestTag request = {request} name = {request.senderName} role = {request.senderRole} setLengthOfRequestList = {setLengthOfRequestList}></RelationshipRequestTag>
+                )}
+                </div>}
             </div>
         </div>
     )

@@ -1,3 +1,5 @@
+import React, {useEffect, useState}from 'react'
+
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -6,6 +8,27 @@ import { VscAccount } from 'react-icons/vsc';
 import './dropdown.css';
 
 function DropUser(props) {
+    const [lengthOfRequestList, setLengthOfRequestList] = useState(0)
+    useEffect(() => {
+        fetch('http://localhost:5000/login/user',{
+            credentials: 'include',
+            method: 'GET',
+        })
+        .then(res => res.json())
+        .then(account => {
+            fetch(`http://localhost:5000/membership/receiver/${account.id}`,{
+                credentials: 'include',
+                method: 'GET',
+            })
+            .then(res => res.json())
+            .then(requests => {
+                setLengthOfRequestList(requests.length)
+            });
+        });
+
+    },[lengthOfRequestList])
+
+
     const onClick = () => {
         fetch('http://localhost:5000/login/logout', {
             credentials: 'include',
@@ -58,6 +81,7 @@ function DropUser(props) {
                                 {' '}
                                 Request membership{' '}
                             </Dropdown.Item>
+                            {lengthOfRequestList != 0 && <div className='notice'>{lengthOfRequestList}</div>}
                         </div>
                     )}
                     <Dropdown.Item

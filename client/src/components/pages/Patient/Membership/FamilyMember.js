@@ -106,7 +106,7 @@ export default function FamilyMember() {
             </form>}
 
             <div style={{marginLeft: '100px', marginTop: '50px'}}>
-                <h5>ID user: {id || idUser}</h5>
+                {id && <h5>ID user: {id || idUser}</h5>}
             </div>
 
             <div className='listMember'>
