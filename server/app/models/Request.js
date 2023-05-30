@@ -9,7 +9,7 @@ const Request = new Schema(
         idRecord: { type: String, require: true },
         nameRecord: { type: String, require: true },
         idOnChain: { type: String, require: true },
-        status: { type: String, default: 'Waitting' },
+        status: { type: String, default: 'Waiting' },
         id: { type: String, require: true },
         createdDate: { type: Date, default: Date.now },
     },
