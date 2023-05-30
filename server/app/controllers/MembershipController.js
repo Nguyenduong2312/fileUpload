@@ -65,8 +65,8 @@ class MembershipController {
 
                     request
                         .save()
-                        .then(() => res.send('Sendd success'))
-                        .catch(() => res.send('Sendd fail'));
+                        .then(() => res.send('Send success'))
+                        .catch(() => res.send('Send fail'));
                 }
             });
         });

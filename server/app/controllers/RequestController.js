@@ -19,14 +19,14 @@ class RequestController {
         });
     }
     getRequestByReceiverId(req, res) {
-        Request.find({ idReceiver: req.params.id, status: 'Waiting' }).then(
+        Request.find({ idReceiver: req.params.id, status: 'Waitting' }).then(
             function (request) {
                 res.status(200).json(request);
             },
         );
     }
     getRequestBySenderId(req, res) {
-        Request.find({ idSender: req.params.id, status: 'Waiting' }).then(
+        Request.find({ idSender: req.params.id, status: 'Waitting' }).then(
             function (request) {
                 res.status(200).json(request);
             },
@@ -42,7 +42,7 @@ class RequestController {
     }
 
     request(req, res) {
-        const { idReceiver, idRecord, nameRecord } = req.body;
+        const { idReceiver, idRecord, nameRecord, idOnChain } = req.body;
         Request.findOne({
             idSender: req.session.user.id,
             idReceiver: idReceiver,
@@ -59,6 +59,7 @@ class RequestController {
                 request.idSender = req.session.user.id;
                 request.idRecord = idRecord;
                 request.nameRecord = nameRecord;
+                request.idOnChain = idOnChain;
                 request
                     .save()
                     .then(() => res.send('Send request successful'))

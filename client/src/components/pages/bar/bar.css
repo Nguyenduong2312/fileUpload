@@ -1,15 +1,7 @@
-body{
-    width: 100%;
-}
-
 .bar{
     display: flex;
     padding: 0px 50px;
     position: relative;
-}
-
-.bar.false{
-    grid-template-columns: 3fr 1fr;
 }
 
 .bar_logo img{
@@ -28,18 +20,11 @@ body{
     margin: auto;
 }
 
-
-.bar_menu li a{
-    color: white;
-    text-decoration: none;
+p,a{
+    font-size: 18px;
 }
-
-
-@media all and (max-width: 1024px) {
-    .bar{
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        padding: 0px 50px;
-    }
-    
+.bar_menu li a{
+    color: #191825;
+    font-weight: 400;
+    text-decoration: none;
 }

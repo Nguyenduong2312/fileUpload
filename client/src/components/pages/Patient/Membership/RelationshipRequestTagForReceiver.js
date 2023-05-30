@@ -48,7 +48,7 @@ export default function RelationshipRequestTag(props) {
                     style={{ marginLeft: '30px' }}
                     onClick={handleRejectRequest}
                 >
-                    Delete
+                    Decline
                 </div>
             </div>
         </div>

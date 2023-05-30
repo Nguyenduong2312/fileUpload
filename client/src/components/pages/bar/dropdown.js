@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -6,6 +8,28 @@ import { VscAccount } from 'react-icons/vsc';
 import './dropdown.css';
 
 function DropUser(props) {
+    const [lengthOfRequestList, setLengthOfRequestList] = useState(0);
+    useEffect(() => {
+        fetch('http://localhost:5000/login/user', {
+            credentials: 'include',
+            method: 'GET',
+        })
+            .then((res) => res.json())
+            .then((account) => {
+                fetch(
+                    `http://localhost:5000/membership/receiver/${account.id}`,
+                    {
+                        credentials: 'include',
+                        method: 'GET',
+                    },
+                )
+                    .then((res) => res.json())
+                    .then((requests) => {
+                        setLengthOfRequestList(requests.length);
+                    });
+            });
+    }, [lengthOfRequestList]);
+
     const onClick = () => {
         fetch('http://localhost:5000/login/logout', {
             credentials: 'include',
@@ -17,23 +41,26 @@ function DropUser(props) {
         <div>
             <Dropdown as={ButtonGroup}>
                 <Button style={{ background: 'none', border: 'none' }}>
-                    <VscAccount color="white" fontSize={30} />
+                    <VscAccount color="#191825" fontSize={30} />
                 </Button>
                 <Dropdown.Toggle
                     split
                     variant="success"
                     id="dropdown-split-basic"
-                    style={{ background: 'none', border: 'none' }}
+                    style={{
+                        color: 'black',
+                        background: 'none',
+                        border: 'none',
+                    }}
                 />
-                <Dropdown.Menu className="dropdownnn" variant="dark">
+                <Dropdown.Menu className="dropdown" variant="dark">
                     <div className="dropdownItemTag">
                         <Dropdown.Item
                             className="dropdownItem"
                             href="/myProfile"
                             style={{ color: 'black' }}
                         >
-                            {' '}
-                            View profile{' '}
+                            View profile
                         </Dropdown.Item>
                     </div>
                     {props.role === 'Patient' && (
@@ -43,8 +70,7 @@ function DropUser(props) {
                                 href="/mybranch"
                                 style={{ color: 'black' }}
                             >
-                                {' '}
-                                Membership{' '}
+                                Relationship
                             </Dropdown.Item>
                         </div>
                     )}
@@ -55,16 +81,18 @@ function DropUser(props) {
                                 href="/relationshipRequestForReceiver"
                                 style={{ color: 'black' }}
                             >
-                                {' '}
-                                Request membership{' '}
+                                Relationship request
                             </Dropdown.Item>
+                            {lengthOfRequestList !== 0 && (
+                                <div className="notice">
+                                    {lengthOfRequestList}
+                                </div>
+                            )}
                         </div>
                     )}
-                    <Dropdown.Divider />
                     <Dropdown.Item
                         className="dropdownItemTag"
                         href="/"
-                        style={{ color: 'black' }}
                         onClick={onClick}
                     >
                         Log out

@@ -3,7 +3,21 @@ import './AcceptedRecordTag.css';
 import axios from 'axios';
 
 export default function AcceptedRecordTag(props) {
-    const handleDownload = async (e) => {};
+    console.log('props', props.record);
+    const handleDownload = (id, filename) => {
+        fetch(`http://localhost:5000/record/download/${id}`).then(
+            (response) => {
+                response.blob().then((blob) => {
+                    console.log(id);
+                    const fileURL = window.URL.createObjectURL(blob);
+                    let alink = document.createElement('a');
+                    alink.href = fileURL;
+                    alink.download = filename;
+                    alink.click();
+                });
+            },
+        );
+    };
 
     const handleRejectRequest = async (e) => {
         e.preventDefault();
@@ -27,7 +41,15 @@ export default function AcceptedRecordTag(props) {
                     <p>Name: {props.record.nameRecord}</p>
                 </div>
                 <div className="dashboard_buttons">
-                    <div className="button download" onClick={handleDownload}>
+                    <div
+                        className="button download"
+                        onClick={() =>
+                            handleDownload(
+                                props.record.idOnChain,
+                                props.record.nameRecord,
+                            )
+                        }
+                    >
                         Download
                     </div>
                     <div

@@ -6,3 +6,8 @@
 body{
     background-color: #A4BC92;
 }
+
+*{
+    margin: 0px;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}

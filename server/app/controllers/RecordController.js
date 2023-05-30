@@ -48,10 +48,10 @@ class UploadFileController {
     }
 
     upload(req, res) {
-        if (req.files === null) {
-            return res.send('No file uploaded');
-        } else if (req.body.id === '') {
-            return res.send('Id can not be empty');
+        if (req.body.id === '') {
+            return res.send('Id can not be empty!');
+        } else if (req.files === null) {
+            return res.send('No file uploaded!');
         }
 
         //uploadFile
@@ -63,10 +63,10 @@ class UploadFileController {
                 return res.status(500).send(err);
             }
             try {
-                console.log('run');
                 const data = fs.readFileSync(path + file.name);
                 //generate khóa k và mã hóa nội dung tập tin
                 const { key, en_data } = EncryptAES.encrypt(data);
+
                 let googleFileId = null;
                 try {
                     // file written successfully
@@ -85,21 +85,14 @@ class UploadFileController {
                 //1. Lấy public key từ id BN
 
                 let record;
-                console.log('req body: ', req.body);
                 record = new Record();
                 record.idReceiver = req.body.id;
                 record.idSender = req.session.user.id;
                 record.fileName = file.name;
                 console.log('record: ', record);
-                record
-                    .save()
-                    .then(() => {
-                        console.log('saved');
-                    })
-                    .catch(() => {
-                        console.log('lỗi save đầu');
-                        res.json({ status: false });
-                    });
+                record.save().catch(() => {
+                    res.json({ status: false });
+                });
 
                 console.log('keyB', publicKeyB);
                 console.log('string keyB', publicKeyB.toString('hex'));
