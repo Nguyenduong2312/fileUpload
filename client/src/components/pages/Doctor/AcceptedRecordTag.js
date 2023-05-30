@@ -41,8 +41,9 @@ export default function AcceptedRecordTag(props) {
                     <p>Name: {props.record.nameRecord}</p>
                 </div>
                 <div className="dashboard_buttons">
-                    <div className="button download" 
-                    onClick={() =>
+                    <div
+                        className="button download"
+                        onClick={() =>
                             handleDownload(
                                 props.record.idOnChain,
                                 props.record.nameRecord,

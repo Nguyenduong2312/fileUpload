@@ -1,4 +1,4 @@
-import React, {useEffect, useState}from 'react'
+import React, { useEffect, useState } from 'react';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
@@ -8,26 +8,27 @@ import { VscAccount } from 'react-icons/vsc';
 import './dropdown.css';
 
 function DropUser(props) {
-    const [lengthOfRequestList, setLengthOfRequestList] = useState(0)
+    const [lengthOfRequestList, setLengthOfRequestList] = useState(0);
     useEffect(() => {
-        fetch('http://localhost:5000/login/user',{
+        fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
         })
-        .then(res => res.json())
-        .then(account => {
-            fetch(`http://localhost:5000/membership/receiver/${account.id}`,{
-                credentials: 'include',
-                method: 'GET',
-            })
-            .then(res => res.json())
-            .then(requests => {
-                setLengthOfRequestList(requests.length)
+            .then((res) => res.json())
+            .then((account) => {
+                fetch(
+                    `http://localhost:5000/membership/receiver/${account.id}`,
+                    {
+                        credentials: 'include',
+                        method: 'GET',
+                    },
+                )
+                    .then((res) => res.json())
+                    .then((requests) => {
+                        setLengthOfRequestList(requests.length);
+                    });
             });
-        });
-
-    },[lengthOfRequestList])
-
+    }, [lengthOfRequestList]);
 
     const onClick = () => {
         fetch('http://localhost:5000/login/logout', {
@@ -46,7 +47,11 @@ function DropUser(props) {
                     split
                     variant="success"
                     id="dropdown-split-basic"
-                    style={{ color: 'black', background: 'none', border: 'none' }}
+                    style={{
+                        color: 'black',
+                        background: 'none',
+                        border: 'none',
+                    }}
                 />
                 <Dropdown.Menu className="dropdown" variant="dark">
                     <div className="dropdownItemTag">
@@ -78,7 +83,11 @@ function DropUser(props) {
                             >
                                 Relationship request
                             </Dropdown.Item>
-                            {lengthOfRequestList !== 0 && <div className='notice'>{lengthOfRequestList}</div>}
+                            {lengthOfRequestList !== 0 && (
+                                <div className="notice">
+                                    {lengthOfRequestList}
+                                </div>
+                            )}
                         </div>
                     )}
                     <Dropdown.Item

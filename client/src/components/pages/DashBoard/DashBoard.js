@@ -95,10 +95,14 @@ export default function DashBoard() {
                         <div
                             className={`dashboard_menu_button ${first}`}
                             onClick={handleClickFirst}
-                            style={{display: 'flex'}}
+                            style={{ display: 'flex' }}
                         >
                             Received Record
-                            {lengthOfAcceptedList !== 0 && <div className='notice'>{lengthOfAcceptedList}</div>}
+                            {lengthOfAcceptedList !== 0 && (
+                                <div className="notice">
+                                    {lengthOfAcceptedList}
+                                </div>
+                            )}
                         </div>
                         <div
                             className={`dashboard_menu_button ${second}`}
@@ -116,14 +120,17 @@ export default function DashBoard() {
                         >
                             My Records
                         </div>
-                        <div 
+                        <div
                             className={`dashboard_menu_button ${second}`}
                             onClick={handleClickSecond}
-                            style={{display: 'flex'}}
+                            style={{ display: 'flex' }}
                         >
                             Request List
-                            {lengthOfRequestedList != 0 && <div className='notice'>{lengthOfRequestedList}</div>}
-
+                            {lengthOfRequestedList != 0 && (
+                                <div className="notice">
+                                    {lengthOfRequestedList}
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}

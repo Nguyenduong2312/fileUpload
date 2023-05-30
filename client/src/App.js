@@ -15,7 +15,6 @@ import SearchUser from './components/pages/Doctor/UserInfor/SearchUser';
 import UserDetail from './components/pages/Doctor/UserInfor/UserDetail';
 import UserRecords from './components/pages/Doctor/UserInfor/UserRecords';
 
-
 import FamilyMember from './components/pages/Patient/Membership/FamilyMember';
 import RelationshipRequestTagForReceiver from './components/pages/Patient/Membership/RelationshipRequestForReceiver';
 
@@ -31,14 +30,16 @@ const App = () => (
                     <Route path="userDetail/:id" element={<UserDetail />} />
                     <Route path="records/:id" element={<UserRecords />} />
 
-                    
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="myProfile" element={<Profile />} />
 
                     <Route path="mybranch" element={<FamilyMember />} />
                     <Route path="membership/:id" element={<FamilyMember />} />
-                    <Route path="relationshipRequestForReceiver" element={<RelationshipRequestTagForReceiver />} />
+                    <Route
+                        path="relationshipRequestForReceiver"
+                        element={<RelationshipRequestTagForReceiver />}
+                    />
                 </Route>
             </Routes>
         </BrowserRouter>
