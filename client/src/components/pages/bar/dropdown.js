@@ -55,8 +55,7 @@ function DropUser(props) {
                             href="/myProfile"
                             style={{ color: 'black' }}
                         >
-                            {' '}
-                            View profile{' '}
+                            View profile
                         </Dropdown.Item>
                     </div>
                     {props.role === 'Patient' && (
@@ -66,8 +65,7 @@ function DropUser(props) {
                                 href="/mybranch"
                                 style={{ color: 'black' }}
                             >
-                                {' '}
-                                Membership{' '}
+                                Relationship
                             </Dropdown.Item>
                         </div>
                     )}
@@ -78,10 +76,9 @@ function DropUser(props) {
                                 href="/relationshipRequestForReceiver"
                                 style={{ color: 'black' }}
                             >
-                                {' '}
-                                Request membership{' '}
+                                Relationship request
                             </Dropdown.Item>
-                            {lengthOfRequestList != 0 && <div className='notice'>{lengthOfRequestList}</div>}
+                            {lengthOfRequestList !== 0 && <div className='notice'>{lengthOfRequestList}</div>}
                         </div>
                     )}
                     <Dropdown.Item

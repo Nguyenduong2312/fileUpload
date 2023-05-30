@@ -37,7 +37,7 @@ export default function UserDetail(props) {
                             <Link to= {`/records/${id}`} style={{textDecorationLine: 'none', color: 'white'}}>Record list</Link>
                         </div>
                         <div className='button viewFamilyMember' style={{marginTop:'10px'}}>
-                            <Link to= {`/membership/${id}`} style={{textDecorationLine: 'none', color: 'white'}}>Membership</Link>
+                            <Link to= {`/membership/${id}`} style={{textDecorationLine: 'none', color: 'white'}}>Relationship</Link>
                         </div>
                     </div>
                 </div>

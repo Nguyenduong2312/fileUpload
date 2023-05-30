@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './DashBoard.css';
 
 import Bar from '../bar/bar';
@@ -22,6 +21,7 @@ export default function DashBoard() {
     const [lengthOfRequestList, setLengthOfRequestList] = useState(0);
     const [lengthOfAcceptedList, setLengthOfAcceptedList] = useState(0);
     const [role, setRole] = useState(true);
+
     useEffect(() => {
         fetch('http://localhost:5000/login/user', {
             credentials: 'include',
@@ -96,16 +96,15 @@ export default function DashBoard() {
                             className={`dashboard_menu_button ${first}`}
                             onClick={handleClickFirst}
                             style={{display: 'flex'}}
-
                         >
-                            Accepted Records
-                            {lengthOfAcceptedList != 0 && <div className='notice'>{lengthOfAcceptedList}</div>}
+                            Received Record
+                            {lengthOfAcceptedList !== 0 && <div className='notice'>{lengthOfAcceptedList}</div>}
                         </div>
                         <div
                             className={`dashboard_menu_button ${second}`}
                             onClick={handleClickSecond}
                         >
-                            Sending Request
+                            Send Request
                         </div>
                     </div>
                 )}

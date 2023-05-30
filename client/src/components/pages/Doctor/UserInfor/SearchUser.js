@@ -27,7 +27,7 @@ const RequestRecord = () => {
             });
             if (res.data === false){
                 setId('null');
-                setMessage('User is not exist.');
+                setMessage('User does not exist.');
             }
             else{
                 setId(e.target.id.value);

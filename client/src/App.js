@@ -17,7 +17,6 @@ import UserRecords from './components/pages/Doctor/UserInfor/UserRecords';
 
 
 import FamilyMember from './components/pages/Patient/Membership/FamilyMember';
-import RelationshipRequestTagForSender from './components/pages/Patient/Membership/RelationshipRequestForSender';
 import RelationshipRequestTagForReceiver from './components/pages/Patient/Membership/RelationshipRequestForReceiver';
 
 const App = () => (
@@ -39,7 +38,6 @@ const App = () => (
 
                     <Route path="mybranch" element={<FamilyMember />} />
                     <Route path="membership/:id" element={<FamilyMember />} />
-                    <Route path="relationshipRequestForSender" element={<RelationshipRequestTagForSender />} />
                     <Route path="relationshipRequestForReceiver" element={<RelationshipRequestTagForReceiver />} />
                 </Route>
             </Routes>

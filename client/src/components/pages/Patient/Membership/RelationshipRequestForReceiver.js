@@ -32,7 +32,7 @@ export default function RelationshipRequest() {
     return (
         <div className='requestMember'>
             <Bar></Bar>
-            <h4 style={{marginLeft:'60px', marginTop:'30px', fontWeight: '600'}}>RELATIONSHIP MEMBER</h4>
+            <h4 style={{marginLeft:'60px', marginTop:'30px', fontWeight: '600'}}>Relationship Request</h4>
             <div className='requestsTag'>
                 {lengthOfRequestList <= 1 && <div className = "request">
                 {lengthOfRequestList < 1 && <p className='empty'>No request</p>}
