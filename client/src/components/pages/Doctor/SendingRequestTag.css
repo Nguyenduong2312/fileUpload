@@ -8,3 +8,17 @@
 .download:hover{
     background-color: #537188;
 }
+
+.status{
+    font-weight: 600;
+}
+
+.status.Waitting{
+    color: orange;
+}
+.status.Accepted{
+    color: green;
+}
+.status.Rejected{
+    color: red;
+}
