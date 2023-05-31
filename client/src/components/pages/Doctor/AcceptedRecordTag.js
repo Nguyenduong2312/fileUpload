@@ -3,12 +3,10 @@ import './AcceptedRecordTag.css';
 import axios from 'axios';
 
 export default function AcceptedRecordTag(props) {
-    //console.log('props', props.record);
     const handleDownload = (id, filename) => {
         fetch(`http://localhost:5000/record/download/${id}`).then(
             (response) => {
                 response.blob().then((blob) => {
-                    console.log(id);
                     const fileURL = window.URL.createObjectURL(blob);
                     let alink = document.createElement('a');
                     alink.href = fileURL;
@@ -29,7 +27,11 @@ export default function AcceptedRecordTag(props) {
             });
             props.setLength((prev) => prev - 1);
         } catch (err) {
-            console.log('lỗi');
+            if (err.response.status === 500) {
+                props.setMessage('There was a problem with the server');
+            } else {
+                props.setMessage(err.response.data.msg);
+            }
         }
     };
 
@@ -37,7 +39,7 @@ export default function AcceptedRecordTag(props) {
         <div>
             <div className="record_tag">
                 <div className="text" style={{ display: 'block' }}>
-                    <p>Patient id: {props.record.idReceiver}</p>
+                    <p>Sender id: {props.record.idSender}</p>
                     <p>Name: {props.record.fileName}</p>
                 </div>
                 <div className="dashboard_buttons">
@@ -45,7 +47,7 @@ export default function AcceptedRecordTag(props) {
                         className="button download"
                         onClick={() =>
                             handleDownload(
-                                props.record.idOnChain,
+                                props.record._id,
                                 props.record.fileName,
                             )
                         }

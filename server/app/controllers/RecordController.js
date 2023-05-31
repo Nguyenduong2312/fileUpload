@@ -42,9 +42,19 @@ const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
     getRecordById(req, res) {
-        Record.find({ idReceiver: req.params.id }).then((record) => {
-            res.status(200).json(record);
-        });
+        Record.find({ idReceiver: req.params.id, idSender: '' }).then(
+            (record) => {
+                res.status(200).json(record);
+            },
+        );
+    }
+
+    getReceivedRecordById(req, res) {
+        Record.find({ idReceiver: req.params.id, idUploader: '' }).then(
+            (record) => {
+                res.status(200).json(record);
+            },
+        );
     }
 
     upload(req, res) {
@@ -59,7 +69,6 @@ class UploadFileController {
 
         file.mv(path + file.name, async (err) => {
             if (err) {
-                console.log('lỗi');
                 return res.status(500).send(err);
             }
             try {
@@ -87,11 +96,11 @@ class UploadFileController {
                 let record;
                 record = new Record();
                 record.idReceiver = req.body.id;
-                record.idSender = req.session.user.id;
+                record.idUploader = req.session.user.id;
                 record.fileName = file.name;
                 console.log('record: ', record);
                 record.save().catch(() => {
-                    res.json({ status: false });
+                    return res.status(400);
                 });
 
                 console.log('keyB', publicKeyB);
@@ -152,7 +161,7 @@ class UploadFileController {
                 console.error(err);
             }
         });
-        res.status(200).json({ status: true });
+        return res.status(200).send(`Uploaded!`);
     }
 
     downloadRecord(req, res) {

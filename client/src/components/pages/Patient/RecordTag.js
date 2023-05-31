@@ -3,7 +3,6 @@ import { useState } from 'react';
 import axios from 'axios';
 
 export default function RecordTag(props) {
-    console.log('pr:', props);
     const auth = props.status;
     const [formData, setFormData] = useState({
         idReceiver: props.record.idReceiver,
@@ -21,7 +20,7 @@ export default function RecordTag(props) {
             .then((account) => {
                 setFormData((prevState) => ({
                     ...prevState,
-                    ['idSender']: account.id,
+                    ['idUploader']: account.id,
                 }));
             });
     }, []);
@@ -31,7 +30,6 @@ export default function RecordTag(props) {
         fetch(`http://localhost:5000/record/download/${id}`).then(
             (response) => {
                 response.blob().then((blob) => {
-                    console.log(id);
                     const fileURL = window.URL.createObjectURL(blob);
                     let alink = document.createElement('a');
                     alink.href = fileURL;
@@ -43,7 +41,6 @@ export default function RecordTag(props) {
     };
     const handleRequestRecord = async (e) => {
         e.preventDefault();
-        console.log('form:', formData);
         try {
             const res = await axios.post('/requestRecord', formData, {
                 headers: {
@@ -65,7 +62,7 @@ export default function RecordTag(props) {
         <div className="record_tag">
             <div className="text" style={{ display: 'block' }}>
                 <p>File: {props.record.fileName}</p>
-                <p>ID Uploader: {props.record.idSender}</p>
+                <p>ID Uploader: {props.record.idUploader}</p>
             </div>
             <div className="dashboard_buttons">
                 {auth && (

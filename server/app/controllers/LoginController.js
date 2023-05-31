@@ -4,10 +4,10 @@ const bcrypt = require('bcrypt');
 class LoginController {
     // [POST] /login
     login(req, res, next) {
-        if (req.username === null) {
-            res.status(400).json({ status: false });
-        } else if (req.password === null) {
-            res.status(400).json({ status: false });
+        if (!req.body.username) {
+            return res.status(220).send('Username can be empty.');
+        } else if (!req.body.password) {
+            return res.status(220).send('Password can be empty.');
         }
         const { username, password } = req.body; //lấy được username & password
 
@@ -16,7 +16,7 @@ class LoginController {
             .lean()
             .then((account) => {
                 if (!account) {
-                    res.status(400).json({ status: false });
+                    return res.status(220).send('Username does not exist.');
                 } else {
                     bcrypt.compare(
                         password,
@@ -24,9 +24,11 @@ class LoginController {
                         function (err, result) {
                             if (result) {
                                 req.session.user = account;
-                                res.status(200).json({ status: true });
+                                return res.status(200).send('');
                             } else {
-                                res.status(400).json({ status: false });
+                                return res
+                                    .status(220)
+                                    .send('Password is incorrect.');
                             }
                         },
                     );
@@ -38,49 +40,42 @@ class LoginController {
     logout(req, res, next) {
         // Destroy a session
         req.session.destroy(function (err) {
-            return res
-                .status(200)
-                .json({
-                    status: 'success',
-                    session: 'cannot access session here',
-                });
+            return res.status(200).json({
+                status: 'success',
+                session: 'cannot access session here',
+            });
         });
     }
     //login/:id
-    getUser(req,res){
-        Account.findOne({id: req.params.id})
-        .then((account) => {
-            res.send(account)
-        })
-        .catch(() => {
-            res.send('null')
-        })
+    getUser(req, res) {
+        Account.findOne({ id: req.params.id })
+            .then((account) => {
+                res.send(account);
+            })
+            .catch(() => {
+                res.send('null');
+            });
     }
 
     // [GET] /login/user
     user(req, res) {
-        Account.findOne({id: req.session?.user?.id})
-        .then((account) => {
-            res.send(account)
-        })
+        Account.findOne({ id: req.session?.user?.id }).then((account) => {
+            res.send(account);
+        });
     }
 
-    checkPatient(req,res){
-        console.log('req1:', req.body);
-        console.log('req pra', req.params.id);
-        Account.findOne({id: req.params.id, role: "Patient"})
-        .then((account) => {
-            console.log(account);
-            if(account){
-                res.send(true)
-            }
-            else{
-                res.send(false)
-            }
-        })
-        .catch(() => {
-            res.send(false)
-        })
+    checkPatient(req, res) {
+        Account.findOne({ id: req.params.id, role: 'Patient' })
+            .then((account) => {
+                if (account) {
+                    res.send(true);
+                } else {
+                    res.send(false);
+                }
+            })
+            .catch(() => {
+                res.send(false);
+            });
     }
 }
 

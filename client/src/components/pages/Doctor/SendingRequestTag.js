@@ -21,7 +21,7 @@ export default function RequestList(props) {
         <div className="record_tag">
             <div className="text" style={{ display: 'block' }}>
                 <p>
-                    Patient id: <span>{props.request.idReceiver}</span>
+                    Receiver id: <span>{props.request.idReceiver}</span>
                 </p>
                 <p>File name: {props.request.nameRecord} </p>
             </div>

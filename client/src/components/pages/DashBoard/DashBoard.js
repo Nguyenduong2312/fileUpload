@@ -59,7 +59,7 @@ export default function DashBoard() {
                         });
                 }
 
-                fetch(`http://localhost:5000/record/${account.id}`)
+                fetch(`http://localhost:5000/record/received/${account.id}`)
                     .then((res) => res.json())
                     .then((record) => {
                         if (account.role === 'Doctor') {
@@ -180,6 +180,20 @@ export default function DashBoard() {
                                 <RequestedTag
                                     request={request}
                                     setLength={setLengthOfReceivedRequest}
+                                />
+                            ))}
+                        {tab === 3 &&
+                            receivedRecord_PT.map((record) => (
+                                <AcceptedRecordTag
+                                    record={record}
+                                    setLength={setLengthOfReceivedRecord_DT}
+                                />
+                            ))}
+                        {tab === 4 &&
+                            requestList_PT.map((request) => (
+                                <RequestList
+                                    request={request}
+                                    setLength={setLengthOfRequestList_DT}
                                 />
                             ))}
                     </div>
