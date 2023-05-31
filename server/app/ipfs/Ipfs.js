@@ -35,5 +35,17 @@ class Ipfs {
         let result = await node.add(data, options);
         return result;
     };
+
+    downloadFile = async (node, cid, destPath) => {
+        let hashdata = node.cat(cid);
+        const file = fs.createWriteStream(destPath);
+        let content = '';
+        for await (const itr of hashdata) {
+            let data = Buffer.from(itr).toString();
+            content += data;
+        }
+        file.write(content);
+        return content;
+    };
 }
 module.exports = new Ipfs();
