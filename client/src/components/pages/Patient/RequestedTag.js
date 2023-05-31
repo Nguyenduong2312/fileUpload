@@ -22,7 +22,7 @@ export default function RequestedTag(props) {
                 },
             });
             console.log('ac', Accepted);
-            props.setLengthOfRequestList((prev) => prev - 1);
+            props.setLength((prev) => prev - 1);
         } catch (err) {
             console.log('lỗi');
         }

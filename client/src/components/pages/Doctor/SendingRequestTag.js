@@ -11,7 +11,7 @@ export default function RequestList(props) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            props.setLengthOfRequestList((prev) => prev - 1);
+            props.setLength((prev) => prev - 1);
         } catch (err) {
             console.log('lỗi');
         }

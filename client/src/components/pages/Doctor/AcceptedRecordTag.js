@@ -27,7 +27,7 @@ export default function AcceptedRecordTag(props) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            props.setLengthOfAcceptedList((prev) => prev - 1);
+            props.setLength((prev) => prev - 1);
         } catch (err) {
             console.log('lỗi');
         }
