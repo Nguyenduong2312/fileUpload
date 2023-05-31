@@ -157,15 +157,19 @@ class UploadFileController {
 
     downloadRecord(req, res) {
         const { id } = req.params;
+        console.log(id);
         contractInstance.methods
             .numberOfRecords()
             .call()
             .then(async (result) => {
-                if (id < 0 || id >= result) {
+                const record = await Record.findById(id);
+                console.log(id);
+                console.log(record);
+                if (record.idOnChain < 0 || record.idOnChain >= result) {
                     return res.status(404).json({ msg: 'id out of range' });
                 }
                 const txRecord = await contractInstance.methods['ehrs'](
-                    id,
+                    record.idOnChain,
                 ).call();
                 console.log('DECRYPTING');
 

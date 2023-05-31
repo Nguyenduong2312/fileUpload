@@ -27,6 +27,7 @@ export default function RecordTag(props) {
     }, []);
 
     const handleDownload = (id, filename) => {
+        console.log(`Download: ${id}`);
         fetch(`http://localhost:5000/record/download/${id}`).then(
             (response) => {
                 response.blob().then((blob) => {
@@ -72,7 +73,7 @@ export default function RecordTag(props) {
                         className="button download"
                         onClick={() =>
                             handleDownload(
-                                props.record.idOnChain,
+                                props.record._id,
                                 props.record.fileName,
                             )
                         }
