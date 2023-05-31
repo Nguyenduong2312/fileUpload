@@ -3,7 +3,7 @@ import './AcceptedRecordTag.css';
 import axios from 'axios';
 
 export default function AcceptedRecordTag(props) {
-    console.log('props', props.record);
+    //console.log('props', props.record);
     const handleDownload = (id, filename) => {
         fetch(`http://localhost:5000/record/download/${id}`).then(
             (response) => {
@@ -38,7 +38,7 @@ export default function AcceptedRecordTag(props) {
             <div className="record_tag">
                 <div className="text" style={{ display: 'block' }}>
                     <p>Patient id: {props.record.idReceiver}</p>
-                    <p>Name: {props.record.nameRecord}</p>
+                    <p>Name: {props.record.fileName}</p>
                 </div>
                 <div className="dashboard_buttons">
                     <div
@@ -46,7 +46,7 @@ export default function AcceptedRecordTag(props) {
                         onClick={() =>
                             handleDownload(
                                 props.record.idOnChain,
-                                props.record.nameRecord,
+                                props.record.fileName,
                             )
                         }
                     >

@@ -62,8 +62,8 @@ class RequestController {
                 request.idOnChain = idOnChain;
                 request
                     .save()
-                    .then(() => res.send('Send request successful'))
-                    .catch(() => res.send('Send request fail'));
+                    .then(() => res.send('Request sent successfully.'))
+                    .catch(() => res.send('Request sent fail.'));
             }
         });
     }

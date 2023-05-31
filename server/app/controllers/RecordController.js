@@ -42,7 +42,7 @@ const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
     getRecordById(req, res) {
-        Record.find({ idSender: '1' }).then((record) => {
+        Record.find({ idReceiver: req.params.id }).then((record) => {
             res.status(200).json(record);
         });
     }

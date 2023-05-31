@@ -8,8 +8,7 @@ import RecordTag from '../Patient/RecordTag';
 import RequestedTag from '../Patient/RequestedTag';
 
 export default function DashBoard() {
-    const [first, setFirst] = useState(true);
-    const [second, setSecond] = useState(false);
+    const [tab, setTab] = useState(1);
 
     const [requestList, setRequestList] = useState([]);
     const [acceptedList, setAcceptedList] = useState([]);
@@ -44,13 +43,11 @@ export default function DashBoard() {
                             setRequestList(requests);
                             setLengthOfRequestList(requests.length);
                         });
-                    fetch(
-                        `http://localhost:5000/requestRecord/accepted/sender/${account.id}`,
-                    )
+                    fetch(`http://localhost:5000/record/${account.id}`)
                         .then((res) => res.json())
-                        .then((requests) => {
-                            setAcceptedList(requests);
-                            setLengthOfAcceptedList(requests.length);
+                        .then((record) => {
+                            setAcceptedList(record);
+                            setLengthOfAcceptedList(record.length);
                         });
                 } else {
                     fetch(
@@ -76,15 +73,6 @@ export default function DashBoard() {
         lengthOfAcceptedList,
     ]);
 
-    const handleClickFirst = () => {
-        setFirst(true);
-        setSecond(false);
-    };
-    const handleClickSecond = () => {
-        setFirst(false);
-        setSecond(true);
-    };
-
     return (
         <div>
             <Bar />
@@ -93,8 +81,8 @@ export default function DashBoard() {
                 {role && (
                     <div className="dashboard_menu">
                         <div
-                            className={`dashboard_menu_button ${first}`}
-                            onClick={handleClickFirst}
+                            className={`dashboard_menu_button ${tab === 1}`}
+                            onClick={() => setTab(1)}
                             style={{ display: 'flex' }}
                         >
                             Received Record
@@ -105,28 +93,28 @@ export default function DashBoard() {
                             )}
                         </div>
                         <div
-                            className={`dashboard_menu_button ${second}`}
-                            onClick={handleClickSecond}
+                            className={`dashboard_menu_button ${tab === 2}`}
+                            onClick={() => setTab(2)}
                         >
-                            Send Request
+                            Sent Request
                         </div>
                     </div>
                 )}
                 {!role && (
                     <div className="dashboard_menu">
                         <div
-                            className={`dashboard_menu_button ${first}`}
-                            onClick={handleClickFirst}
+                            className={`dashboard_menu_button ${tab === 1}`}
+                            onClick={() => setTab(1)}
                         >
                             My Records
                         </div>
                         <div
-                            className={`dashboard_menu_button ${second}`}
-                            onClick={handleClickSecond}
+                            className={`dashboard_menu_button ${tab === 2}`}
+                            onClick={() => setTab(2)}
                             style={{ display: 'flex' }}
                         >
                             Request List
-                            {lengthOfRequestedList != 0 && (
+                            {lengthOfRequestedList !== 0 && (
                                 <div className="notice">
                                     {lengthOfRequestedList}
                                 </div>
@@ -136,7 +124,7 @@ export default function DashBoard() {
                 )}
                 {role && (
                     <div className="dashboard_tag">
-                        {first &&
+                        {tab === 1 &&
                             acceptedList.map((record) => (
                                 <AcceptedRecordTag
                                     record={record}
@@ -145,7 +133,7 @@ export default function DashBoard() {
                                     }
                                 />
                             ))}
-                        {second &&
+                        {tab === 2 &&
                             requestList.map((request) => (
                                 <RequestList
                                     request={request}
@@ -158,11 +146,11 @@ export default function DashBoard() {
                 )}
                 {!role && (
                     <div className="dashboard_tag">
-                        {first &&
+                        {tab === 1 &&
                             recordList.map((record) => (
                                 <RecordTag record={record} status={true} />
                             ))}
-                        {second &&
+                        {tab === 2 &&
                             requestedList.map((request) => (
                                 <RequestedTag
                                     request={request}
