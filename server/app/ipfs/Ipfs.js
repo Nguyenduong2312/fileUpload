@@ -57,7 +57,8 @@ class Ipfs {
             progress: (prog) => console.log(`Saved :${prog}`),
         };
         let result = await node.add(en_data, options);
-        return { result, stringToken };
+        let cid = result.cid;
+        return { cid, stringToken };
     };
 
     downloadFile = async (node, cid, destPath) => {

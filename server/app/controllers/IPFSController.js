@@ -34,10 +34,11 @@ class IPFSController {
     upFile(req, res) {
         ipfs.then(async (ipfs) => {
             try {
-                const { result, stringToken } = await Ipfs.uploadFile(
+                const { cid, stringToken } = await Ipfs.uploadFile(
                     ipfs,
                     req.body.filePath,
                 );
+
                 // transaction data
                 const owner = accountB.address;
 
@@ -66,10 +67,14 @@ class IPFSController {
                     to: contractAddress,
                     gas: 3000000,
                     data: contractInstance.methods
-                        .createEHR(owner, cid, fileName, encryptedKey)
+                        .createEHR(
+                            owner,
+                            cid.toString(),
+                            fileName,
+                            encryptedKey,
+                        )
                         .encodeABI(),
                 };
-
                 // sign the transaction
                 console.log('Signing tracsaction');
                 web3.eth.accounts
@@ -92,6 +97,7 @@ class IPFSController {
                         console.log('result:', result);
                         record.idOnChain = result;
                         record.save();
+                        console.log(record);
                     });
                 res.status(200).json({ data: txObject });
             } catch (error) {
