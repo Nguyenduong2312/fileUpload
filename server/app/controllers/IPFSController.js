@@ -109,8 +109,48 @@ class IPFSController {
     downFile(req, res) {
         ipfs.then(async (ipfs) => {
             try {
-                let data = await Ipfs.downloadFile(ipfs, res.cid, res.fileName);
-                res.status(200).json({ status: true });
+                const { id } = req.params;
+                contractInstance.methods
+                    .numberOfRecords()
+                    .call()
+                    .then(async (result) => {
+                        if (id < 0 || id >= result) {
+                            return res
+                                .status(404)
+                                .json({ msg: 'id out of range' });
+                        }
+                        const txRecord = await contractInstance.methods['ehrs'](
+                            id,
+                        ).call();
+                        console.log('DECRYPTING');
+
+                        //decrypt
+                        // chuyen string thanh buffer
+                        let encryptedContent = JSON.parse(
+                            txRecord.encryptedKey,
+                        );
+                        encryptedContent = {
+                            iv: Buffer.from(encryptedContent.iv, 'hex'),
+                            ciphertext: Buffer.from(
+                                encryptedContent.ciphertext,
+                                'hex',
+                            ),
+                            mac: Buffer.from(encryptedContent.mac, 'hex'),
+                            ephemPublicKey: Buffer.from(
+                                encryptedContent.ephemPublicKey,
+                                'hex',
+                            ),
+                        };
+
+                        let data = await Ipfs.downloadFile(
+                            ipfs,
+                            txRecord.cid,
+                            txRecord.fileName,
+                            encryptedContent,
+                        );
+
+                        res.status(200).json({ status: true });
+                    });
             } catch (error) {
                 console.error('Error downloading file:', error);
                 res.status(500).json({ error: 'Failed to download file' });

@@ -29,19 +29,19 @@ class Ipfs {
         return fileAdded.cid;
     };
 
-    readDataFromIpfs = async (cid) => {
-        let asyncitr = node.cat(cid);
-        let content = '';
-        for await (const itr of asyncitr) {
-            let data = Buffer.from(itr).toString();
-            content += data;
+    readDataFromIpfs = async (node, cid) => {
+        const chunks = [];
+        for await (const chunk of node.cat(cid)) {
+            chunks.push(chunk);
         }
-        return content;
+        const hashdata = Buffer.concat(chunks);
+        return hashdata;
     };
 
     uploadFile = async (node, filePath) => {
         let data = fs.readFileSync(filePath);
         const { key, en_data } = EncryptAES.encrypt(data);
+
         //2. Mã hóa khóa k
         const token = await ECC.encrypt(key, publicKeyB);
         // chuyen token thanh string de luu len blockchain
@@ -52,25 +52,25 @@ class Ipfs {
             ephemPublicKey: token.ephemPublicKey.toString('hex'),
         });
 
-        let options = {
-            warpWithDirectory: false,
-            progress: (prog) => console.log(`Saved :${prog}`),
-        };
-        let result = await node.add(en_data, options);
+        let result = await node.add(en_data);
         let cid = result.cid;
         return { cid, stringToken };
     };
 
-    downloadFile = async (node, cid, destPath) => {
-        let hashdata = node.cat(cid);
+    downloadFile = async (node, cid, destPath, encryptedContent) => {
+        let hashdata = await this.readDataFromIpfs(node, cid);
         const file = fs.createWriteStream(destPath);
-        let content = '';
-        for await (const itr of hashdata) {
-            let data = Buffer.from(itr).toString();
-            content += data;
-        }
-        file.write(content);
-        return content;
+        const aesKey = await ECC.decrypt(
+            encryptedContent,
+            Buffer.from(privateKeyB, 'hex'),
+        );
+
+        const originalText = EncryptAES.decrypt(hashdata.toString(), aesKey);
+        //console.log(originalText.toString())
+        // const plainttext = String.fromCharCode.apply(null, originalText);
+        // console.log(plainttext) // convert Uint8Array to string
+        file.write(originalText);
+        return originalText;
     };
 }
 module.exports = new Ipfs();
