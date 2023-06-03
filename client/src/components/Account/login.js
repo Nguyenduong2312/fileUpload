@@ -17,7 +17,6 @@ export default function Login() {
             [e.target.name]: e.target.value,
         }));
     };
-
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
