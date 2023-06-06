@@ -57,6 +57,16 @@ class LoginController {
             });
     }
 
+    getUserById(req, res) {
+        Account.findOne({ _id: req.params.id })
+            .then((account) => {
+                res.send(account);
+            })
+            .catch(() => {
+                res.send('null');
+            });
+    }
+
     // [GET] /login/user
     user(req, res) {
         Account.findOne({ id: req.session?.user?.id }).then((account) => {

@@ -75,7 +75,7 @@ class UploadFileController {
                 const data = fs.readFileSync(path + file.name);
                 //generate khóa k và mã hóa nội dung tập tin
                 const { key, en_data } = EncryptAES.encrypt(data);
-                console.log('data:', data);
+                console.log('data:', file.name, data);
                 let googleFileId = null;
                 try {
                     // file written successfully
@@ -231,7 +231,7 @@ class UploadFileController {
                         const temp = fs.readFileSync(
                             path + 'de_' + txRecord.fileName,
                         );
-                        console.log('temp:', temp);
+                        console.log('temp:', txRecord.fileName, temp);
                     } catch (err) {
                         console.error(err);
                         res.status(500);
