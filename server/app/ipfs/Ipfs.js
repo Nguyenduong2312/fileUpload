@@ -34,10 +34,24 @@ class Ipfs {
         return cid;
     };
 
+    retrieveFiles = async (cid) => {
+        const client = this.makeStorageClient();
+        const res = await client.get(cid);
+
+        // unpack File objects from the response
+        const files = await res.files();
+
+        for (const file of files) {
+            const fileData = (await file.text()).toString();
+            return fileData;
+        }
+    };
+
     uploadFile = async (filePath) => {
         let data = fs.readFileSync(filePath);
         const { key, en_data } = EncryptAES.encrypt(data);
-
+        //overwrite encrypt data to file
+        fs.writeFileSync(filePath, en_data);
         const file = await this.getFiles(filePath);
         const cid = await this.storeFiles(file);
         //2. Mã hóa khóa k
@@ -52,22 +66,18 @@ class Ipfs {
         console.log('File uploaded successfully. CID:', cid);
         return { cid, stringToken };
     };
+
+    downloadFile = async (cid, destPath, encryptedContent) => {
+        let hashdata = await this.retrieveFiles(cid);
+        const file = fs.createWriteStream(destPath);
+        const aesKey = await ECC.decrypt(
+            encryptedContent,
+            Buffer.from(privateKeyB, 'hex'),
+        );
+
+        const originalText = EncryptAES.decrypt(hashdata.toString(), aesKey);
+        file.write(originalText);
+        return originalText;
+    };
 }
-
-downloadFile = async (node, cid, destPath, encryptedContent) => {
-    let hashdata = await this.readDataFromIpfs(node, cid);
-    const file = fs.createWriteStream(destPath);
-    const aesKey = await ECC.decrypt(
-        encryptedContent,
-        Buffer.from(privateKeyB, 'hex'),
-    );
-
-    const originalText = EncryptAES.decrypt(hashdata.toString(), aesKey);
-    //console.log(originalText.toString())
-    // const plainttext = String.fromCharCode.apply(null, originalText);
-    // console.log(plainttext) // convert Uint8Array to string
-    file.write(originalText);
-    return originalText;
-};
-
 module.exports = new Ipfs();
