@@ -48,35 +48,42 @@ class Ipfs {
     };
 
     uploadFile = async (filePath) => {
-        let data = fs.readFileSync(filePath);
-        const { key, en_data } = EncryptAES.encrypt(data);
+        // let data = fs.readFileSync(filePath);
+        // const { key, en_data } = EncryptAES.encrypt(data);
         //overwrite encrypt data to file
-        fs.writeFileSync(filePath, en_data);
+        // fs.writeFileSync(filePath, en_data);
         const file = await this.getFiles(filePath);
         const cid = await this.storeFiles(file);
         //2. Mã hóa khóa k
-        const token = await ECC.encrypt(key, publicKeyB);
-        const stringToken = JSON.stringify({
-            iv: token.iv.toString('hex'),
-            ciphertext: token.ciphertext.toString('hex'),
-            mac: token.mac.toString('hex'),
-            ephemPublicKey: token.ephemPublicKey.toString('hex'),
-        });
+        // const token = await ECC.encrypt(key, publicKeyB);
+        // const stringToken = JSON.stringify({
+        //     iv: token.iv.toString('hex'),
+        //     ciphertext: token.ciphertext.toString('hex'),
+        //     mac: token.mac.toString('hex'),
+        //     ephemPublicKey: token.ephemPublicKey.toString('hex'),
+        // });
 
         console.log('File uploaded successfully. CID:', cid);
-        return { cid, stringToken };
+        return cid;
     };
 
     downloadFile = async (cid, destPath, encryptedContent) => {
         let hashdata = await this.retrieveFiles(cid);
-        const file = fs.createWriteStream(destPath);
         const aesKey = await ECC.decrypt(
             encryptedContent,
             Buffer.from(privateKeyB, 'hex'),
         );
 
         const originalText = EncryptAES.decrypt(hashdata.toString(), aesKey);
-        file.write(originalText);
+        console.log(originalText);
+        try {
+            // file written successfully
+            fs.writeFileSync(destPath, originalText);
+        } catch (err) {
+            console.error(err);
+            res.status(500);
+        }
+
         return originalText;
     };
 }

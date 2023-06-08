@@ -69,7 +69,7 @@ export default function RecordTag(props) {
                         className="button download"
                         onClick={() =>
                             handleDownload(
-                                props.record.idOnChain,
+                                props.record._id,
                                 props.record.fileName,
                             )
                         }
