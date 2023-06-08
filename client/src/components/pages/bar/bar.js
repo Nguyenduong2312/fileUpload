@@ -31,34 +31,27 @@ export default function Bar() {
                 </div>
                 <div className="bar_menu">
                     {auth && (
-                        <li>
+                        <li className={`is${auth}`}>
                             <Link to="/dashboard">Dashboard</Link>
                         </li>
                     )}
                     {auth && role === 'Doctor' && (
-                        <li>
-                            <Link to="/uploadRecord">Upload Record</Link>
-                        </li>
-                    )}
-                    {auth && role === 'Doctor' && (
-                        <li>
-                            <Link to="/searchUser">Search User</Link>
-                        </li>
+                        <div style={{ display: 'flex' }}>
+                            <li className={`is${auth}`}>
+                                <Link to="/uploadRecord">Upload Record</Link>
+                            </li>
+                            <li className={`is${auth}`}>
+                                <Link to="/searchUser">Search User</Link>
+                            </li>
+                        </div>
                     )}
                     {auth && (
                         <li className={`is${auth}`}>
-                            <DropUser role={role}></DropUser>
+                            <DropUser
+                                role={role}
+                                className="iconUser"
+                            ></DropUser>
                         </li>
-                    )}
-                    {!auth && (
-                        <div style={{ display: 'flex' }}>
-                            <li className={`is${auth}`}>
-                                <Link to="/login">Login</Link>
-                            </li>
-                            <li className={`is${auth}`}>
-                                <Link to="/register">Register</Link>
-                            </li>
-                        </div>
                     )}
                 </div>
             </div>

@@ -1,5 +1,6 @@
 const eccrypto = require('eccrypto');
 const fs = require('fs');
+
 const Record = require('../models/Record');
 const Ipfs = require('../ipfs/Ipfs');
 
@@ -12,9 +13,6 @@ const web3 = new Web3(
 const contractAbi = require('../contracts/abi');
 const contractAddress = require('../contracts/contractAddress');
 const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
-
-// const ipfs = require('../ipfs/Ipfs')
-// const node = ipfs.loadIpfs()
 
 // const privateKeyA = eccrypto.generatePrivate();
 // const publicKeyA = eccrypto.getPublic(privateKeyA);
@@ -33,12 +31,11 @@ const publicKeyB = eccrypto.getPublic(Buffer.from(privateKeyB, 'hex'));
 // private key: dd9f05bb8788eb238be1f0d5dfe0bc8102536810babb78962a595abb33de4ba5 (64 hex charaters, 256 bit-value)
 // public key: 0xf5742F47DeB2943D550A65C95Bfa4fA6957B59b5 (64 hex characters, 512-bit (64 byte-value))
 
-const EncryptAES = require('./EncryptAES');
-const ECC = require('./ECC');
-const Account = require('../models/Account');
+const EncryptAES = require('../custom_modules/EncryptAES');
+const ECC = require('../custom_modules/ECC');
 
-const UploadDrive = require('./UploadToDrive');
-const DownloadDrive = require('./DownloadFromDrive');
+const UploadDrive = require('../custom_modules/UploadToDrive');
+const DownloadDrive = require('../custom_modules/DownloadFromDrive');
 const { drive } = require('googleapis/build/src/apis/drive');
 
 //lưu file vào public/uploads
@@ -46,28 +43,37 @@ const path = `${process.cwd()}/server/public/uploads/`;
 
 class UploadFileController {
     getRecordById(req, res) {
-        Record.find({ idSender: '1' }).then((record) => {
-            res.status(200).json(record);
-        });
+        Record.find({ idReceiver: req.params.id, idSender: '' }).then(
+            (record) => {
+                res.status(200).json(record);
+            },
+        );
+    }
+
+    getReceivedRecordById(req, res) {
+        Record.find({ idReceiver: req.params.id, idUploader: '' }).then(
+            (record) => {
+                res.status(200).json(record);
+            },
+        );
     }
 
     upload(req, res) {
-        if (req.files === null) {
-            return res.send('No file uploaded');
-        } else if (req.body.id === '') {
-            return res.send('Id can not be empty');
+        if (req.body.id === '') {
+            return res.send('Id can not be empty!');
+        } else if (req.files === null) {
+            return res.send('No file uploaded!');
         }
         const file = req.files.file;
         //uploadFile
         file.mv(path + file.name, async (err) => {
             if (err) {
-                console.log('lỗi');
                 return res.status(500).send(err);
             }
             try {
-                console.log('run');
                 const data = fs.readFileSync(path + file.name);
                 const { key, en_data } = EncryptAES.encrypt(data);
+                console.log('data:', file.name, data);
                 // let googleFileId = null;
                 let ipfsCID;
                 try {
@@ -91,18 +97,12 @@ class UploadFileController {
                 let record;
                 record = new Record();
                 record.idReceiver = req.body.id;
-                record.idSender = req.session.user.id;
+                record.idUploader = req.session.user.id;
                 record.fileName = file.name;
                 console.log('record: ', record);
-                record
-                    .save()
-                    .then(() => {
-                        console.log('saved');
-                    })
-                    .catch(() => {
-                        console.log('lỗi save đầu');
-                        res.json({ status: false });
-                    });
+                record.save().catch(() => {
+                    return res.status(400);
+                });
 
                 console.log('keyB', publicKeyB);
                 // console.log('string keyB', publicKeyB.toString('hex'));
@@ -162,11 +162,12 @@ class UploadFileController {
                 console.error(err);
             }
         });
-        res.status(200).json({ status: true });
+        return res.status(200).send(`Uploaded!`);
     }
 
     downloadRecord(req, res) {
         const { id } = req.params;
+        console.log(id);
         contractInstance.methods
             .numberOfRecords()
             .call()

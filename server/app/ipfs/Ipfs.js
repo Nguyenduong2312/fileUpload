@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const EncryptAES = require('../controllers/EncryptAES');
+const EncryptAES = require('../custom_modules/EncryptAES');
 const eccrypto = require('eccrypto');
-const ECC = require('../controllers/ECC');
+const ECC = require('../custom_modules/ECC');
 const { getFilesFromPath, File, Web3Storage } = require('web3.storage');
 require('dotenv').config();
 const Web3 = require('web3');
@@ -83,7 +83,6 @@ class Ipfs {
             console.error(err);
             res.status(500);
         }
-
         return originalText;
     };
 }

@@ -7,10 +7,10 @@ import Bar from '../bar/bar';
 
 const UploadRecord = () => {
     const [file, setFile] = useState('');
-    const [filename, setFilename] = useState('Choose File');
+    const [filename, setFilename] = useState('Choose file');
     const [message, setMessage] = useState('');
     const [id, setId] = useState('');
-    //const [formData,setFormData] = useState({})
+
     const handleChange = (event) => {
         setId(event.target.value);
     };
@@ -24,14 +24,17 @@ const UploadRecord = () => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('id', id);
-        console.log(formData);
+        console.log('form', formData);
         try {
-            await axios.post('/record', formData, {
+            const res = await axios.post('/record', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setMessage(`File "${filename}" Uploaded`);
+            if (res.data) {
+                setMessage(res.data);
+            }
+            //setMessage(`File "${filename}" Uploaded`);
         } catch (err) {
             if (err.response.status === 500) {
                 setMessage('There was a problem with the server');

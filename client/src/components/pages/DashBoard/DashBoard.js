@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import './DashBoard.css';
 
 import Bar from '../bar/bar';
@@ -9,19 +8,27 @@ import RecordTag from '../Patient/RecordTag';
 import RequestedTag from '../Patient/RequestedTag';
 
 export default function DashBoard() {
-    const [first, setFirst] = useState(true);
-    const [second, setSecond] = useState(false);
+    const [tab, setTab] = useState(1);
 
-    const [requestList, setRequestList] = useState([]);
-    const [acceptedList, setAcceptedList] = useState([]);
+    const [receivedRecord_DT, setReceivedRecord_DT] = useState([]);
+    const [requestList_DT, setRequestList_DT] = useState([]);
+
     const [recordList, setRecordList] = useState([]);
-    const [requestedList, setRequestedList] = useState([]);
+    const [receivedRequest, setReceivedRequest] = useState([]);
+    const [receivedRecord_PT, setReceivedRecord_PT] = useState([]);
+    const [requestList_PT, setRequestList_PT] = useState([]);
 
-    const [lengthOfRecordList, setLengthOfRecordList] = useState(0);
-    const [lengthOfRequestedList, setLengthOfRequestedList] = useState(0);
-    const [lengthOfRequestList, setLengthOfRequestList] = useState(0);
-    const [lengthOfAcceptedList, setLengthOfAcceptedList] = useState(0);
+    const [lengthOfReceivedRecord_DT, setLengthOfReceivedRecord_DT] =
+        useState(0);
+    const [lengthOfRequestList_DT, setLengthOfRequestList_DT] = useState(0);
+
+    const [lengthOfReceivedRequest, setLengthOfReceivedRequest] = useState(0);
+    const [lengthOfReceivedRecord_PT, setLengthOfReceivedRecord_PT] =
+        useState(0);
+    const [lengthOfRequestList_PT, setLengthOfRequestList_PT] = useState(0);
+
     const [role, setRole] = useState(true);
+
     useEffect(() => {
         fetch('http://localhost:5000/login/user', {
             credentials: 'include',
@@ -34,129 +41,159 @@ export default function DashBoard() {
                 } else {
                     setRole(false);
                 }
+                if (account.role === 'Patient') {
+                    fetch(`http://localhost:5000/record/${account.id}`)
+                        .then((res) => res.json())
+                        .then((records) => {
+                            setRecordList(records);
+                            //setLengthOfRecordList(records.length);
+                        });
 
-                if (account.role === 'Doctor') {
-                    fetch(
-                        `http://localhost:5000/requestRecord/sender/${account.id}`,
-                    )
-                        .then((res) => res.json())
-                        .then((requests) => {
-                            setRequestList(requests);
-                            setLengthOfRequestList(requests.length);
-                        });
-                    fetch(
-                        `http://localhost:5000/requestRecord/accepted/sender/${account.id}`,
-                    )
-                        .then((res) => res.json())
-                        .then((requests) => {
-                            setAcceptedList(requests);
-                            setLengthOfAcceptedList(requests.length);
-                        });
-                } else {
                     fetch(
                         `http://localhost:5000/requestRecord/receiver/${account.id}`,
                     )
                         .then((res) => res.json())
                         .then((requests) => {
-                            setRequestedList(requests);
-                            setLengthOfRequestedList(requests.length);
-                        });
-                    fetch(`http://localhost:5000/record/${account.id}`)
-                        .then((res) => res.json())
-                        .then((records) => {
-                            setRecordList(records);
-                            setLengthOfRecordList(records.length);
+                            setReceivedRequest(requests);
+                            setLengthOfReceivedRequest(requests.length);
                         });
                 }
+
+                fetch(`http://localhost:5000/record/received/${account.id}`)
+                    .then((res) => res.json())
+                    .then((record) => {
+                        if (account.role === 'Doctor') {
+                            setReceivedRecord_DT(record);
+                            setLengthOfReceivedRecord_DT(record.length);
+                        } else {
+                            setReceivedRecord_PT(record);
+                            setLengthOfReceivedRecord_PT(record.length);
+                        }
+                    });
+
+                fetch(
+                    `http://localhost:5000/requestRecord/sender/${account.id}`,
+                )
+                    .then((res) => res.json())
+                    .then((requests) => {
+                        if (account.role === 'Doctor') {
+                            setRequestList_DT(requests);
+                            setLengthOfRequestList_DT(requests.length);
+                        } else {
+                            setRequestList_PT(requests);
+                            setLengthOfRequestList_PT(requests.length);
+                        }
+                    });
             });
     }, [
-        lengthOfRecordList,
-        lengthOfRequestedList,
-        lengthOfRequestList,
-        lengthOfAcceptedList,
-    ]);
+        lengthOfReceivedRecord_DT,
+        lengthOfRequestList_DT,
 
-    const handleClickFirst = () => {
-        setFirst(true);
-        setSecond(false);
-    };
-    const handleClickSecond = () => {
-        setFirst(false);
-        setSecond(true);
-    };
+        lengthOfReceivedRequest,
+        lengthOfReceivedRecord_PT,
+        lengthOfRequestList_PT,
+    ]);
 
     return (
         <div>
             <Bar />
             <h3>DASHBOARD</h3>
             <div className="dashboard_content">
-                {role && (
-                    <div className="dashboard_menu">
-                        <div
-                            className={`dashboard_menu_button ${first}`}
-                            onClick={handleClickFirst}
-                        >
-                            Accepted Records
+                <div className="dashboard_menu">
+                    {!role && (
+                        <div style={{ display: 'flex' }}>
+                            <div
+                                className={`dashboard_menu_button ${tab === 1}`}
+                                onClick={() => setTab(1)}
+                            >
+                                My Records
+                            </div>
+                            <div
+                                className={`dashboard_menu_button ${tab === 2}`}
+                                onClick={() => setTab(2)}
+                                style={{ display: 'flex' }}
+                            >
+                                Request List
+                                {lengthOfReceivedRequest !== 0 && (
+                                    <div className="notice">
+                                        {lengthOfReceivedRequest}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        <div
-                            className={`dashboard_menu_button ${second}`}
-                            onClick={handleClickSecond}
-                        >
-                            Sending Request
-                        </div>
+                    )}
+                    <div
+                        className={`dashboard_menu_button ${
+                            role ? tab === 1 : tab === 3
+                        }`}
+                        onClick={() => setTab(role ? 1 : 3)}
+                        style={{ display: 'flex' }}
+                    >
+                        Received Record
+                        {role && lengthOfReceivedRecord_DT !== 0 && (
+                            <div className="notice">
+                                {lengthOfReceivedRecord_DT}
+                            </div>
+                        )}
+                        {!role && lengthOfReceivedRecord_PT !== 0 && (
+                            <div className="notice">
+                                {lengthOfReceivedRecord_PT}
+                            </div>
+                        )}
                     </div>
-                )}
-                {!role && (
-                    <div className="dashboard_menu">
-                        <div
-                            className={`dashboard_menu_button ${first}`}
-                            onClick={handleClickFirst}
-                        >
-                            My Records
-                        </div>
-                        <div
-                            className={`dashboard_menu_button ${second}`}
-                            onClick={handleClickSecond}
-                        >
-                            Request List
-                        </div>
+                    <div
+                        className={`dashboard_menu_button ${
+                            role ? tab === 2 : tab === 4
+                        }`}
+                        onClick={() => setTab(role ? 2 : 4)}
+                    >
+                        Sent Request
                     </div>
-                )}
+                </div>
+
                 {role && (
                     <div className="dashboard_tag">
-                        {first &&
-                            acceptedList.map((record) => (
+                        {tab === 1 &&
+                            receivedRecord_DT.map((record) => (
                                 <AcceptedRecordTag
                                     record={record}
-                                    setLengthOfAcceptedList={
-                                        setLengthOfAcceptedList
-                                    }
+                                    setLength={setLengthOfReceivedRecord_DT}
                                 />
                             ))}
-                        {second &&
-                            requestList.map((request) => (
+                        {tab === 2 &&
+                            requestList_DT.map((request) => (
                                 <RequestList
                                     request={request}
-                                    setLengthOfRequestList={
-                                        setLengthOfRequestList
-                                    }
+                                    setLength={setLengthOfRequestList_DT}
                                 />
                             ))}
                     </div>
                 )}
                 {!role && (
                     <div className="dashboard_tag">
-                        {first &&
+                        {tab === 1 &&
                             recordList.map((record) => (
                                 <RecordTag record={record} status={true} />
                             ))}
-                        {second &&
-                            requestedList.map((request) => (
+                        {tab === 2 &&
+                            receivedRequest.map((request) => (
                                 <RequestedTag
                                     request={request}
-                                    setLengthOfRequestList={
-                                        setLengthOfRequestList
-                                    }
+                                    setLength={setLengthOfReceivedRequest}
+                                />
+                            ))}
+                        {tab === 3 &&
+                            receivedRecord_PT.map((record) => (
+                                <AcceptedRecordTag
+                                    record={record}
+                                    setLength={setLengthOfReceivedRecord_DT}
+                                />
+                            ))}
+                        {tab === 4 &&
+                            requestList_PT.map((request) => (
+                                <RequestList
+                                    request={request}
+                                    setLength={setLengthOfRequestList_DT}
                                 />
                             ))}
                     </div>

@@ -11,54 +11,61 @@ class RegisterController {
             !req.body.password2 ||
             !req.body.role
         ) {
-            res.status(400).json({ status: false });
+            return res.status(220).send('This field can be empty.');
         } else if (req.password1 !== req.password2) {
-            res.status(400).json({ status: false });
+            return res
+                .status(220)
+                .send("Those passwords didn't match. Try again.");
         }
         Account.findOne({ username: req.body.username }).then((account) => {
             if (account) {
-                res.status(422).json({ status: false });
+                return res
+                    .status(220)
+                    .send('That username is taken. Try another.');
+            } else {
+                // Create temporary account object to assign value
+                const tmp = new Account();
+                tmp.username = req.body.username;
+                const privateKey = eccrypto.generatePrivate();
+                tmp.privateKey = JSON.stringify(privateKey);
+                tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
+                tmp.role = req.body.role;
+                // Increment id
+                Account.findOne({})
+                    .lean()
+                    .sort({ id: 'desc' })
+                    .then((lastAccount) => {
+                        if (lastAccount) {
+                            tmp.id = lastAccount.id + 1;
+                        } else {
+                            tmp.id = 1;
+                        }
+                        // Hash password
+                        bcrypt.hash(
+                            req.body.password1,
+                            saltRounds,
+                            function (err, hash) {
+                                tmp.password = hash;
+
+                                // Create another account with assigned value and save to database
+                                const account = new Account(tmp);
+                                account
+                                    .save()
+                                    .then(() => {
+                                        req.session.user = account;
+                                        res.status(200).send('');
+                                    })
+                                    .catch(() => {
+                                        res.status(500).send('');
+                                    });
+                            },
+                        );
+                    })
+                    .catch(() => {
+                        res.status(500).send('');
+                    });
             }
         });
-        // Create temporary account object to assign value
-        const tmp = new Account();
-        tmp.username = req.body.username;
-        const privateKey = eccrypto.generatePrivate();
-        tmp.privateKey = JSON.stringify(privateKey);
-        tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
-        tmp.role = req.body.role;
-        // Increment id
-        Account.findOne({})
-            .lean()
-            .sort({ id: 'desc' })
-            .then((lastAccount) => {
-                if (lastAccount) {
-                    tmp.id = lastAccount.id + 1;
-                } else {
-                    tmp.id = 1;
-                }
-                // Hash password
-                bcrypt.hash(
-                    req.body.password1,
-                    saltRounds,
-                    function (err, hash) {
-                        tmp.password = hash;
-
-                        // Create another account with assigned value and save to database
-                        const account = new Account(tmp);
-                        account
-                            .save()
-                            .then(() => {
-                                req.session.user = account;
-                                res.json({ status: true });
-                            })
-                            .catch(() => {
-                                res.json({ status: false });
-                            });
-                    },
-                );
-            })
-            .catch(() => res.json({ status: false }));
     }
 
     AddRelationshipForUser(idUser, role) {

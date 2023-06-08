@@ -7,6 +7,7 @@ export default function RecordTag(props) {
     const [formData, setFormData] = useState({
         idReceiver: props.record.idReceiver,
         idRecord: props.record._id,
+        idOnChain: props.record.idOnChain,
         nameRecord: props.record.fileName,
     });
 
@@ -19,16 +20,16 @@ export default function RecordTag(props) {
             .then((account) => {
                 setFormData((prevState) => ({
                     ...prevState,
-                    ['idSender']: account.id,
+                    ['idUploader']: account.id,
                 }));
             });
     }, []);
 
     const handleDownload = (id, filename) => {
+        console.log(`Download: ${id}`);
         fetch(`http://localhost:5000/record/download/${id}`).then(
             (response) => {
                 response.blob().then((blob) => {
-                    console.log(id);
                     const fileURL = window.URL.createObjectURL(blob);
                     let alink = document.createElement('a');
                     alink.href = fileURL;
@@ -61,7 +62,7 @@ export default function RecordTag(props) {
         <div className="record_tag">
             <div className="text" style={{ display: 'block' }}>
                 <p>File: {props.record.fileName}</p>
-                <p>ID Uploader: {props.record.idSender}</p>
+                <p>ID Uploader: {props.record.idUploader}</p>
             </div>
             <div className="dashboard_buttons">
                 {auth && (
