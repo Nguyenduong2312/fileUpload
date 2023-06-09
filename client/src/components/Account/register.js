@@ -21,7 +21,7 @@ export default function Register(props) {
 
     const onSubmit = async (e) => {
         if (password1 !== password2) {
-            setMessage('Password không giống nhau.');
+            setMessage('Confirm password does not match with password.');
         }
 
         e.preventDefault();
