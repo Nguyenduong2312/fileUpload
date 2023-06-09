@@ -32,7 +32,10 @@ export default function Register(props) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            if (res.data.status === true) {
+            if (res.status === 220) {
+                setMessage(res.data);
+            }
+            if (res.status === 200) {
                 navigate('/myProfile');
             }
         } catch (err) {
@@ -104,7 +107,6 @@ export default function Register(props) {
                                             <option value="Patient">
                                                 Patient
                                             </option>
-                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
 

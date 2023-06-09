@@ -14,6 +14,8 @@ export default function Home() {
             .then((account) => {
                 if (account) {
                     setAuth(true);
+                    console.log('set Local');
+                    localStorage.setItem('privateKey', JSON.stringify());
                 }
             });
     }, [auth]);

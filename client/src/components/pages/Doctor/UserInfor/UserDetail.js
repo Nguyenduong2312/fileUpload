@@ -8,7 +8,7 @@ export default function UserDetail(props) {
     const { id } = useParams();
     const [user, setUser] = useState({});
     useEffect(() => {
-        fetch(`http://localhost:5000/login/${id}`, {
+        fetch(`http://localhost:5000/login/id/${id}`, {
             credentials: 'include',
             method: 'GET',
         })
@@ -17,11 +17,6 @@ export default function UserDetail(props) {
                 setUser(account);
             });
     });
-
-    const handleViewRecord = () => {};
-
-    const handleMembership = () => {};
-
     return (
         <div>
             <Bar></Bar>

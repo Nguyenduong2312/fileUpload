@@ -31,7 +31,9 @@ const UploadRecord = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setMessage(res.data);
+            if (res.data) {
+                setMessage(res.data);
+            }
             //setMessage(`File "${filename}" Uploaded`);
         } catch (err) {
             if (err.response.status === 500) {

@@ -12,8 +12,14 @@ export default function Profile() {
 
     const [message, setMessage] = useState('');
     const { name, address, email, date } = formData;
+    const [key, setKey] = useState();
 
     useEffect(() => {
+        const items = JSON.parse(localStorage.getItem('items'));
+        if (items) {
+            console.log('items:', items);
+            setKey(items);
+        }
         fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',

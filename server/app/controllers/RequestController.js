@@ -26,11 +26,9 @@ class RequestController {
         );
     }
     getRequestBySenderId(req, res) {
-        Request.find({ idSender: req.params.id, status: 'Waiting' }).then(
-            function (request) {
-                res.status(200).json(request);
-            },
-        );
+        Request.find({ idSender: req.params.id }).then(function (request) {
+            res.status(200).json(request);
+        });
     }
 
     getAcceptedBySenderId(req, res) {
@@ -62,14 +60,14 @@ class RequestController {
                 request.idOnChain = idOnChain;
                 request
                     .save()
-                    .then(() => res.send('Send request successful'))
-                    .catch(() => res.send('Send request fail'));
+                    .then(() => res.send('Request sent successfully.'))
+                    .catch(() => res.send('Request sent fail.'));
             }
         });
     }
     updateRequest(req, res) {
         Request.findOne({ _id: req.params.id }).then((request) => {
-            request.status = 'Accepted';
+            request.status = req.body.status;
             request
                 .save()
                 .then(() =>
@@ -77,48 +75,53 @@ class RequestController {
                 )
                 .catch(() => res.send(`Error!`));
 
-            Record.findById(request.idRecord).then(async (record) => {
-                const copyRecord = await Record.create({
-                    idReceiver: request.idSender,
-                    idSender: request.idReceiver,
-                    fileName: record.fileName,
+            if (req.body.status === 'Accepted') {
+                Record.findById(request.idRecord).then(async (record) => {
+                    const copyRecord = await Record.create({
+                        idReceiver: request.idSender,
+                        idSender: request.idReceiver,
+                        fileName: record.fileName,
+                    });
+
+                    // Get record on blockchain
+                    const txRecord = await getTxRecord(record.idOnChain);
+
+                    // Get buffer encrypted AES key
+                    const token = await stringEncryptedKeyToBuffer(
+                        txRecord.encryptedKey,
+                    );
+
+                    // Decrypt AES key with patient private key
+                    const aesKey = await ECC.decrypt(
+                        token,
+                        Buffer.from(privateKeyB, 'hex'),
+                    );
+                    // Encrypt AES key
+                    const encryptedAESKey = await ECC.encrypt(
+                        aesKey,
+                        publicKeyA,
+                    );
+                    console.log(encryptedAESKey);
+                    // Conver AES key from buffer to string
+                    const stringToken = await bufferEncryptedKeyToString(
+                        encryptedAESKey,
+                    );
+
+                    console.log(addressA);
+
+                    await createRecordOnBlockchain(
+                        stringToken,
+                        addressB,
+                        addressA,
+                        txRecord.cid,
+                        txRecord.fileName,
+                        copyRecord,
+                        privateKeyB,
+                    );
+
+                    // res.json({ status: true })
                 });
-
-                // Get record on blockchain
-                const txRecord = await getTxRecord(record.idOnChain);
-
-                // Get buffer encrypted AES key
-                const token = await stringEncryptedKeyToBuffer(
-                    txRecord.encryptedKey,
-                );
-
-                // Decrypt AES key with patient private key
-                const aesKey = await ECC.decrypt(
-                    token,
-                    Buffer.from(privateKeyB, 'hex'),
-                );
-                // Encrypt AES key
-                const encryptedAESKey = await ECC.encrypt(aesKey, publicKeyA);
-                console.log(encryptedAESKey);
-                // Conver AES key from buffer to string
-                const stringToken = await bufferEncryptedKeyToString(
-                    encryptedAESKey,
-                );
-
-                console.log(addressA);
-
-                await createRecordOnBlockchain(
-                    stringToken,
-                    addressB,
-                    addressA,
-                    txRecord.cid,
-                    txRecord.fileName,
-                    copyRecord,
-                    privateKeyB,
-                );
-
-                // res.json({ status: true })
-            });
+            }
         });
         //
     }

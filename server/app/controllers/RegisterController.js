@@ -11,13 +11,17 @@ class RegisterController {
             !req.body.password2 ||
             !req.body.role
         ) {
-            res.status(400).json({ status: false });
+            return res.status(220).send('This field can be empty.');
         } else if (req.password1 !== req.password2) {
-            res.status(400).json({ status: false });
+            return res
+                .status(220)
+                .send("Those passwords didn't match. Try again.");
         }
         Account.findOne({ username: req.body.username }).then((account) => {
             if (account) {
-                res.status(422).json({ status: false });
+                return res
+                    .status(220)
+                    .send('That username is taken. Try another.');
             } else {
                 // Create temporary account object to assign value
                 const tmp = new Account();
@@ -49,15 +53,17 @@ class RegisterController {
                                     .save()
                                     .then(() => {
                                         req.session.user = account;
-                                        res.json({ status: true });
+                                        res.status(200).send('');
                                     })
                                     .catch(() => {
-                                        res.json({ status: false });
+                                        res.status(500).send('');
                                     });
                             },
                         );
                     })
-                    .catch(() => res.json({ status: false }));
+                    .catch(() => {
+                        res.status(500).send('');
+                    });
             }
         });
     }

@@ -1,10 +1,11 @@
-import './login.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Bar from '../pages/bar/bar';
 import Message from '../Message';
+
+import './login.css';
 
 export default function Login() {
     const [formData, setFormData] = useState({});
@@ -16,7 +17,6 @@ export default function Login() {
             [e.target.name]: e.target.value,
         }));
     };
-
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -25,12 +25,11 @@ export default function Login() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
-            //check logined -> home
-            if (res.data.status === true) {
+            if (res.status === 220) {
+                setMessage(res.data);
+            }
+            if (res.status === 200) {
                 navigate('/');
-            } else {
-                setMessage('Username và password không hợp lệ');
             }
         } catch (err) {
             if (err.response.status === 500) {

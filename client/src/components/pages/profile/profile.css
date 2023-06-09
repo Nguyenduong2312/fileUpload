@@ -12,6 +12,7 @@
     color: white;
     background-color: #41644A;
     text-decoration-line: none;
+    box-shadow: 5px 5px 5px gray;
 }
 .profile_form_tag .button{
     position: absolute;
