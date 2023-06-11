@@ -21,6 +21,9 @@ export default function FamilyMember() {
         fetch(`http://localhost:5000/login/${id || 'user'}`, {
             credentials: 'include',
             method: 'GET',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
         })
             .then((res) => res.json())
             .then((account) => {
@@ -29,7 +32,7 @@ export default function FamilyMember() {
                 console.log('relation: ', account.relationship);
                 const accRelationship = account.relationship;
                 for (let key in accRelationship) {
-                    fetch(`http://localhost:5000/login/${key}`, {
+                    fetch(`http://localhost:5000/login/id/${key}`, {
                         credentials: 'include',
                         method: 'GET',
                     })
@@ -112,7 +115,7 @@ export default function FamilyMember() {
             )}
 
             <div style={{ marginLeft: '100px', marginTop: '50px' }}>
-                {id && <h5>ID user: {id || idUser}</h5>}
+                {id && <h5>ID user: {idUser}</h5>}
             </div>
 
             <div className="listMember">
@@ -120,7 +123,7 @@ export default function FamilyMember() {
                 <div className="memberTags parents">
                     {parentList.map((user) => (
                         <UserTag
-                            id={user.id}
+                            id={user._id}
                             role={user.roleRelationShip}
                         ></UserTag>
                     ))}
@@ -138,7 +141,7 @@ export default function FamilyMember() {
                 <div className="memberTags children">
                     {childList.map((user) => (
                         <UserTag
-                            id={user.id}
+                            id={user._id}
                             role={user.roleRelationShip}
                         ></UserTag>
                     ))}

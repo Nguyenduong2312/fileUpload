@@ -28,11 +28,16 @@ export default function DashBoard() {
     const [lengthOfRequestList_PT, setLengthOfRequestList_PT] = useState(0);
 
     const [role, setRole] = useState(true);
-
+    const headers = {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+    };
     useEffect(() => {
         fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
         })
             .then((res) => res.json())
             .then((account) => {
@@ -42,7 +47,9 @@ export default function DashBoard() {
                     setRole(false);
                 }
                 if (account.role === 'Patient') {
-                    fetch(`http://localhost:5000/record/${account.id}`)
+                    fetch(`http://localhost:5000/record/${account.id}`, {
+                        headers,
+                    })
                         .then((res) => res.json())
                         .then((records) => {
                             setRecordList(records);

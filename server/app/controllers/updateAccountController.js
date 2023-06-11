@@ -22,15 +22,12 @@ class UpdateAccountController {
                     account.email = req.body.email;
                 }
                 if (req.body.date) {
-                    console.log('set date');
                     account.birthday = req.body.date;
                 }
-                console.log(account);
                 account
                     .save()
                     .then(() => {
-                        console.log('save acc', account);
-                        res.json({ status: true });
+                        res.send('Information is updated!');
                     })
                     .catch(() => res.json({ status: false }));
             })

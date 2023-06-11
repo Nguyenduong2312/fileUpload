@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import './UserTag.css';
 
 export default function UserTag(props) {
-    console.log('propS:', props);
     const [user, setUser] = useState({});
     useEffect(() => {
         fetch(`http://localhost:5000/login/${props.id}`, {
@@ -15,7 +14,7 @@ export default function UserTag(props) {
             .then((account) => {
                 setUser(account);
             });
-    }, []);
+    }, [props.id]);
 
     return (
         <div className="userTag">
@@ -24,8 +23,8 @@ export default function UserTag(props) {
                 <img src="../image/user.png" alt="" />
             </div>
             <div className="infor">
-                <p>Name:{props.name}</p>
-                <p>Id: {props.id}</p>
+                <p>Name:{user.name}</p>
+                <p>Id: {user.id}</p>
             </div>
             <div className="listButton">
                 <div

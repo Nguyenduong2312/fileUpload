@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 const loginController = require('../app/controllers/LoginController');
+const { protect, checkPatient } = require('../app/controllers/authenticate');
 
 router.post('/', loginController.login);
-router.get('/user', loginController.user);
-router.get('/logout', loginController.logout);
-router.get('/:id', loginController.getUser);
-router.get('/id/:id', loginController.getUserById);
+router.get('/user', protect, loginController.user);
+router.get('/:id', loginController.getUserById);
+router.get('/id/:id', loginController.getUser);
 
-router.post('/patient/:id', loginController.checkPatient);
+router.get('/patient/:id', checkPatient, loginController.getUser);
 module.exports = router;

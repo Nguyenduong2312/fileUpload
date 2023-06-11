@@ -13,6 +13,9 @@ function DropUser(props) {
         fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
         })
             .then((res) => res.json())
             .then((account) => {
@@ -31,10 +34,7 @@ function DropUser(props) {
     }, [lengthOfRequestList]);
 
     const onClick = () => {
-        fetch('http://localhost:5000/login/logout', {
-            credentials: 'include',
-            method: 'GET',
-        });
+        localStorage.removeItem('token');
     };
 
     return (

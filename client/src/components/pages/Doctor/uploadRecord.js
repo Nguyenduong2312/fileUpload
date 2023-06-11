@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Message from '../../Message';
 import axios from 'axios';
 
@@ -31,7 +31,9 @@ const UploadRecord = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            if (res.data) {
+            console.log(res.status);
+            if (res.data && res.status === 200) {
+                console.log('true');
                 setMessage(res.data);
             }
             //setMessage(`File "${filename}" Uploaded`);

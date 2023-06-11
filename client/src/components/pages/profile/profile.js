@@ -12,17 +12,14 @@ export default function Profile() {
 
     const [message, setMessage] = useState('');
     const { name, address, email, date } = formData;
-    const [key, setKey] = useState();
 
     useEffect(() => {
-        const items = JSON.parse(localStorage.getItem('items'));
-        if (items) {
-            console.log('items:', items);
-            setKey(items);
-        }
         fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
         })
             .then((res) => res.json())
             .then((account) => {
@@ -43,11 +40,12 @@ export default function Profile() {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`/myProfile/${user.id}`, formData, {
+            const res = await axios.put(`/myProfile/${user.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            setMessage(res.data);
         } catch (err) {
             if (err.response.status === 500) {
                 setMessage('There was a problem with the server');
