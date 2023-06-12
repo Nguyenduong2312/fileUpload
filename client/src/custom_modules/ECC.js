@@ -1,11 +1,11 @@
-import { encrypt, decrypt } from 'eccrypto';
+import { encrypt as _encrypt, decrypt as _decrypt } from 'eccrypto';
 
 class ECC {
     async encrypt(data, publicKey) {
-        return await encrypt(publicKey, Buffer.from(data));
+        return await _encrypt(publicKey, Buffer.from(data));
     }
     async decrypt(en_data, privateKey) {
-        return (await decrypt(privateKey, en_data)).toString();
+        return (await _decrypt(privateKey, en_data)).toString();
     }
 }
 

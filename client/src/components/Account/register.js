@@ -6,6 +6,9 @@ import axios from 'axios';
 import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
+import { checkDoctorIsRegistered } from '../../custom_modules/accountContractModules';
+require('dotenv').config();
+
 export default function Register(props) {
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
@@ -18,32 +21,42 @@ export default function Register(props) {
             [e.target.name]: e.target.value,
         }));
     };
-
+    checkDoctorIsRegistered('');
     const onSubmit = async (e) => {
         if (password1 !== password2) {
             setMessage('Confirm password does not match with password.');
         }
 
         e.preventDefault();
-
+        // try {
+        //     const res = await axios.post('/register', formData, {
+        //         headers: {
+        //             'Content-Type': 'multipart/form-data',
+        //         },
+        //     });
+        //     if (res.status === 220) {
+        //         setMessage(res.data);
+        //     }
+        //     if (res.status === 200) {
+        //         navigate('/myProfile');
+        //     }
+        // } catch (err) {
+        //     if (err.response.status === 500) {
+        //         setMessage('There was a problem with the server');
+        //     } else {
+        //         setMessage(err.response.data.msg);
+        //     }
+        // }
         try {
-            const res = await axios.post('/register', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            if (res.status === 220) {
-                setMessage(res.data);
-            }
-            if (res.status === 200) {
-                navigate('/myProfile');
-            }
+            // const res = await checkDoctorIsRegistered("ad3bec1060a729641f437fd15690e7fc0fcef1b0a134197faf1076e719b221b8")
+            const res = await checkDoctorIsRegistered(
+                process.env.REACT_APP_PRIVATE_KEY_A,
+            );
+            setMessage(res);
+            console.log(res);
+            console.log(process.env.REACT_APP_PRIVATE_KEY_A);
         } catch (err) {
-            if (err.response.status === 500) {
-                setMessage('There was a problem with the server');
-            } else {
-                setMessage(err.response.data.msg);
-            }
+            console.log(err);
         }
     };
 

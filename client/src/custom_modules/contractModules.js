@@ -1,19 +1,10 @@
-import { getPublic } from 'eccrypto';
-
 import Web3, { providers } from 'web3';
 const web3 = new Web3(new providers.HttpProvider(process.env.INFURA_API_KEY));
 
 import contractAbi from '../contracts/abi';
 import contractAddress from '../contracts/contractAddress';
+
 const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
-
-const privateKeyA = process.env.PRIVATE_KEY_A;
-const accountA = web3.eth.accounts.privateKeyToAccount(privateKeyA);
-const publicKeyA = getPublic(Buffer.from(privateKeyA, 'hex'));
-
-const privateKeyB = process.env.PRIVATE_KEY_B;
-const accountB = web3.eth.accounts.privateKeyToAccount(privateKeyB);
-const publicKeyB = getPublic(Buffer.from(privateKeyB, 'hex'));
 
 const getTxRecord = async (idOnChain) => {
     const result = await contractInstance.methods.numberOfRecords().call();
