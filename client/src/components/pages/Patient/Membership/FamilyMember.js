@@ -137,7 +137,7 @@ export default function FamilyMember() {
                         marginTop: '50px',
                     }}
                 >
-                    CHILDRENT:{' '}
+                    CHILDREN:{' '}
                 </p>
                 <div className="memberTags children">
                     {childList.map((user) => (

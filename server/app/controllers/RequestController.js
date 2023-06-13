@@ -49,7 +49,7 @@ class RequestController {
         }).then((request) => {
             if (request) {
                 res.send(
-                    'Request has already sent before. Waiting receiver accepted it.',
+                    'Request has already been sent before. Waiting for receiver to accept it.',
                 );
             } else {
                 const request = new Request();

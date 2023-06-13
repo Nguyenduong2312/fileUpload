@@ -201,6 +201,7 @@ class UploadFileController {
                     path + 'de_' + txRecord.fileName,
                     encryptedContent,
                 ).then(() => {
+                    console.log('downnn');
                     res.status(200).download(path + 'de_' + txRecord.fileName);
                 });
             })
