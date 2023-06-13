@@ -10,7 +10,7 @@ import './dropdown.css';
 function DropUser(props) {
     const [lengthOfRequestList, setLengthOfRequestList] = useState(0);
     useEffect(() => {
-        fetch('http://localhost:5000/login/user', {
+        fetch('http://localhost:5000/account/user', {
             credentials: 'include',
             method: 'GET',
             headers: {

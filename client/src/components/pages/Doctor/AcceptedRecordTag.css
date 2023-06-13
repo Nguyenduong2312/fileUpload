@@ -11,7 +11,7 @@
 .dashboard_buttons{
     position: absolute;
     right: 50px;
-    bottom: 40px;
+    top: 40px;
 }   
 .dashboard_buttons .button{
     position: static;
@@ -35,4 +35,9 @@
     background-color: #D82148;
 }
 
-
+.text p{
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

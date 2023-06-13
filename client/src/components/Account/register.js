@@ -27,16 +27,19 @@ export default function Register(props) {
         e.preventDefault();
 
         try {
-            const res = await axios.post('/register', formData, {
+            const res = await axios.post('/account/signup', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log('status: ', res.status);
             if (res.status === 220) {
                 setMessage(res.data);
             }
             if (res.status === 200) {
                 navigate('/myProfile');
+                console.log('data:  ', res.data.token);
+                localStorage.setItem('token', res.data.token);
             }
         } catch (err) {
             if (err.response.status === 500) {

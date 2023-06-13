@@ -42,7 +42,7 @@ class RequestController {
     request(req, res) {
         const { idReceiver, idRecord, nameRecord, idOnChain } = req.body;
         Request.findOne({
-            idSender: req.session.user.id,
+            idSender: req.user.id,
             idReceiver: idReceiver,
             idRecord: idRecord,
             status: 'Waiting',
@@ -54,7 +54,7 @@ class RequestController {
             } else {
                 const request = new Request();
                 request.idReceiver = idReceiver;
-                request.idSender = req.session.user.id;
+                request.idSender = req.user.id;
                 request.idRecord = idRecord;
                 request.nameRecord = nameRecord;
                 request.idOnChain = idOnChain;

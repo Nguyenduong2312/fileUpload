@@ -12,7 +12,7 @@ export default function RecordTag(props) {
     });
 
     useEffect(() => {
-        fetch('http://localhost:5000/login/user', {
+        fetch('http://localhost:5000/account/user', {
             credentials: 'include',
             method: 'GET',
             headers: {
@@ -48,6 +48,7 @@ export default function RecordTag(props) {
             const res = await axios.post('/requestRecord', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
 

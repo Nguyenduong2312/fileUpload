@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import Message from '../../Message';
 import axios from 'axios';
 
@@ -29,6 +29,7 @@ const UploadRecord = () => {
             const res = await axios.post('/record', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
             console.log(res.status);

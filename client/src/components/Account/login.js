@@ -20,16 +20,16 @@ export default function Login() {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('/login', formData, {
+            const res = await axios.post('/account/login', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log(res.status);
             if (res.status === 220) {
                 setMessage(res.data);
             }
             if (res.status === 200) {
-                console.log('res1: ', res.data.token);
                 navigate('/');
                 localStorage.setItem('token', res.data.token);
             }

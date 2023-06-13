@@ -1,6 +1,6 @@
 const RelationshipRequest = require('../models/MembershipRequest');
 const Account = require('../models/Account');
-const AccountController = require('./RegisterController');
+const AccountController = require('./LoginController');
 
 class MembershipController {
     getRequestfromSender(req, res) {
@@ -27,21 +27,21 @@ class MembershipController {
         Account.findOne({ id: req.body.receiverId }).then((account) => {
             if (
                 !account ||
-                req.body.receiverId === req.session.user.id ||
+                req.body.receiverId === req.user.id ||
                 account.role === 'Doctor'
             ) {
                 return res.send('User is not exists.');
             }
             RelationshipRequest.findOne({
-                senderId: req.session.user.id,
+                senderId: req.user.id,
                 receiverId: req.body.receiverId,
             }).then((request) => {
                 if (request && request.status === 'Waitting') {
                     return res.send('Request has already sent before.');
                 } else {
                     const request = new RelationshipRequest();
-                    request.senderId = req.session.user.id;
-                    request.senderName = req.session.user.name;
+                    request.senderId = req.user.id;
+                    request.senderName = req.user.name;
 
                     request.receiverName = account.name;
                     request.receiverId = req.body.receiverId;
@@ -49,12 +49,12 @@ class MembershipController {
                     request.receiverRole = req.body.receiverRole;
                     if (
                         request.receiverRole === 'Child' &&
-                        req.session.user.gender === 'Female'
+                        req.user.gender === 'Female'
                     ) {
                         request.senderRole = 'Mother';
                     } else if (
                         request.receiverRole === 'Child' &&
-                        req.session.user.gender === 'Male'
+                        req.user.gender === 'Male'
                     ) {
                         request.senderRole = 'Father';
                     } else if (request.receiverRole === 'Child') {

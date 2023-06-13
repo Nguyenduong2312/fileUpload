@@ -39,7 +39,7 @@ const DownloadDrive = require('../custom_modules/DownloadFromDrive');
 const { drive } = require('googleapis/build/src/apis/drive');
 
 //lưu file vào public/uploads
-const path = `${process.cwd()}/server/public/uploads/`;
+const path = `${__dirname}/public/`;
 
 class UploadFileController {
     getRecordById(req, res) {
@@ -68,7 +68,8 @@ class UploadFileController {
         //uploadFile
         file.mv(path + file.name, async (err) => {
             if (err) {
-                return res.status(500).send(err);
+                console.log('êrr');
+                return res.status(220).send(err);
             }
             try {
                 const data = fs.readFileSync(path + file.name);
@@ -97,11 +98,11 @@ class UploadFileController {
                 let record;
                 record = new Record();
                 record.idReceiver = req.body.id;
-                record.idUploader = req.session.user.id;
+                record.idUploader = req.user.id;
                 record.fileName = file.name;
                 console.log('record: ', record);
                 record.save().catch(() => {
-                    return res.status(400);
+                    res.status(400);
                 });
 
                 console.log('keyB', publicKeyB);
@@ -162,7 +163,7 @@ class UploadFileController {
                 console.error(err);
             }
         });
-        return res.status(200).send(`Uploaded!`);
+        res.status(200).send(`Uploaded!`);
     }
 
     downloadRecord(req, res) {

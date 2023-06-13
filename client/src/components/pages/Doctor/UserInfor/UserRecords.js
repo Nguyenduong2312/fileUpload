@@ -14,7 +14,7 @@ export default function UseRecords(props) {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        fetch(`http://localhost:5000/login/${id}`)
+        fetch(`http://localhost:5000/account/${id}`)
             .then((res) => res.json())
             .then((account) => {
                 setUser(account);

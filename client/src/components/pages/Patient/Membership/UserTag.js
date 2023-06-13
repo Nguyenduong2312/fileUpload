@@ -6,7 +6,7 @@ import './UserTag.css';
 export default function UserTag(props) {
     const [user, setUser] = useState({});
     useEffect(() => {
-        fetch(`http://localhost:5000/login/${props.id}`, {
+        fetch(`http://localhost:5000/account/${props.id}`, {
             credentials: 'include',
             method: 'GET',
         })

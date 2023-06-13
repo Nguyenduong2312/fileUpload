@@ -16,7 +16,7 @@ const RequestRecord = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            fetch(`http://localhost:5000/login/patient/${e.target.id.value}`)
+            fetch(`http://localhost:5000/account/patient/${e.target.id.value}`)
                 .then((res) => res.json())
                 .then((account) => {
                     if (account) {

@@ -2,6 +2,13 @@ const Account = require('../models/Account');
 var eccrypto = require('eccrypto');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+    });
+};
 
 class RegisterController {
     createAccount(req, res) {
@@ -52,8 +59,10 @@ class RegisterController {
                                 account
                                     .save()
                                     .then(() => {
-                                        req.session.user = account;
-                                        res.status(200).send('');
+                                        //req.session.user = account;
+                                        res.status(200).json({
+                                            token: generateToken(account._id),
+                                        });
                                     })
                                     .catch(() => {
                                         res.status(500).send('');
