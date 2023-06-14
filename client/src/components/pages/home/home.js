@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export default function Home() {
     const [auth, setAuth] = useState(false);
     useEffect(() => {
-        fetch('http://localhost:5000/login/user', {
+        fetch('http://localhost:5000/account/user', {
             credentials: 'include',
             method: 'GET',
             headers: {

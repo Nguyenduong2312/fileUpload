@@ -10,14 +10,6 @@ const port = 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-    session({
-        resave: true,
-        saveUninitialized: true,
-        secret: 'somesecret',
-        cookie: { maxAge: 600000000000000000 },
-    }),
-);
 app.use(fileUpload());
 app.use(
     cors({

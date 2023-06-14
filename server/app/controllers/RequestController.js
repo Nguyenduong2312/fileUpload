@@ -42,19 +42,19 @@ class RequestController {
     request(req, res) {
         const { idReceiver, idRecord, nameRecord, idOnChain } = req.body;
         Request.findOne({
-            idSender: req.session.user.id,
+            idSender: req.user.id,
             idReceiver: idReceiver,
             idRecord: idRecord,
             status: 'Waiting',
         }).then((request) => {
             if (request) {
                 res.send(
-                    'Request has already sent before. Waiting receiver accepted it.',
+                    'Request has already been sent before. Waiting for receiver to accept it.',
                 );
             } else {
                 const request = new Request();
                 request.idReceiver = idReceiver;
-                request.idSender = req.session.user.id;
+                request.idSender = req.user.id;
                 request.idRecord = idRecord;
                 request.nameRecord = nameRecord;
                 request.idOnChain = idOnChain;

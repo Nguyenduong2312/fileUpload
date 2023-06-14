@@ -32,6 +32,8 @@ const protect = asyncHandler(async (req, res, next) => {
 });
 
 const checkPatient = asyncHandler(async (req, res, next) => {
+    console.log('checkPatient');
+
     User.findOne({ id: req.params.id, role: 'Patient' })
         .then((account) => {
             if (account) {

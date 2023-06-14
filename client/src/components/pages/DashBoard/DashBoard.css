@@ -1,5 +1,6 @@
 .dashboard_content{
     width: 80%;
+    min-width: 800px;
     margin: auto;
     position: relative;
 }

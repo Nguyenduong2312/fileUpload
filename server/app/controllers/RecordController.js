@@ -35,7 +35,7 @@ const EncryptAES = require('../custom_modules/EncryptAES');
 const ECC = require('../custom_modules/ECC');
 
 //lưu file vào public/uploads
-const path = `${process.cwd()}/server/public/`;
+const path = `${__dirname}/public/`;
 
 class UploadFileController {
     getRecordById(req, res) {
@@ -64,21 +64,17 @@ class UploadFileController {
         //uploadFile
         file.mv(path + file.name, async (err) => {
             if (err) {
-                console.log(err);
-
-                return res.status(500);
+                return res.status(220).send(err);
             }
             try {
                 const data = fs.readFileSync(path + file.name);
                 const { key, en_data } = EncryptAES.encrypt(data);
-                console.log('data:', file.name, data);
                 // let googleFileId = null;
                 let ipfsCID;
                 try {
                     // file written successfully
                     fs.writeFileSync(path + file.name, en_data);
                     //up defile to drive
-                    console.log(path + file.name, file.name);
                     // const res = await UploadDrive.upload(
                     //     path + file.name,
                     //     file.name,
@@ -95,15 +91,13 @@ class UploadFileController {
                 let record;
                 record = new Record();
                 record.idReceiver = req.body.id;
-                // record.idUploader = req.user.id;
-                console.log(req.user);
+                record.idUploader = req.user.id;
                 record.fileName = file.name;
-                console.log('record: ', record);
-                // record.save().catch(() => {
-                //     return res.status(400);
-                // });
+                record.save().catch(() => {
+                    res.status(400);
+                });
 
-                console.log('keyB', publicKeyB);
+                //console.log('keyB', publicKeyB);
                 // console.log('string keyB', publicKeyB.toString('hex'));
                 //2. Mã hóa khóa k
                 const token = await ECC.encrypt(key, publicKeyB);
@@ -161,21 +155,17 @@ class UploadFileController {
                 console.error(err);
             }
         });
-        return res.status(200).send(`Uploaded!`);
     }
 
     downloadRecord(req, res) {
         const { id } = req.params;
-        console.log(id);
         contractInstance.methods
             .numberOfRecords()
             .call()
             .then(async (result) => {
                 const record = await Record.findById(id);
-                console.log(id);
-                console.log(record);
                 if (record.idOnChain < 0 || record.idOnChain >= result) {
-                    return res.status(404).json({ msg: 'id out of range' });
+                    return res.status(404).send('id out of range');
                 }
                 const txRecord = await contractInstance.methods['ehrs'](
                     record.idOnChain,

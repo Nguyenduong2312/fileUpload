@@ -2,12 +2,16 @@
     display: flex;
 }
 
-.button.download{
+.button.Download{
     background-color: #0074E4;
 }
 .download:hover{
     background-color: #537188;
 }
+.button.Downloading{
+    background-color: #537188;
+}
+
 
 .status{
     font-weight: 600;

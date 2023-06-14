@@ -28,33 +28,28 @@ export default function Register(props) {
         }
 
         e.preventDefault();
-        // try {
-        //     const res = await axios.post('/register', formData, {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data',
-        //         },
-        //     });
-        //     if (res.status === 220) {
-        //         setMessage(res.data);
-        //     }
-        //     if (res.status === 200) {
-        //         navigate('/myProfile');
-        //     }
-        // } catch (err) {
-        //     if (err.response.status === 500) {
-        //         setMessage('There was a problem with the server');
-        //     } else {
-        //         setMessage(err.response.data.msg);
-        //     }
-        // }
         try {
             // const res = await checkDoctorIsRegistered("ad3bec1060a729641f437fd15690e7fc0fcef1b0a134197faf1076e719b221b8")
-            const res = await checkDoctorIsRegistered(
-                process.env.REACT_APP_PRIVATE_KEY_A,
-            );
-            setMessage(res);
-            console.log(res);
-            console.log(process.env.REACT_APP_PRIVATE_KEY_A);
+            // const res = await checkDoctorIsRegistered(
+            //     process.env.REACT_APP_PRIVATE_KEY_A,
+            // );
+            // setMessage(res);
+            // console.log(res);
+            // console.log(process.env.REACT_APP_PRIVATE_KEY_A);
+            const res = await axios.post('/account/signup', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log('status: ', res.status);
+            if (res.status === 220) {
+                setMessage(res.data);
+            }
+            if (res.status === 200) {
+                navigate('/myProfile');
+                console.log('data:  ', res.data.token);
+                localStorage.setItem('token', res.data.token);
+            }
         } catch (err) {
             console.log(err);
         }

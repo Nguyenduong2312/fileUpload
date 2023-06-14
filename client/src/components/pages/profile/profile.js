@@ -14,7 +14,7 @@ export default function Profile() {
     const { name, address, email, date } = formData;
 
     useEffect(() => {
-        fetch('http://localhost:5000/login/user', {
+        fetch('http://localhost:5000/account/user', {
             credentials: 'include',
             method: 'GET',
             headers: {
@@ -23,6 +23,7 @@ export default function Profile() {
         })
             .then((res) => res.json())
             .then((account) => {
+                console.log('acc : ', account);
                 setUser(account);
             });
     }, []);

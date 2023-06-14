@@ -18,7 +18,7 @@ export default function FamilyMember() {
     useEffect(() => {
         setParentList([]);
         setChildList([]);
-        fetch(`http://localhost:5000/login/${id || 'user'}`, {
+        fetch(`http://localhost:5000/account/${id || 'user'}`, {
             credentials: 'include',
             method: 'GET',
             headers: {
@@ -32,7 +32,7 @@ export default function FamilyMember() {
                 console.log('relation: ', account.relationship);
                 const accRelationship = account.relationship;
                 for (let key in accRelationship) {
-                    fetch(`http://localhost:5000/login/id/${key}`, {
+                    fetch(`http://localhost:5000/account/id/${key}`, {
                         credentials: 'include',
                         method: 'GET',
                     })
@@ -63,6 +63,7 @@ export default function FamilyMember() {
             const res = await axios.post(`/membership`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
             setMessage(res.data);
@@ -136,7 +137,7 @@ export default function FamilyMember() {
                         marginTop: '50px',
                     }}
                 >
-                    CHILDRENT:{' '}
+                    CHILDREN:{' '}
                 </p>
                 <div className="memberTags children">
                     {childList.map((user) => (

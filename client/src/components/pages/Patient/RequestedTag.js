@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 export default function RequestedTag(props) {
+    const [user, setuser] = useState();
+    useEffect(() => {
+        console.log('run');
+        fetch(`http://localhost:5000/account/id/${props.request.idSender}`, {
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((account) => {
+                if (account) {
+                    console.log('acc', account);
+                    setuser(account);
+                }
+            });
+    }, [props.request.idSender]);
+
     const Accepted = {
         idSender: props.request.idSender,
         status: 'Accepted',
@@ -36,7 +55,7 @@ export default function RequestedTag(props) {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log('rj', Rejected);
+            //console.log('rj', Rejected);
             props.setLengthOfRequestList((prev) => prev - 1);
         } catch (err) {
             console.log('lỗi');
@@ -47,9 +66,9 @@ export default function RequestedTag(props) {
         <div className="record_tag">
             <div className="text" style={{ display: 'block' }}>
                 <p>
-                    Id Sender: {props.request.idSender}{' '}
+                    Id Sender: {user?.id}
                     <Link
-                        to={`/userDetail/${props.request.idSender}`}
+                        to={`/userDetail/${user?._id}`}
                         style={{ textDecorationLine: 'none' }}
                     >
                         [Xem thông tin]

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import Message from '../../Message';
 import axios from 'axios';
 
@@ -6,6 +6,7 @@ import './uploadRecord.css';
 import Bar from '../bar/bar';
 
 const UploadRecord = () => {
+    const [status, setStatus] = useState('Upload');
     const [file, setFile] = useState('');
     const [filename, setFilename] = useState('Choose file');
     const [message, setMessage] = useState('');
@@ -21,21 +22,21 @@ const UploadRecord = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        setStatus('Uploading...');
         const formData = new FormData();
         formData.append('file', file);
         formData.append('id', id);
-        console.log('form', formData);
         try {
             const res = await axios.post('/record', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
                 credentials: 'include',
             });
-            console.log(res.status);
             if (res.data && res.status === 200) {
-                console.log('true');
                 setMessage(res.data);
+                setStatus('Upload');
             }
             //setMessage(`File "${filename}" Uploaded`);
         } catch (err) {
@@ -84,7 +85,7 @@ const UploadRecord = () => {
                         </div>
                         <input
                             type="submit"
-                            value="Upload"
+                            value={status}
                             className="btn btn-primary btn-block mt-4"
                         />
                     </form>
