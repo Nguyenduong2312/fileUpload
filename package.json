@@ -25,7 +25,7 @@
         "bcrypt": "^5.1.0",
         "bootstrap": "^5.3.0",
         "client-sessions": "^0.8.0",
-        "corn": "^0.0.1",
+        "cors": "^2.8.5",
         "crypto": "^1.0.1",
         "crypto-js": "^4.1.1",
         "eccrypto": "^1.1.6",
@@ -50,7 +50,7 @@
         "react-scripts": "^5.0.1",
         "react-select": "^5.7.3",
         "web-vitals": "^3.3.2",
-        "web3": "^4.0.1",
+        "web3": "^1.9.0",
         "web3.storage": "^4.5.4"
     },
     "devDependencies": {
