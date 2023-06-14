@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function RecordTag(props) {
     const auth = props.status;
+    const [status, setStatus] = useState('Download');
     const [formData, setFormData] = useState({
         idReceiver: props.record.idReceiver,
         idRecord: props.record._id,
@@ -29,7 +30,7 @@ export default function RecordTag(props) {
     }, []);
 
     const handleDownload = (id, filename) => {
-        console.log(`Download: ${id}`);
+        setStatus('Downloading');
         fetch(`http://localhost:5000/record/download/${id}`).then(
             (response) => {
                 response.blob().then((blob) => {
@@ -38,6 +39,7 @@ export default function RecordTag(props) {
                     alink.href = fileURL;
                     alink.download = filename;
                     alink.click();
+                    setStatus('Download');
                 });
             },
         );
@@ -52,7 +54,7 @@ export default function RecordTag(props) {
                 },
             });
 
-            props.setMessage(res.data);
+            //props.setMessage(res.data);
         } catch (err) {
             if (err.response.status === 500) {
                 props.setMessage('There was a problem with the server');
@@ -71,7 +73,7 @@ export default function RecordTag(props) {
             <div className="dashboard_buttons">
                 {auth && (
                     <div
-                        className="button download"
+                        className={`button ${status}`}
                         onClick={() =>
                             handleDownload(
                                 props.record._id,
@@ -79,7 +81,7 @@ export default function RecordTag(props) {
                             )
                         }
                     >
-                        Download
+                        {status}
                     </div>
                 )}
                 {!auth && (

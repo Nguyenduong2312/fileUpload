@@ -77,6 +77,7 @@ class Ipfs {
         const originalText = EncryptAES.decrypt(hashdata.toString(), aesKey);
         try {
             // file written successfully
+            console.log('originalText', originalText);
             fs.writeFileSync(destPath, originalText);
         } catch (err) {
             console.error(err);

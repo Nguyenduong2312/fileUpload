@@ -1,5 +1,6 @@
 .dashboard_content{
     width: 80%;
+    min-width: 800px;
     margin: auto;
     position: relative;
 }
@@ -44,5 +45,4 @@ h3{
     border-radius: 0px 0px 20px 20px;
     max-height: 450px;
     overflow-y: scroll;
-    min-width: 800px;
 }

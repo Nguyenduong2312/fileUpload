@@ -6,6 +6,7 @@ const Message = ({ msg }) => {
         <div
             className="alert alert-info alert-dismissible fade show"
             role="alert"
+            style={{ transition: 'width 2s, height 4s' }}
         >
             {msg}
             <button
