@@ -66,6 +66,7 @@ class RequestController {
         });
     }
     updateRequest(req, res) {
+        console.log('update');
         Request.findOne({ _id: req.params.id }).then((request) => {
             request.status = req.body.status;
             request
@@ -101,13 +102,13 @@ class RequestController {
                         aesKey,
                         publicKeyA,
                     );
-                    console.log(encryptedAESKey);
+                    console.log('encryptedAESKey', encryptedAESKey);
                     // Conver AES key from buffer to string
                     const stringToken = await bufferEncryptedKeyToString(
                         encryptedAESKey,
                     );
 
-                    console.log(addressA);
+                    console.log('addressA', addressA);
 
                     await createRecordOnBlockchain(
                         stringToken,
@@ -117,7 +118,9 @@ class RequestController {
                         txRecord.fileName,
                         copyRecord,
                         privateKeyB,
-                    );
+                    ).then(() => {
+                        console.log('done');
+                    });
 
                     // res.json({ status: true })
                 });
