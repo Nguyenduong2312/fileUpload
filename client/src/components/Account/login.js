@@ -29,7 +29,9 @@ export default function Login() {
                 setMessage(res.data);
             }
             if (res.status === 200) {
+                console.log('res1: ', res.data.token);
                 navigate('/');
+                localStorage.setItem('token', res.data.token);
             }
         } catch (err) {
             if (err.response.status === 500) {

@@ -3,8 +3,6 @@ import { decrypt } from '../custom_modules/EncryptAES';
 import { decrypt as _decrypt } from '../custom_modules/ECC';
 import { getFilesFromPath, Web3Storage } from 'web3.storage';
 require('dotenv').config();
-import Web3, { providers } from 'web3';
-const web3 = new Web3(new providers.HttpProvider(process.env.INFURA_API_KEY));
 
 const getAccessToken = () => {
     return process.env.WEB3STORAGE_TOKEN;

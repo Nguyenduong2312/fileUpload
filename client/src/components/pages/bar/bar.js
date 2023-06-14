@@ -11,6 +11,9 @@ export default function Bar() {
         fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
         })
             .then((res) => res.json())
             .then((requests) => {
@@ -19,7 +22,7 @@ export default function Bar() {
                     setRole(requests.role);
                 }
             });
-    }, [auth]);
+    }, []);
 
     return (
         <div>

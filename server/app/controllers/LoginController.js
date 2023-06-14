@@ -1,19 +1,25 @@
 const Account = require('../models/Account');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+    });
+};
 
 class LoginController {
     // [POST] /login
     login(req, res, next) {
-        if (!req.body.username) {
+        const { username, password } = req.body;
+        if (!username) {
             return res.status(220).send('Username can be empty.');
         } else if (!req.body.password) {
             return res.status(220).send('Password can be empty.');
         }
-        const { username, password } = req.body; //lấy được username & password
 
         //Xử lý
         Account.findOne({ username: username })
-            .lean()
             .then((account) => {
                 if (!account) {
                     return res.status(220).send('Username does not exist.');
@@ -23,8 +29,9 @@ class LoginController {
                         account.password,
                         function (err, result) {
                             if (result) {
-                                req.session.user = account;
-                                return res.status(200).send('');
+                                return res.status(200).json({
+                                    token: generateToken(account._id),
+                                });
                             } else {
                                 return res
                                     .status(220)
@@ -37,16 +44,6 @@ class LoginController {
             .catch(next);
     }
 
-    logout(req, res, next) {
-        // Destroy a session
-        req.session.destroy(function (err) {
-            return res.status(200).json({
-                status: 'success',
-                session: 'cannot access session here',
-            });
-        });
-    }
-    //login/:id
     getUser(req, res) {
         Account.findOne({ id: req.params.id })
             .then((account) => {
@@ -67,25 +64,10 @@ class LoginController {
             });
     }
 
-    // [GET] /login/user
     user(req, res) {
-        Account.findOne({ id: req.session?.user?.id }).then((account) => {
+        Account.findOne({ _id: req.user._id }).then((account) => {
             res.send(account);
         });
-    }
-
-    checkPatient(req, res) {
-        Account.findOne({ id: req.params.id, role: 'Patient' })
-            .then((account) => {
-                if (account) {
-                    res.send(true);
-                } else {
-                    res.send(false);
-                }
-            })
-            .catch(() => {
-                res.send(false);
-            });
     }
 }
 

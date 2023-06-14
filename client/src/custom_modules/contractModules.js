@@ -96,8 +96,4 @@ export default {
     createRecordOnBlockchain,
     stringEncryptedKeyToBuffer,
     bufferEncryptedKeyToString,
-    privateKeyB,
-    publicKeyA,
-    addressA: accountA.address,
-    addressB: accountB.address,
 };

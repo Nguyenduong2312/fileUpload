@@ -14,6 +14,9 @@
     text-decoration-line: none;
     box-shadow: 5px 5px 5px gray;
 }
+.button:active {
+    background-color: #3e8e41;
+  }
 .profile_form_tag .button{
     position: absolute;
     bottom: 30px;

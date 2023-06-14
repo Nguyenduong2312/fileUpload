@@ -11,29 +11,21 @@ import { Button } from 'react-bootstrap';
 
 const RequestRecord = () => {
     const [message, setMessage] = useState('');
-    const [id, setId] = useState('null');
-    const [user, setUser] = useState({
-        name: ' ',
-        id: ' ',
-    });
+    const [user, setUser] = useState();
 
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(
-                `/login/patient/${e.target.id.value}`,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                },
-            );
-            if (res.data === false) {
-                setId('null');
-                setMessage('User does not exist.');
-            } else {
-                setId(e.target.id.value);
-            }
+            fetch(`http://localhost:5000/login/patient/${e.target.id.value}`)
+                .then((res) => res.json())
+                .then((account) => {
+                    if (account) {
+                        setUser(account);
+                    } else {
+                        setMessage('User is not exist');
+                        setUser();
+                    }
+                });
         } catch (err) {
             if (err.response.status === 500) {
                 setMessage('There was a problem with the server');
@@ -42,16 +34,6 @@ const RequestRecord = () => {
             }
         }
     };
-    useEffect(() => {
-        fetch(`http://localhost:5000/login/${id}`, {
-            credentials: 'include',
-            method: 'GET',
-        })
-            .then((res) => res.json())
-            .then((account) => {
-                setUser(account);
-            });
-    }, [id]);
     return (
         <div>
             <Bar></Bar>
@@ -73,9 +55,7 @@ const RequestRecord = () => {
                 </Button>
             </form>
             <div className="result_search">
-                {id !== 'null' && user && (
-                    <UserTag name={user.name} id={user.id}></UserTag>
-                )}
+                {user && <UserTag id={user._id}></UserTag>}
             </div>
         </div>
     );

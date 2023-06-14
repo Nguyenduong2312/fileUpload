@@ -34,12 +34,8 @@ const publicKeyB = eccrypto.getPublic(Buffer.from(privateKeyB, 'hex'));
 const EncryptAES = require('../custom_modules/EncryptAES');
 const ECC = require('../custom_modules/ECC');
 
-const UploadDrive = require('../custom_modules/UploadToDrive');
-const DownloadDrive = require('../custom_modules/DownloadFromDrive');
-const { drive } = require('googleapis/build/src/apis/drive');
-
 //lưu file vào public/uploads
-const path = `${process.cwd()}/server/public/uploads/`;
+const path = `${process.cwd()}/server/public/`;
 
 class UploadFileController {
     getRecordById(req, res) {
@@ -68,7 +64,9 @@ class UploadFileController {
         //uploadFile
         file.mv(path + file.name, async (err) => {
             if (err) {
-                return res.status(500).send(err);
+                console.log(err);
+
+                return res.status(500);
             }
             try {
                 const data = fs.readFileSync(path + file.name);
@@ -86,7 +84,7 @@ class UploadFileController {
                     //     file.name,
                     // );
                     // googleFileId = res.data.id;
-                    ipfsCID = await Ipfs.uploadFile(path + file.name);
+                    // ipfsCID = await Ipfs.uploadFile(path + file.name);
                 } catch (err) {
                     console.error(err);
                 }
@@ -97,12 +95,13 @@ class UploadFileController {
                 let record;
                 record = new Record();
                 record.idReceiver = req.body.id;
-                record.idUploader = req.session.user.id;
+                // record.idUploader = req.user.id;
+                console.log(req.user);
                 record.fileName = file.name;
                 console.log('record: ', record);
-                record.save().catch(() => {
-                    return res.status(400);
-                });
+                // record.save().catch(() => {
+                //     return res.status(400);
+                // });
 
                 console.log('keyB', publicKeyB);
                 // console.log('string keyB', publicKeyB.toString('hex'));
@@ -121,43 +120,43 @@ class UploadFileController {
                 const fileName = file.name;
                 const encryptedKey = stringToken;
                 // create the transaction object
-                const txObject = {
-                    from: accountA.address,
-                    to: contractAddress,
-                    gas: 3000000,
-                    data: contractInstance.methods
-                        .createEHR(owner, cid, fileName, encryptedKey)
-                        .encodeABI(),
-                };
+                // const txObject = {
+                //     from: accountA.address,
+                //     to: contractAddress,
+                //     gas: 3000000,
+                //     data: contractInstance.methods
+                //         .createEHR(owner, cid, fileName, encryptedKey)
+                //         .encodeABI(),
+                // };
                 // sign the transaction
                 console.log('Signing tracsaction');
-                web3.eth.accounts
-                    .signTransaction(txObject, accountA.privateKey)
-                    .then((signedTx) => {
-                        // send the signed transaction to the network
-                        web3.eth
-                            .sendSignedTransaction(signedTx.rawTransaction)
-                            .on('receipt', (receipt) => {
-                                console.log('Transaction receipt:', receipt);
-                            })
-                            .on('error', (error) => {
-                                console.error('Error sending EHR:', error);
-                            });
-                    })
-                    .catch((error) => {
-                        console.error('Error signing transaction:', error);
-                    });
-                contractInstance.methods
-                    .numberOfRecords()
-                    .call()
-                    .then(async (result) => {
-                        console.log('result:', result);
-                        record.idOnChain = result;
-                        record.save();
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
+                // web3.eth.accounts
+                //     .signTransaction(txObject, accountA.privateKey)
+                //     .then((signedTx) => {
+                //         // send the signed transaction to the network
+                //         web3.eth
+                //             .sendSignedTransaction(signedTx.rawTransaction)
+                //             .on('receipt', (receipt) => {
+                //                 console.log('Transaction receipt:', receipt);
+                //             })
+                //             .on('error', (error) => {
+                //                 console.error('Error sending EHR:', error);
+                //             });
+                //     })
+                //     .catch((error) => {
+                //         console.error('Error signing transaction:', error);
+                //     });
+                // contractInstance.methods
+                //     .numberOfRecords()
+                //     .call()
+                //     .then(async (result) => {
+                //         console.log('result:', result);
+                //         record.idOnChain = result;
+                //         record.save();
+                //     })
+                //     .catch((error) => {
+                //         console.error(error);
+                //     });
             } catch (err) {
                 console.error(err);
             }

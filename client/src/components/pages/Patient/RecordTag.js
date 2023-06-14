@@ -15,6 +15,9 @@ export default function RecordTag(props) {
         fetch('http://localhost:5000/login/user', {
             credentials: 'include',
             method: 'GET',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
         })
             .then((res) => res.json())
             .then((account) => {

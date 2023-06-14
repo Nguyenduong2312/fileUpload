@@ -8,7 +8,7 @@ export default function UserDetail(props) {
     const { id } = useParams();
     const [user, setUser] = useState({});
     useEffect(() => {
-        fetch(`http://localhost:5000/login/id/${id}`, {
+        fetch(`http://localhost:5000/login/${id}`, {
             credentials: 'include',
             method: 'GET',
         })
