@@ -32,9 +32,9 @@ const protect = asyncHandler(async (req, res, next) => {
 });
 
 const checkPatient = asyncHandler(async (req, res, next) => {
-    console.log('checkPatient');
+    console.log('checkPatient', req.params.id || req.body.id);
 
-    User.findOne({ id: req.params.id, role: 'Patient' })
+    User.findOne({ id: req.params.id || req.user.id, role: 'Patient' })
         .then((account) => {
             if (account) {
                 next();

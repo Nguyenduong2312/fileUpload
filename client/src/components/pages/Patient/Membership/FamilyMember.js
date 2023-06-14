@@ -87,16 +87,12 @@ export default function FamilyMember() {
                     <div className="line_input">
                         <div className="inputField">
                             <label>ID:</label>
-                            <input
-                                type="text"
-                                name="receiverId"
-                                onChange={onChange}
-                            />
+                            <input type="text" name="id" onChange={onChange} />
                         </div>
                         <div className="inputField">
                             <label>Role: </label>
                             <select
-                                name="receiverRole"
+                                name="role"
                                 defaultValue="Select"
                                 onChange={onChange}
                             >
