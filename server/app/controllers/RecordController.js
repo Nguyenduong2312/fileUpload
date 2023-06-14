@@ -80,7 +80,7 @@ class UploadFileController {
                     //     file.name,
                     // );
                     // googleFileId = res.data.id;
-                    // ipfsCID = await Ipfs.uploadFile(path + file.name);
+                    ipfsCID = await Ipfs.uploadFile(path + file.name);
                 } catch (err) {
                     console.error(err);
                 }
@@ -114,43 +114,43 @@ class UploadFileController {
                 const fileName = file.name;
                 const encryptedKey = stringToken;
                 // create the transaction object
-                // const txObject = {
-                //     from: accountA.address,
-                //     to: contractAddress,
-                //     gas: 3000000,
-                //     data: contractInstance.methods
-                //         .createEHR(owner, cid, fileName, encryptedKey)
-                //         .encodeABI(),
-                // };
+                const txObject = {
+                    from: accountA.address,
+                    to: contractAddress,
+                    gas: 3000000,
+                    data: contractInstance.methods
+                        .createEHR(owner, cid, fileName, encryptedKey)
+                        .encodeABI(),
+                };
                 // sign the transaction
                 console.log('Signing tracsaction');
-                // web3.eth.accounts
-                //     .signTransaction(txObject, accountA.privateKey)
-                //     .then((signedTx) => {
-                //         // send the signed transaction to the network
-                //         web3.eth
-                //             .sendSignedTransaction(signedTx.rawTransaction)
-                //             .on('receipt', (receipt) => {
-                //                 console.log('Transaction receipt:', receipt);
-                //             })
-                //             .on('error', (error) => {
-                //                 console.error('Error sending EHR:', error);
-                //             });
-                //     })
-                //     .catch((error) => {
-                //         console.error('Error signing transaction:', error);
-                //     });
-                // contractInstance.methods
-                //     .numberOfRecords()
-                //     .call()
-                //     .then(async (result) => {
-                //         console.log('result:', result);
-                //         record.idOnChain = result;
-                //         record.save();
-                //     })
-                //     .catch((error) => {
-                //         console.error(error);
-                //     });
+                web3.eth.accounts
+                    .signTransaction(txObject, accountA.privateKey)
+                    .then((signedTx) => {
+                        // send the signed transaction to the network
+                        web3.eth
+                            .sendSignedTransaction(signedTx.rawTransaction)
+                            .on('receipt', (receipt) => {
+                                console.log('Transaction receipt:', receipt);
+                            })
+                            .on('error', (error) => {
+                                console.error('Error sending EHR:', error);
+                            });
+                    })
+                    .catch((error) => {
+                        console.error('Error signing transaction:', error);
+                    });
+                contractInstance.methods
+                    .numberOfRecords()
+                    .call()
+                    .then(async (result) => {
+                        console.log('result:', result);
+                        record.idOnChain = result;
+                        record.save();
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
             } catch (err) {
                 console.error(err);
             }
