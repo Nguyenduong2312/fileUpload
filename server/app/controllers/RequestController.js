@@ -85,6 +85,7 @@ class RequestController {
                     });
 
                     // Get record on blockchain
+                    console.log('record.idOnChain: ', record.idOnChain);
                     const txRecord = await getTxRecord(record.idOnChain);
 
                     // Get buffer encrypted AES key
@@ -108,8 +109,8 @@ class RequestController {
                         encryptedAESKey,
                     );
 
-                    console.log('addressA', addressA);
-
+                    //console.log('stringToken: ',stringToken);
+                    //console.log('addressA', addressA);
                     await createRecordOnBlockchain(
                         stringToken,
                         addressB,
@@ -129,6 +130,7 @@ class RequestController {
         //
     }
     deleteRequest(req, res) {
+        console.log('delete', req.params.id);
         Request.findOneAndRemove({ _id: req.params.id })
             .then(() => res.json({ status: true }))
             .catch(() => res.json({ status: false }));

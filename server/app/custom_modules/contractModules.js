@@ -42,6 +42,7 @@ const stringEncryptedKeyToBuffer = async (encryptedKey) => {
 
 const bufferEncryptedKeyToString = async (encryptedKey) => {
     // chuyen token thanh string de luu len blockchain
+    console.log('bufferEncryptedKeyToString:');
     const stringToken = JSON.stringify({
         iv: encryptedKey.iv.toString('hex'),
         ciphertext: encryptedKey.ciphertext.toString('hex'),

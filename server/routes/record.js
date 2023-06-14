@@ -8,4 +8,6 @@ router.post('/', protect, RecordController.upload);
 router.get('/:id', RecordController.getRecordById);
 router.get('/received/:id', RecordController.getReceivedRecordById);
 router.get('/download/:id', RecordController.downloadRecord);
+router.delete('/:id', RecordController.deleteRecord);
+
 module.exports = router;

@@ -112,6 +112,8 @@ class UploadFileController {
                     mac: token.mac.toString('hex'),
                     ephemPublicKey: token.ephemPublicKey.toString('hex'),
                 });
+                console.log('stringToken: ', stringToken);
+
                 // transaction data
                 const owner = accountB.address;
                 const cid = ipfsCID;
@@ -135,7 +137,7 @@ class UploadFileController {
                         web3.eth
                             .sendSignedTransaction(signedTx.rawTransaction)
                             .on('receipt', (receipt) => {
-                                //console.log('Transaction receipt:', receipt);
+                                console.log('Transaction receipt:', receipt);
                             })
 
                             .on('error', (error) => {
@@ -200,6 +202,11 @@ class UploadFileController {
             .catch((error) => {
                 console.error(error);
             });
+    }
+    deleteRecord(req, res) {
+        Record.findOneAndRemove({ _id: req.params.id })
+            .then(() => res.json({ status: true }))
+            .catch(() => res.json({ status: false }));
     }
 }
 

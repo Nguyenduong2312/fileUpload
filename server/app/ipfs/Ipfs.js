@@ -68,11 +68,17 @@ class Ipfs {
     };
 
     downloadFile = async (cid, destPath, encryptedContent) => {
+        console.log('download ipfs');
+        console.log(cid, destPath, encryptedContent);
+
         let hashdata = await this.retrieveFiles(cid);
+        console.log('hashdata ipfs', hashdata);
+
         const aesKey = await ECC.decrypt(
             encryptedContent,
             Buffer.from(privateKeyB, 'hex'),
         );
+        console.log('aesKey ipfs', aesKey);
 
         const originalText = EncryptAES.decrypt(hashdata.toString(), aesKey);
         try {

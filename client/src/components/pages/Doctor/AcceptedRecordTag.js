@@ -20,12 +20,13 @@ export default function AcceptedRecordTag(props) {
     const handleRejectRequest = async (e) => {
         e.preventDefault();
         try {
-            await axios.delete(`/requestRecord/${props.record._id}`, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            props.setLength((prev) => prev - 1);
+            await axios
+                .delete(`/record/${props.record._id}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                .then(() => props.setLength((prev) => prev - 1));
         } catch (err) {
             if (err.response.status === 500) {
                 props.setMessage('There was a problem with the server');
