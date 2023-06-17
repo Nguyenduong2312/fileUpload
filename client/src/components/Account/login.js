@@ -8,6 +8,7 @@ import Message from '../Message';
 import './login.css';
 
 export default function Login() {
+    const [privateKey, setPrivateKey] = useState('');
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
@@ -83,7 +84,11 @@ export default function Login() {
                                             <input
                                                 type="password"
                                                 name="privateKey"
-                                                onChange={onChange}
+                                                onChange={(e) =>
+                                                    setPrivateKey(
+                                                        e.target.value,
+                                                    )
+                                                }
                                             />
                                         </label>
                                     </div>
