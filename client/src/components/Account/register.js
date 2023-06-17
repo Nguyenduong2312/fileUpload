@@ -9,7 +9,8 @@ import Message from '../Message';
 export default function Register(props) {
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
-    const { username, password1, password2 } = formData;
+    const { role } = formData;
+    const [privateKey, setPrivateKey] = useState('');
     const navigate = useNavigate();
 
     const onChange = (e) => {
@@ -76,7 +77,6 @@ export default function Register(props) {
                                             <input
                                                 type="text"
                                                 name="username"
-                                                value={username}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -87,7 +87,6 @@ export default function Register(props) {
                                             <input
                                                 type="password"
                                                 name="password1"
-                                                value={password1}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -98,7 +97,6 @@ export default function Register(props) {
                                             <input
                                                 type="password"
                                                 name="password2"
-                                                value={password2}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -124,7 +122,20 @@ export default function Register(props) {
                                             </option>
                                         </select>
                                     </div>
-
+                                    {role === 'Doctor' && (
+                                        <div className="inputField">
+                                            <label>
+                                                Private key:<br></br>
+                                                <input
+                                                    type="password"
+                                                    name="privateKey"
+                                                    onChange={(e) =>
+                                                        setPrivateKey(e)
+                                                    }
+                                                />
+                                            </label>
+                                        </div>
+                                    )}
                                     <p className="login">
                                         Already have an account?
                                         <Link
