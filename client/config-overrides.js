@@ -1,5 +1,8 @@
 const webpack = require('webpack');
 module.exports = function override(config) {
+    config.resolve = config.resolve || {};
+    config.resolve.fullySpecified = false;
+
     const fallback = config.resolve.fallback || {};
     Object.assign(fallback, {
         crypto: require.resolve('crypto-browserify'),
@@ -13,11 +16,21 @@ module.exports = function override(config) {
         fs: require.resolve('browserify-fs'),
     });
     config.resolve.fallback = fallback;
+
     config.plugins = (config.plugins || []).concat([
         new webpack.ProvidePlugin({
             process: 'process/browser',
             Buffer: ['buffer', 'Buffer'],
         }),
     ]);
+    config.module.rules.push({
+        test: /\.(js|mjs|jsx)$/,
+        enforce: 'pre',
+        loader: require.resolve('source-map-loader'),
+        resolve: {
+            fullySpecified: false,
+        },
+    });
+
     return config;
 };
