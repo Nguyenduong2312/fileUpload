@@ -7,13 +7,14 @@ import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
 import { checkDoctorIsRegistered } from '../../custom_modules/accountContractModules';
+
 require('dotenv').config();
 
 export default function Register(props) {
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
-    // const [privateKey, setPrivatekey] = useState('');
-    const { username, password1, password2 } = formData;
+    const { role } = formData;
+    const [privateKey, setPrivateKey] = useState('');
     const navigate = useNavigate();
 
     const onChange = (e) => {
@@ -21,66 +22,33 @@ export default function Register(props) {
             ...prevState,
             [e.target.name]: e.target.value,
         }));
-        // if (e.target.name=="role" && e.target.value=="Doctor"){
-        //     setFormData((prevState) => ({
-        //         ...prevState,
-        //         ["privateKey"]: "",
-        //     }));
-        //     }
-        // if (e.target.name=="role" && e.target.value=="Doctor"){
-        //     var iDiv = document.createElement('div');
-        //     iDiv.className = 'inputField';
-        //     iDiv.id = 'privateKey';
-        //     var label = document.createElement("label");
-        //     label.innerHTML = "Private Key:\n"
-        //     var input = document.createElement("input");
-        //     input.setAttribute('type', 'text');
-        //     input.setAttribute('name', 'privateKey');
-        //     label.appendChild(input)
-        //     iDiv.appendChild(label)
-        //     console.log(iDiv)
-        //     var parentElement = document.getElementById('formField')[0]
-        //     console.log(parentElement)
-        //     // parentElement.insertBefore(iDiv, parentElement.childNodes[1]);
-        //     parentElement.appendChild(iDiv)
-        // }
     };
     const onSubmit = async (e) => {
-        if (password1 !== password2) {
-            setMessage('Confirm password does not match with password.');
-        }
-
         e.preventDefault();
-
-        //gen key
-
-        //setFormData((prevState) => ({
-        //    ...prevState,
-        //    ['publicKey']: publicKey,
-        //}));
-
         try {
-            // const res = await checkDoctorIsRegistered("ad3bec1060a729641f437fd15690e7fc0fcef1b0a134197faf1076e719b221b8")
-            // const res = await checkDoctorIsRegistered(
-            //     process.env.REACT_APP_PRIVATE_KEY_A,
-            // );
-            // setMessage(res);
-            // console.log(res);
-            // console.log(process.env.REACT_APP_PRIVATE_KEY_A);
-            const res = await axios.post('/account/signup', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log('status: ', res.status);
-            if (res.status === 220) {
-                setMessage(res.data);
-            }
-            if (res.status === 200) {
-                navigate(`/myProfile/true`);
-                console.log('data:  ', res.data.token);
-                localStorage.setItem('token', res.data.token);
-                //localStorage.setItem('key', privateKey);
+            const publicKey = await checkDoctorIsRegistered(privateKey);
+            if (publicKey) {
+                setFormData((prevState) => ({
+                    ...prevState,
+                    ['publicKey']: publicKey,
+                }));
+                const res = await axios.post('/account/signup', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                console.log('status: ', res.status);
+                if (res.status === 220) {
+                    setMessage(res.data);
+                }
+                if (res.status === 200) {
+                    navigate(`/myProfile/true`);
+                    console.log('data:  ', res.data.token);
+                    localStorage.setItem('token', res.data.token);
+                    localStorage.setItem('key', privateKey);
+                } else {
+                    setMessage('Doctor is not registered on blockchain');
+                }
             }
         } catch (err) {
             console.log(err);
@@ -109,7 +77,6 @@ export default function Register(props) {
                                             <input
                                                 type="text"
                                                 name="username"
-                                                value={username}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -120,7 +87,6 @@ export default function Register(props) {
                                             <input
                                                 type="password"
                                                 name="password1"
-                                                value={password1}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -131,7 +97,6 @@ export default function Register(props) {
                                             <input
                                                 type="password"
                                                 name="password2"
-                                                value={password2}
                                                 onChange={onChange}
                                             />
                                         </label>
@@ -157,7 +122,22 @@ export default function Register(props) {
                                             </option>
                                         </select>
                                     </div>
-
+                                    {role === 'Doctor' && (
+                                        <div className="inputField">
+                                            <label>
+                                                Private key:<br></br>
+                                                <input
+                                                    type="password"
+                                                    name="privateKey"
+                                                    onChange={(e) =>
+                                                        setPrivateKey(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            </label>
+                                        </div>
+                                    )}
                                     <p className="login">
                                         Already have an account?
                                         <Link

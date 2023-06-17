@@ -1,5 +1,4 @@
 const Account = require('../models/Account');
-var eccrypto = require('eccrypto');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
@@ -33,9 +32,7 @@ class RegisterController {
                 // Create temporary account object to assign value
                 const tmp = new Account();
                 tmp.username = req.body.username;
-                const privateKey = eccrypto.generatePrivate();
-                tmp.privateKey = JSON.stringify(privateKey);
-                tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
+                tmp.publicKey = req.body.publicKey;
                 tmp.role = req.body.role;
                 // Increment id
                 Account.findOne({})

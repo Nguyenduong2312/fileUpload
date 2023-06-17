@@ -13,6 +13,7 @@ const contractInstance = new web3.eth.Contract(
 );
 
 export const checkDoctorIsRegistered = async (priKey) => {
+    console.log(priKey);
     const account = web3.eth.accounts.privateKeyToAccount(priKey);
     try {
         const txAccount = await contractInstance.methods
