@@ -143,7 +143,10 @@ class UploadFileController {
                             .on('error', (error) => {
                                 console.error('Error sending EHR:', error);
                             })
-                            .then(() => res.status(200).send(`Uploaded!`));
+                            .then(() => {
+                                fs.unlinkSync(path + file.name);
+                                return res.status(200).send(`Uploaded!`);
+                            });
                     })
                     .catch((error) => {
                         console.error('Error signing transaction:', error);
@@ -191,12 +194,15 @@ class UploadFileController {
                         'hex',
                     ),
                 };
+                console.log('res1');
                 Ipfs.downloadFile(
                     txRecord.cid,
                     path + 'de_' + txRecord.fileName,
                     encryptedContent,
                 ).then(() => {
+                    console.log('res');
                     res.status(200).download(path + 'de_' + txRecord.fileName);
+                    //fs.unlinkSync(path + 'de_' + txRecord.fileName);
                 });
             })
             .catch((error) => {
@@ -207,6 +213,14 @@ class UploadFileController {
         Record.findOneAndRemove({ _id: req.params.id })
             .then(() => res.json({ status: true }))
             .catch(() => res.json({ status: false }));
+    }
+    deleteFile(req, res) {
+        try {
+            fs.unlinkSync(path + 'de_' + req.body.filename);
+            return res.status(200).send('xóa thành công');
+        } catch (err) {
+            console.error(err);
+        }
     }
 }
 

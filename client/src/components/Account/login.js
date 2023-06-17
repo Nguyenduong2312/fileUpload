@@ -77,6 +77,17 @@ export default function Login() {
                                             />
                                         </label>
                                     </div>
+                                    <div className="inputField">
+                                        <label>
+                                            Private key:<br></br>
+                                            <input
+                                                type="password"
+                                                name="privateKey"
+                                                onChange={onChange}
+                                            />
+                                        </label>
+                                    </div>
+
                                     <p className="login">
                                         Don't have account?
                                         <Link

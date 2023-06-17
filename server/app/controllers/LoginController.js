@@ -13,12 +13,18 @@ const generateToken = (id) => {
 class LoginController {
     // [POST] /login
     login(req, res, next) {
-        const { username, password } = req.body;
+        const { username, password, privateKey } = req.body;
         if (!username) {
             return res.status(220).send('Username can be empty.');
         } else if (!req.body.password) {
             return res.status(220).send('Password can be empty.');
         }
+
+        //check privateKey
+        console.log('privateKey: ', privateKey);
+
+        //if false
+        ////retuen res.status(220).send('Private key không đúng')
 
         //Xử lý
         Account.findOne({ username: username })
@@ -33,6 +39,7 @@ class LoginController {
                             if (result) {
                                 return res.status(200).json({
                                     token: generateToken(account._id),
+                                    //key: privateKey,
                                 });
                             } else {
                                 return res
@@ -95,9 +102,11 @@ class LoginController {
                 // Create temporary account object to assign value
                 const tmp = new Account();
                 tmp.username = req.body.username;
-                const privateKey = eccrypto.generatePrivate();
-                tmp.privateKey = JSON.stringify(privateKey);
-                tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
+
+                const privateKey = eccrypto.generatePrivate(); //
+                tmp.privateKey = JSON.stringify(privateKey); //
+                tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey)); //
+                //tmp.privateKey = JSON.stringify(req.body.privateKey)
                 tmp.role = req.body.role;
                 // Increment id
                 Account.findOne({})

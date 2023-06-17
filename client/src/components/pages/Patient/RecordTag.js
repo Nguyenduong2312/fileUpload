@@ -31,8 +31,8 @@ export default function RecordTag(props) {
 
     const handleDownload = (id, filename) => {
         setStatus('Downloading');
-        fetch(`http://localhost:5000/record/download/${id}`).then(
-            (response) => {
+        fetch(`http://localhost:5000/record/download/${id}`)
+            .then((response) => {
                 response.blob().then((blob) => {
                     const fileURL = window.URL.createObjectURL(blob);
                     let alink = document.createElement('a');
@@ -41,8 +41,22 @@ export default function RecordTag(props) {
                     alink.click();
                     setStatus('Download');
                 });
-            },
-        );
+                return filename;
+            })
+            .then(async (filename) => {
+                await axios.post(
+                    `/record/delete`,
+                    { filename: filename },
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            authorization: `Bearer ${localStorage.getItem(
+                                'token',
+                            )}`,
+                        },
+                    },
+                );
+            });
     };
     const handleRequestRecord = async (e) => {
         e.preventDefault();

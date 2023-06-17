@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import Bar from '../bar/bar';
@@ -13,6 +14,7 @@ export default function Profile() {
     const [message, setMessage] = useState('');
     const { name, address, email, date } = formData;
 
+    const isFirstLogin = useParams();
     useEffect(() => {
         fetch('http://localhost:5000/account/user', {
             credentials: 'include',
@@ -23,7 +25,6 @@ export default function Profile() {
         })
             .then((res) => res.json())
             .then((account) => {
-                console.log('acc : ', account);
                 setUser(account);
             });
     }, []);
@@ -60,6 +61,13 @@ export default function Profile() {
         <div>
             <Bar></Bar>
             <div className="profile">
+                {isFirstLogin.status === 'true' && (
+                    <Message
+                        msg={
+                            'This is your private key. Please save it for future use when logging in again.'
+                        }
+                    />
+                )}
                 {message ? <Message msg={message} /> : null}
                 <div className="infoTag">
                     <div className="profile_form_tag">

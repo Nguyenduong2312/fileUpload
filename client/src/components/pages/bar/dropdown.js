@@ -57,7 +57,7 @@ function DropUser(props) {
                     <div className="dropdownItemTag">
                         <Dropdown.Item
                             className="dropdownItem"
-                            href="/myProfile"
+                            href="/myProfile/false"
                             style={{ color: 'black' }}
                         >
                             View profile

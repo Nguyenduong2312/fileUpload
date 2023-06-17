@@ -20,11 +20,14 @@ export default function Register(props) {
     };
 
     const onSubmit = async (e) => {
-        if (password1 !== password2) {
-            setMessage('Password không giống nhau.');
-        }
-
         e.preventDefault();
+
+        //gen key
+
+        //setFormData((prevState) => ({
+        //    ...prevState,
+        //    ['publicKey']: publicKey,
+        //}));
 
         try {
             const res = await axios.post('/account/signup', formData, {
@@ -37,9 +40,10 @@ export default function Register(props) {
                 setMessage(res.data);
             }
             if (res.status === 200) {
-                navigate('/myProfile');
+                navigate(`/myProfile/true`);
                 console.log('data:  ', res.data.token);
                 localStorage.setItem('token', res.data.token);
+                //localStorage.setItem('key', privateKey);
             }
         } catch (err) {
             if (err.response.status === 500) {
@@ -59,7 +63,10 @@ export default function Register(props) {
                 </div>
                 <div class="login_tag_cover">
                     <div class="login_tag">
-                        <div className="login_tag_text">
+                        <div
+                            className="login_tag_text"
+                            style={{ padding: '50px 0px' }}
+                        >
                             <p>REGISTER</p>
                             <section>
                                 <form onSubmit={onSubmit}>
@@ -102,6 +109,11 @@ export default function Register(props) {
                                             name="role"
                                             defaultValue="Select"
                                             onChange={onChange}
+                                            style={{
+                                                borderRadius: '5px',
+                                                padding: '5px 20px',
+                                                marginLeft: '10px',
+                                            }}
                                         >
                                             <option>Select...</option>
                                             <option value="Doctor">

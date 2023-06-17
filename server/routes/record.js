@@ -9,5 +9,5 @@ router.get('/:id', RecordController.getRecordById);
 router.get('/received/:id', RecordController.getReceivedRecordById);
 router.get('/download/:id', RecordController.downloadRecord);
 router.delete('/:id', RecordController.deleteRecord);
-
+router.post('/delete', RecordController.deleteFile);
 module.exports = router;
