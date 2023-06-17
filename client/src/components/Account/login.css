@@ -10,6 +10,8 @@
 
 .login_tag{
     margin: auto;
+    margin-top: -50px;
+    z-index: 10;
     width: 400px;
     height: fit-content;
     border-radius: 20px;

@@ -108,6 +108,8 @@ class UploadFileController {
                     mac: token.mac.toString('hex'),
                     ephemPublicKey: token.ephemPublicKey.toString('hex'),
                 });
+                console.log('stringToken: ', stringToken);
+
                 // transaction data
                 const owner = accountB.address;
                 const cid = ipfsCID;
@@ -135,6 +137,10 @@ class UploadFileController {
                             })
                             .on('error', (error) => {
                                 console.error('Error sending EHR:', error);
+                            })
+                            .then(() => {
+                                fs.unlinkSync(path + file.name);
+                                return res.status(200).send(`Uploaded!`);
                             });
                     })
                     .catch((error) => {
@@ -184,17 +190,33 @@ class UploadFileController {
                         'hex',
                     ),
                 };
+                console.log('res1');
                 Ipfs.downloadFile(
                     txRecord.cid,
                     path + 'de_' + txRecord.fileName,
                     encryptedContent,
                 ).then(() => {
+                    console.log('res');
                     res.status(200).download(path + 'de_' + txRecord.fileName);
+                    //fs.unlinkSync(path + 'de_' + txRecord.fileName);
                 });
             })
             .catch((error) => {
                 console.error(error);
             });
+    }
+    deleteRecord(req, res) {
+        Record.findOneAndRemove({ _id: req.params.id })
+            .then(() => res.json({ status: true }))
+            .catch(() => res.json({ status: false }));
+    }
+    deleteFile(req, res) {
+        try {
+            fs.unlinkSync(path + 'de_' + req.body.filename);
+            return res.status(200).send('xóa thành công');
+        } catch (err) {
+            console.error(err);
+        }
     }
 }
 

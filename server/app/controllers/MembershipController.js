@@ -21,20 +21,20 @@ class MembershipController {
     }
 
     request(req, res) {
-        if (req.body.id === null || req.body.role === null) {
+        if (!req.body.id || !req.body.role) {
             return res.send('Id and role can not be empty');
         }
-        Account.findOne({ id: req.body.receiverId }).then((account) => {
+        Account.findOne({ id: req.body.id }).then((account) => {
             if (
                 !account ||
-                req.body.receiverId === req.user.id ||
+                Number(req.body.id) === req.user.id ||
                 account.role === 'Doctor'
             ) {
-                return res.send('User is not exists.');
+                return res.send('User is not exists or invalid.');
             }
             RelationshipRequest.findOne({
                 senderId: req.user.id,
-                receiverId: req.body.receiverId,
+                receiverId: req.body.id,
             }).then((request) => {
                 if (request && request.status === 'Waitting') {
                     return res.send(
@@ -46,9 +46,9 @@ class MembershipController {
                     request.senderName = req.user.name;
 
                     request.receiverName = account.name;
-                    request.receiverId = req.body.receiverId;
+                    request.receiverId = req.body.id;
 
-                    request.receiverRole = req.body.receiverRole;
+                    request.receiverRole = req.body.role;
                     if (
                         request.receiverRole === 'Child' &&
                         req.user.gender === 'Female'
@@ -87,11 +87,11 @@ class MembershipController {
             roleForSender,
         ); // add for sender
 
-        RelationshipRequest.findOne({ _id: req.body._id }).then((request) => {
-            request.status = 'Accepted';
-            request.save();
-        });
-        res.send('abc');
+        RelationshipRequest.findOneAndRemove({ _id: req.params.id })
+            .then(() => res.json({ status: true }))
+            .catch(() => res.json({ status: false }));
+
+        res.status(200);
     }
 
     deleteRequest(req, res) {

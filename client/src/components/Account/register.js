@@ -12,6 +12,7 @@ require('dotenv').config();
 export default function Register(props) {
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
+    // const [privateKey, setPrivatekey] = useState('');
     const { username, password1, password2 } = formData;
     const navigate = useNavigate();
 
@@ -20,14 +21,44 @@ export default function Register(props) {
             ...prevState,
             [e.target.name]: e.target.value,
         }));
+        // if (e.target.name=="role" && e.target.value=="Doctor"){
+        //     setFormData((prevState) => ({
+        //         ...prevState,
+        //         ["privateKey"]: "",
+        //     }));
+        //     }
+        // if (e.target.name=="role" && e.target.value=="Doctor"){
+        //     var iDiv = document.createElement('div');
+        //     iDiv.className = 'inputField';
+        //     iDiv.id = 'privateKey';
+        //     var label = document.createElement("label");
+        //     label.innerHTML = "Private Key:\n"
+        //     var input = document.createElement("input");
+        //     input.setAttribute('type', 'text');
+        //     input.setAttribute('name', 'privateKey');
+        //     label.appendChild(input)
+        //     iDiv.appendChild(label)
+        //     console.log(iDiv)
+        //     var parentElement = document.getElementById('formField')[0]
+        //     console.log(parentElement)
+        //     // parentElement.insertBefore(iDiv, parentElement.childNodes[1]);
+        //     parentElement.appendChild(iDiv)
+        // }
     };
-    checkDoctorIsRegistered('');
     const onSubmit = async (e) => {
         if (password1 !== password2) {
             setMessage('Confirm password does not match with password.');
         }
 
         e.preventDefault();
+
+        //gen key
+
+        //setFormData((prevState) => ({
+        //    ...prevState,
+        //    ['publicKey']: publicKey,
+        //}));
+
         try {
             // const res = await checkDoctorIsRegistered("ad3bec1060a729641f437fd15690e7fc0fcef1b0a134197faf1076e719b221b8")
             // const res = await checkDoctorIsRegistered(
@@ -46,9 +77,10 @@ export default function Register(props) {
                 setMessage(res.data);
             }
             if (res.status === 200) {
-                navigate('/myProfile');
+                navigate(`/myProfile/true`);
                 console.log('data:  ', res.data.token);
                 localStorage.setItem('token', res.data.token);
+                //localStorage.setItem('key', privateKey);
             }
         } catch (err) {
             console.log(err);
@@ -64,10 +96,13 @@ export default function Register(props) {
                 </div>
                 <div class="login_tag_cover">
                     <div class="login_tag">
-                        <div className="login_tag_text">
+                        <div
+                            className="login_tag_text"
+                            style={{ padding: '50px 0px' }}
+                        >
                             <p>REGISTER</p>
                             <section>
-                                <form onSubmit={onSubmit}>
+                                <form onSubmit={onSubmit} id="formField">
                                     <div className="inputField">
                                         <label>
                                             Username:<br></br>
@@ -107,6 +142,11 @@ export default function Register(props) {
                                             name="role"
                                             defaultValue="Select"
                                             onChange={onChange}
+                                            style={{
+                                                borderRadius: '5px',
+                                                padding: '5px 20px',
+                                                marginLeft: '10px',
+                                            }}
                                         >
                                             <option>Select...</option>
                                             <option value="Doctor">
