@@ -13,8 +13,18 @@ export default function Profile() {
 
     const [message, setMessage] = useState('');
     const { name, address, email, date } = formData;
-
     const isFirstLogin = useParams();
+    const [privateKey, setPrivateKey] = useState('');
+    const [inputType, setInputType] = useState('password');
+
+    const toggleInputType = () => {
+        if (inputType === 'password') {
+            setInputType('text');
+        } else {
+            setInputType('password');
+        }
+    };
+
     useEffect(() => {
         fetch('http://localhost:5000/account/user', {
             credentials: 'include',
@@ -27,6 +37,8 @@ export default function Profile() {
             .then((account) => {
                 setUser(account);
             });
+        setPrivateKey(localStorage.getItem('privateKey'));
+        console.log(privateKey);
     }, []);
 
     const onChange = (e) => {
@@ -124,6 +136,31 @@ export default function Profile() {
                                     onChange={onChange}
                                 />
                             </div>
+
+                            <div className="inputField">
+                                <label>Public Key:</label>
+                                <input
+                                    type="text"
+                                    name="publicKey"
+                                    value={user.publicKey}
+                                    readOnly
+                                />
+                            </div>
+
+                            <div className="inputField">
+                                <label>Private Key:</label>
+                                <input
+                                    type={inputType}
+                                    name="privateKey"
+                                    value={privateKey}
+                                    readOnly
+                                    onClick={toggleInputType}
+                                />
+                            </div>
+                            <button type="button" onClick={toggleInputType}>
+                                Toggle visibility
+                            </button>
+
                             <input
                                 className="button"
                                 type="submit"

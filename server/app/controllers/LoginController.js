@@ -77,6 +77,7 @@ class LoginController {
     user(req, res) {
         Account.findOne({ _id: req.user._id }).then((account) => {
             res.send(account);
+            console.log(account);
         });
     }
 
@@ -103,9 +104,7 @@ class LoginController {
                 const tmp = new Account();
                 tmp.username = req.body.username;
 
-                const privateKey = eccrypto.generatePrivate(); //
-                tmp.privateKey = JSON.stringify(privateKey); //
-                tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey)); //
+                tmp.publicKey = req.body.publicKey; //
                 //tmp.privateKey = JSON.stringify(req.body.privateKey)
                 tmp.role = req.body.role;
                 // Increment id
