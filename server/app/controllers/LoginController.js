@@ -13,7 +13,7 @@ const generateToken = (id) => {
 class LoginController {
     // [POST] /login
     login(req, res, next) {
-        const { username, password, privateKey } = req.body;
+        const { username, password, publicKey } = req.body;
         if (!username) {
             return res.status(220).send('Username can be empty.');
         } else if (!req.body.password) {
@@ -21,7 +21,7 @@ class LoginController {
         }
 
         //check privateKey
-        console.log('privateKey: ', privateKey);
+        console.log('publicKey: ', publicKey);
 
         //if false
         ////retuen res.status(220).send('Private key không đúng')
@@ -37,10 +37,15 @@ class LoginController {
                         account.password,
                         function (err, result) {
                             if (result) {
-                                return res.status(200).json({
-                                    token: generateToken(account._id),
-                                    //key: privateKey,
-                                });
+                                if (publicKey == account.publicKey) {
+                                    return res.status(200).json({
+                                        token: generateToken(account._id),
+                                    });
+                                } else {
+                                    return res
+                                        .status(220)
+                                        .send('Public key is not registered.');
+                                }
                             } else {
                                 return res
                                     .status(220)

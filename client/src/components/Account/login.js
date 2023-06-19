@@ -6,6 +6,7 @@ import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
 import './login.css';
+import { getPublicKey } from '../../custom_modules/ECC';
 
 export default function Login() {
     const [privateKey, setPrivateKey] = useState('');
@@ -21,7 +22,12 @@ export default function Login() {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('/account/login', formData, {
+            const publicKey = getPublicKey(privateKey);
+            const loginFormData = {
+                ...formData,
+                ['publicKey']: publicKey,
+            };
+            const res = await axios.post('/account/login', loginFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -33,6 +39,7 @@ export default function Login() {
             if (res.status === 200) {
                 navigate('/');
                 localStorage.setItem('token', res.data.token);
+                localStorage.setItem('privateKey', privateKey);
             }
         } catch (err) {
             if (err.response.status === 500) {
