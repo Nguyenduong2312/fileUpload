@@ -37,7 +37,9 @@ class MembershipController {
                 receiverId: req.body.receiverId,
             }).then((request) => {
                 if (request && request.status === 'Waitting') {
-                    return res.send('Request has already sent before.');
+                    return res.send(
+                        'Request has already been sent before. Waiting for receiver to accept it.',
+                    );
                 } else {
                     const request = new RelationshipRequest();
                     request.senderId = req.user.id;

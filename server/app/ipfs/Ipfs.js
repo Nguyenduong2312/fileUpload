@@ -37,12 +37,24 @@ class Ipfs {
     retrieveFiles = async (cid) => {
         const client = this.makeStorageClient();
         const res = await client.get(cid);
-
+        console.log('cid', cid);
+        console.log('reses ', res);
         // unpack File objects from the response
         const files = await res.files();
+        console.log('reses file ', res.files());
 
         for (const file of files) {
+            console.log('file', file.text());
+            const po = await file.text();
+            console.log('po', po);
+            po.then(function (result) {
+                console.log('resy', result);
+                return result;
+            });
+
             const fileData = (await file.text()).toString();
+            console.log('fileData', fileData);
+
             return fileData;
         }
     };
@@ -68,14 +80,15 @@ class Ipfs {
     };
 
     downloadFile = async (cid, destPath, encryptedContent) => {
+        console.log('download');
         let hashdata = await this.retrieveFiles(cid);
         const aesKey = await ECC.decrypt(
             encryptedContent,
             Buffer.from(privateKeyB, 'hex'),
         );
-
+        console.log('aesKey', aesKey);
         const originalText = EncryptAES.decrypt(hashdata.toString(), aesKey);
-        console.log(originalText);
+        console.log('originalText ', originalText);
         try {
             // file written successfully
             fs.writeFileSync(destPath, originalText);

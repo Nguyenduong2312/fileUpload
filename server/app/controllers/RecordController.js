@@ -167,6 +167,7 @@ class UploadFileController {
     }
 
     downloadRecord(req, res) {
+        console.log('downloadRecord');
         const { id } = req.params;
         console.log(id);
         contractInstance.methods
@@ -201,6 +202,7 @@ class UploadFileController {
                     path + 'de_' + txRecord.fileName,
                     encryptedContent,
                 ).then(() => {
+                    console.log('down');
                     res.status(200).download(path + 'de_' + txRecord.fileName);
                 });
             })
