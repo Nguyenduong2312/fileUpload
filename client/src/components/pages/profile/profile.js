@@ -154,7 +154,6 @@ export default function Profile() {
                                     name="privateKey"
                                     value={privateKey}
                                     readOnly
-                                    onClick={toggleInputType}
                                 />
                             </div>
                             <button type="button" onClick={toggleInputType}>
