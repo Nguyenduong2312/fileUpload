@@ -1,4 +1,4 @@
-import React, { useRef, Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Message from '../../Message';
 import axios from 'axios';
 
@@ -13,7 +13,6 @@ const UploadRecord = () => {
     const [message, setMessage] = useState('');
     const [id, setId] = useState('');
     const [data, setData] = useState('');
-    const ref = useRef(null);
 
     useEffect(() => {
         const reader = new FileReader();
