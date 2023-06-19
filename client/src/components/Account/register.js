@@ -8,7 +8,6 @@ import Message from '../Message';
 
 import { checkDoctorIsRegistered } from '../../custom_modules/accountContractModules';
 import { generatePrivate, getPublicKey } from '../../custom_modules/ECC';
-import { fromPairs } from 'lodash';
 
 require('dotenv').config();
 
