@@ -20,7 +20,7 @@ const protect = asyncHandler(async (req, res, next) => {
             next();
         } catch (error) {
             console.log(error);
-            return res.send(false);
+            return res.send('Not authorized');
             //throw new Error('Not authorized');
         }
     }

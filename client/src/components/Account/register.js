@@ -8,6 +8,7 @@ import Message from '../Message';
 
 import { checkDoctorIsRegistered } from '../../custom_modules/accountContractModules';
 import { generatePrivate, getPublicKey } from '../../custom_modules/ECC';
+import { fromPairs } from 'lodash';
 
 require('dotenv').config();
 
@@ -16,7 +17,8 @@ export default function Register(props) {
     const [message, setMessage] = useState('');
     const { role } = formData;
     const navigate = useNavigate();
-    let privateKey;
+    const [doctorPrivateKey, setDoctorPrivateKey] = useState('');
+    let patientPrivateKey;
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -34,7 +36,7 @@ export default function Register(props) {
                             ...prevState,
                             ['publicKey']: publicKey,
                         }));
-                        privateKey = e.target.value;
+                        setDoctorPrivateKey(e.target.value);
                     } else {
                         setMessage('Private key is not registerd as a doctor');
                     }
@@ -56,7 +58,7 @@ export default function Register(props) {
                     ...formData,
                     ['publicKey']: publicKey,
                 };
-                privateKey = _privateKey;
+                patientPrivateKey = _privateKey;
                 console.log(_privateKey);
                 res = await axios.post('/account/signup', patientFormData, {
                     headers: {
@@ -64,6 +66,7 @@ export default function Register(props) {
                     },
                 });
             } else {
+                console.log(formData);
                 res = await axios.post('/account/signup', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -78,8 +81,13 @@ export default function Register(props) {
                 navigate(`/myProfile/true`);
                 console.log('data:  ', res.data.token);
                 localStorage.setItem('token', res.data.token);
-                console.log(privateKey);
-                localStorage.setItem('privateKey', privateKey);
+                if (formData.role == 'Patient') {
+                    console.log(patientPrivateKey);
+                    localStorage.setItem('privateKey', patientPrivateKey);
+                } else {
+                    console.log(doctorPrivateKey);
+                    localStorage.setItem('privateKey', doctorPrivateKey);
+                }
             }
         } catch (err) {
             console.log(err);

@@ -80,10 +80,15 @@ class LoginController {
     }
 
     user(req, res) {
-        Account.findOne({ _id: req.user._id }).then((account) => {
-            res.send(account);
-            console.log(account);
-        });
+        Account.findOne({ _id: req.user._id })
+            .then((account) => {
+                res.send(account);
+                console.log(account);
+            })
+            .catch((err) => {
+                res.send('Not authorized');
+                console.log(err);
+            });
     }
 
     createAccount(req, res) {
