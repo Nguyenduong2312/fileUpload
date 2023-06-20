@@ -2,6 +2,7 @@ import Web3, { providers } from 'web3';
 
 import contractAbi from '../contracts/abi';
 import { contractAddress } from '../contracts/contractAddress';
+import { encrypt as encryptECC, decrypt as decryptECC } from './ECC';
 
 const web3 = new Web3(
     new providers.HttpProvider(process.env.REACT_APP_INFURA_API_KEY),
@@ -18,7 +19,7 @@ export const getTxRecord = async (idOnChain) => {
     return txRecord;
 };
 
-const stringEncryptedKeyToBuffer = async (encryptedKey) => {
+const stringEncryptedKeyToBuffer = (encryptedKey) => {
     let encryptedContent = JSON.parse(encryptedKey);
     encryptedContent = {
         iv: Buffer.from(encryptedContent.iv, 'hex'),
@@ -29,7 +30,7 @@ const stringEncryptedKeyToBuffer = async (encryptedKey) => {
     return encryptedContent;
 };
 
-const bufferEncryptedKeyToString = async (encryptedKey) => {
+const bufferEncryptedKeyToString = (encryptedKey) => {
     // chuyen token thanh string de luu len blockchain
     const stringToken = JSON.stringify({
         iv: encryptedKey.iv.toString('hex'),
@@ -46,6 +47,7 @@ export const createRecordOnBlockchain = async (
     _filename,
     _privateKey,
 ) => {
+    console.log(_cid);
     const accountA = web3.eth.accounts.privateKeyToAccount(_privateKey);
     // transaction data
     const owner = _targetAddress;
@@ -86,4 +88,21 @@ export const createRecordOnBlockchain = async (
 export const getAddress = (privateKey) => {
     const account = web3.eth.accounts.privateKeyToAccount(privateKey);
     return account.address;
+};
+
+export const reEncryptAESKey = async (
+    encryptedKey,
+    privateKeyB,
+    publicKeyA,
+) => {
+    // Get buffer encrypted AES key
+    const token = stringEncryptedKeyToBuffer(encryptedKey);
+
+    // Decrypt AES key with patient private key
+    const aesKey = await decryptECC(token, Buffer.from(privateKeyB, 'hex'));
+    // Encrypt AES key
+    const encryptedAESKey = await encryptECC(aesKey, publicKeyA);
+
+    const stringToken = bufferEncryptedKeyToString(encryptedAESKey);
+    return stringToken;
 };

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { getTxRecord } from '../../../custom_modules/contractModules';
+import {
+    createRecordOnBlockchain,
+    reEncryptAESKey,
+} from '../../../custom_modules/contractModules';
 
 export default function RequestedTag(props) {
     const [user, setuser] = useState();
@@ -16,10 +21,10 @@ export default function RequestedTag(props) {
             .then((res) => res.json())
             .then((account) => {
                 if (account) {
-                    console.log('acc', account);
                     setuser(account);
                 }
             });
+        console.log(props.request);
     }, [props.request.idSender]);
 
     const Accepted = {
@@ -35,15 +40,44 @@ export default function RequestedTag(props) {
         e.preventDefault();
         //cập nhật status cho api waitting -> accepted
         try {
-            await axios.put(`/requestRecord/${props.request._id}`, Accepted, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+            console.log(props.request.idRecord);
+            let record = await fetch(
+                `http://localhost:5000/record/detail/${props.request.idRecord}`,
+            );
+            record = await record.json();
+            const txRecord = await getTxRecord(record.idOnChain);
+            const stringToken = await reEncryptAESKey(
+                txRecord.encryptedKey,
+                localStorage.getItem('privateKey'),
+                user.publicKey,
+            );
+            console.log(stringToken);
+            const idOnChain = await createRecordOnBlockchain(
+                stringToken,
+                user.blockchainAddress,
+                txRecord.cid,
+                txRecord.fileName,
+                localStorage.getItem('privateKey'),
+            );
+            console.log(idOnChain);
+            const sendAccepted = {
+                ...Accepted,
+                idOnChain: idOnChain,
+            };
+
+            await axios.put(
+                `/requestRecord/${props.request._id}`,
+                sendAccepted,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
                 },
-            });
-            console.log('ac', Accepted);
+            );
+            console.log('ac', sendAccepted);
             props.setLength((prev) => prev - 1);
         } catch (err) {
-            console.log('lỗi');
+            console.log(err);
         }
     };
 
