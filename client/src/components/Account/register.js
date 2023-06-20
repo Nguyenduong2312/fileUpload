@@ -8,6 +8,7 @@ import Message from '../Message';
 
 import { checkDoctorIsRegistered } from '../../custom_modules/accountContractModules';
 import { generatePrivate, getPublicKey } from '../../custom_modules/ECC';
+import { getAddress } from '../../custom_modules/contractModules';
 
 require('dotenv').config();
 
@@ -34,6 +35,7 @@ export default function Register(props) {
                         setFormData((prevState) => ({
                             ...prevState,
                             ['publicKey']: publicKey,
+                            ['blockchainAddress']: getAddress(e.target.value),
                         }));
                         setDoctorPrivateKey(e.target.value);
                     } else {
@@ -56,6 +58,7 @@ export default function Register(props) {
                 const patientFormData = {
                     ...formData,
                     ['publicKey']: publicKey,
+                    ['blockchainAddress']: getAddress(_privateKey),
                 };
                 patientPrivateKey = _privateKey;
                 console.log(_privateKey);

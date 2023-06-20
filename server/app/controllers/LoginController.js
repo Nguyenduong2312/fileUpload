@@ -83,7 +83,6 @@ class LoginController {
         Account.findOne({ _id: req.user._id })
             .then((account) => {
                 res.send(account);
-                console.log(account);
             })
             .catch((err) => {
                 res.send('Not authorized');
@@ -115,6 +114,7 @@ class LoginController {
                 tmp.username = req.body.username;
 
                 tmp.publicKey = req.body.publicKey; //
+                tmp.blockchainAddress = req.body.blockchainAddress;
                 //tmp.privateKey = JSON.stringify(req.body.privateKey)
                 tmp.role = req.body.role;
                 // Increment id

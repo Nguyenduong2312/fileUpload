@@ -38,6 +38,12 @@ const ECC = require('../custom_modules/ECC');
 const path = `${__dirname}/public/`;
 
 class UploadFileController {
+    getRecordDetailById(req, res) {
+        Record.findById({ _id: req.params.id }).then((record) => {
+            res.send(record);
+        });
+    }
+
     getRecordById(req, res) {
         Record.find({ idReceiver: req.params.id, idSender: '' }).then(
             (record) => {
@@ -57,110 +63,19 @@ class UploadFileController {
     upload(req, res) {
         if (req.body.id === '') {
             return res.send('Id can not be empty!');
-        } else if (req.files === null) {
-            return res.send('No file uploaded!');
         }
-        const file = req.files.file;
-        //uploadFile
-        file.mv(path + file.name, async (err) => {
-            if (err) {
-                return res.status(220).send(err);
-            }
-            try {
-                const data = fs.readFileSync(path + file.name);
-                const { key, en_data } = EncryptAES.encrypt(data);
-                // let googleFileId = null;
-                let ipfsCID;
-                try {
-                    // file written successfully
-                    fs.writeFileSync(path + file.name, en_data);
-                    //up defile to drive
-                    // const res = await UploadDrive.upload(
-                    //     path + file.name,
-                    //     file.name,
-                    // );
-                    // googleFileId = res.data.id;
-                    ipfsCID = await Ipfs.uploadFile(path + file.name);
-                } catch (err) {
-                    console.error(err);
-                }
-
-                //mã hóa k bằng ECC
-                //1. Lấy public key từ id BN
-
-                let record;
-                record = new Record();
-                record.idReceiver = req.body.id;
-                record.idUploader = req.user.id;
-                record.fileName = file.name;
-                record.save().catch(() => {
-                    res.status(400);
-                });
-
-                //console.log('keyB', publicKeyB);
-                // console.log('string keyB', publicKeyB.toString('hex'));
-                //2. Mã hóa khóa k
-                const token = await ECC.encrypt(key, publicKeyB);
-                // chuyen token thanh string de luu len blockchain
-                const stringToken = JSON.stringify({
-                    iv: token.iv.toString('hex'),
-                    ciphertext: token.ciphertext.toString('hex'),
-                    mac: token.mac.toString('hex'),
-                    ephemPublicKey: token.ephemPublicKey.toString('hex'),
-                });
-                console.log('stringToken: ', stringToken);
-
-                // transaction data
-                const owner = accountB.address;
-                const cid = ipfsCID;
-                const fileName = file.name;
-                const encryptedKey = stringToken;
-                // create the transaction object
-                const txObject = {
-                    from: accountA.address,
-                    to: contractAddress,
-                    gas: 3000000,
-                    data: contractInstance.methods
-                        .createEHR(owner, cid, fileName, encryptedKey)
-                        .encodeABI(),
-                };
-                // sign the transaction
-                console.log('Signing tracsaction');
-                web3.eth.accounts
-                    .signTransaction(txObject, accountA.privateKey)
-                    .then((signedTx) => {
-                        // send the signed transaction to the network
-                        web3.eth
-                            .sendSignedTransaction(signedTx.rawTransaction)
-                            .on('receipt', (receipt) => {
-                                console.log('Transaction receipt:', receipt);
-                            })
-                            .on('error', (error) => {
-                                console.error('Error sending EHR:', error);
-                            })
-                            .then(() => {
-                                fs.unlinkSync(path + file.name);
-                                return res.status(200).send(`Uploaded!`);
-                            });
-                    })
-                    .catch((error) => {
-                        console.error('Error signing transaction:', error);
-                    });
-                contractInstance.methods
-                    .numberOfRecords()
-                    .call()
-                    .then(async (result) => {
-                        console.log('result:', result);
-                        record.idOnChain = result;
-                        record.save();
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            } catch (err) {
-                console.error(err);
-            }
+        // else if (req.files === null) {
+        //     return res.send('No file uploaded!');
+        // }
+        const record = new Record();
+        record.idReceiver = req.body.id;
+        record.idUploader = req.user.id;
+        record.fileName = req.body.filename;
+        record.idOnChain = req.body.idOnChain;
+        record.save().catch(() => {
+            res.status(400);
         });
+        //uploadFile
     }
 
     downloadRecord(req, res) {

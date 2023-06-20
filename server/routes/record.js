@@ -8,6 +8,7 @@ router.post('/', protect, RecordController.upload);
 router.get('/:id', RecordController.getRecordById);
 router.get('/received/:id', RecordController.getReceivedRecordById);
 router.get('/download/:id', RecordController.downloadRecord);
+router.get('/detail/:id', RecordController.getRecordDetailById);
 router.delete('/:id', RecordController.deleteRecord);
 router.post('/delete', RecordController.deleteFile);
 module.exports = router;
