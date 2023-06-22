@@ -21,34 +21,37 @@ class MembershipController {
     }
 
     request(req, res) {
-        if (req.body.id === null || req.body.role === null) {
-            return res.send('Id and role can not be empty');
+        console.log('request', req.body);
+        if (!req.body.id || !req.body.role) {
+            return res.json({ msg: 'Id and role can not be empty' });
         }
-        Account.findOne({ id: req.body.receiverId }).then((account) => {
+        Account.findOne({ id: req.body.id }).then((account) => {
             if (
                 !account ||
-                req.body.receiverId === req.user.id ||
+                req.body.id === req.user.id ||
                 account.role === 'Doctor'
             ) {
-                return res.send('User is not exists.');
+                console.log('invalid');
+                return res.json({ msg: 'User is not exists or invalid.' });
             }
+            console.log('true');
             RelationshipRequest.findOne({
                 senderId: req.user.id,
-                receiverId: req.body.receiverId,
+                receiverId: req.body.id,
             }).then((request) => {
                 if (request && request.status === 'Waitting') {
-                    return res.send(
-                        'Request has already been sent before. Waiting for receiver to accept it.',
-                    );
+                    return res.json({
+                        msg: 'Request has already been sent before. Waiting for receiver to accept it.',
+                    });
                 } else {
                     const request = new RelationshipRequest();
                     request.senderId = req.user.id;
                     request.senderName = req.user.name;
 
                     request.receiverName = account.name;
-                    request.receiverId = req.body.receiverId;
+                    request.receiverId = req.body.id;
 
-                    request.receiverRole = req.body.receiverRole;
+                    request.receiverRole = req.body.role;
                     if (
                         request.receiverRole === 'Child' &&
                         req.user.gender === 'Female'
@@ -64,17 +67,19 @@ class MembershipController {
                     } else {
                         request.senderRole = 'Child';
                     }
-
+                    console.log('request', request);
                     request
                         .save()
-                        .then(() => res.send('Send success'))
-                        .catch(() => res.send('Send fail'));
+                        .then(() => res.json({ msg: 'Send success' }))
+                        .catch(() => res.json({ msg: 'Send fail' }));
                 }
             });
         });
     }
 
     updateRequest(req, res) {
+        console.log('updateRequest', req.body);
+        console.log('req.params.id', req.params.id);
         const roleForReceiver = { [req.body.senderId]: req.body.senderRole };
         const roleForSender = { [req.body.receiverId]: req.body.receiverRole };
 
@@ -87,11 +92,9 @@ class MembershipController {
             roleForSender,
         ); // add for sender
 
-        RelationshipRequest.findOne({ _id: req.body._id }).then((request) => {
-            request.status = 'Accepted';
-            request.save();
-        });
-        res.send('abc');
+        RelationshipRequest.findOneAndRemove({ _id: req.params.id })
+            .then(() => res.json({ msg: 'Accepted' }))
+            .catch(() => res.json({ msg: 'Err' }));
     }
 
     deleteRequest(req, res) {

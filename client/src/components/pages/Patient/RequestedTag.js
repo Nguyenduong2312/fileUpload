@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 export default function RequestedTag(props) {
     const [user, setuser] = useState();
     useEffect(() => {
-        console.log('run');
         fetch(`http://localhost:5000/account/id/${props.request.idSender}`, {
             credentials: 'include',
             method: 'GET',

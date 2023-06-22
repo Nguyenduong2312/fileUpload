@@ -20,34 +20,24 @@ export default function Register(props) {
     };
 
     const onSubmit = async (e) => {
-        if (password1 !== password2) {
-            setMessage('Password không giống nhau.');
-        }
-
         e.preventDefault();
 
-        try {
-            const res = await axios.post('/account/signup', formData, {
+        await axios
+            .post('/account/signup', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
-            console.log('status: ', res.status);
-            if (res.status === 220) {
-                setMessage(res.data);
-            }
-            if (res.status === 200) {
-                navigate('/myProfile');
-                console.log('data:  ', res.data.token);
-                localStorage.setItem('token', res.data.token);
-            }
-        } catch (err) {
-            if (err.response.status === 500) {
-                setMessage('There was a problem with the server');
-            } else {
-                setMessage(err.response.data.msg);
-            }
-        }
+            })
+            .then((respone) => {
+                if (respone.status === 220) {
+                    setMessage(respone.data.msg);
+                }
+                if (respone.status === 200) {
+                    navigate('/myProfile');
+                    localStorage.setItem('token', respone.data.token);
+                }
+            })
+            .catch((err) => console.log(err));
     };
 
     return (

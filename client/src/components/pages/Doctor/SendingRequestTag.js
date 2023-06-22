@@ -5,16 +5,14 @@ import './SendingRequestTag.css';
 export default function RequestList(props) {
     const handleDeleteRequest = async (e) => {
         e.preventDefault();
-        try {
-            await axios.delete(`/requestRecord/${props.request._id}`, {
+        await axios
+            .delete(`/requestRecord/${props.request._id}`, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
-            props.setLength((prev) => prev - 1);
-        } catch (err) {
-            console.log('lỗi');
-        }
+            })
+            .catch((err) => console.log(err));
+        props.setLength((prev) => prev - 1);
     };
 
     return (

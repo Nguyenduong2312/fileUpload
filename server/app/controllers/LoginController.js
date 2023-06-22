@@ -13,18 +13,22 @@ const generateToken = (id) => {
 class LoginController {
     // [POST] /login
     login(req, res, next) {
+        console.log('login');
+        console.log('req:', req.body);
         const { username, password } = req.body;
         if (!username) {
-            return res.status(220).send('Username can be empty.');
+            return res.status(220).json({ msg: 'Username can be empty.' });
         } else if (!req.body.password) {
-            return res.status(220).send('Password can be empty.');
+            return res.status(220).json({ msg: 'Password can be empty.' });
         }
 
         //Xử lý
         Account.findOne({ username: username })
             .then((account) => {
                 if (!account) {
-                    return res.status(220).send('Username does not exist.');
+                    return res
+                        .status(220)
+                        .json({ msg: 'Username does not exist.' });
                 } else {
                     bcrypt.compare(
                         password,
@@ -37,7 +41,7 @@ class LoginController {
                             } else {
                                 return res
                                     .status(220)
-                                    .send('Password is incorrect.');
+                                    .json({ msg: 'Password is incorrect.' });
                             }
                         },
                     );
@@ -47,7 +51,6 @@ class LoginController {
     }
 
     getUser(req, res) {
-        console.log('get user');
         Account.findOne({ id: req.params.id })
             .then((account) => {
                 res.send(account);
@@ -74,36 +77,34 @@ class LoginController {
     }
 
     createAccount(req, res) {
-        if (
-            !req.body.username ||
-            !req.body.password1 ||
-            !req.body.password2 ||
-            !req.body.role
-        ) {
-            return res.status(220).send('This field can be empty.');
+        console.log('req: ', req.body);
+        console.log('req: ', req.body.password2);
+        if (!req.body.username || !req.body.password1 || !req.body.password2) {
+            return res.status(220).json({ msg: 'This field can be empty.' });
         } else if (req.password1 !== req.password2) {
             return res
                 .status(220)
-                .send("Those passwords didn't match. Try again.");
+                .json({ msg: "Those passwords didn't match. Try again." });
         }
         Account.findOne({ username: req.body.username }).then((account) => {
             if (account) {
                 return res
                     .status(220)
-                    .send('That username is taken. Try another.');
+                    .json({ msg: 'That username is taken. Try another.' });
             } else {
                 // Create temporary account object to assign value
                 const tmp = new Account();
                 tmp.username = req.body.username;
+                tmp.role = req.body.role;
                 const privateKey = eccrypto.generatePrivate();
                 tmp.privateKey = JSON.stringify(privateKey);
                 tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey));
-                tmp.role = req.body.role;
                 // Increment id
                 Account.findOne({})
                     .lean()
                     .sort({ id: 'desc' })
                     .then((lastAccount) => {
+                        //console.log('la: ', lastAccount);
                         if (lastAccount) {
                             tmp.id = lastAccount.id + 1;
                         } else {
@@ -118,22 +119,26 @@ class LoginController {
 
                                 // Create another account with assigned value and save to database
                                 const account = new Account(tmp);
+                                console.log('acc: ', account);
+
                                 account
                                     .save()
                                     .then(() => {
-                                        //req.session.user = account;
-                                        res.status(200).json({
-                                            token: generateToken(account._id),
-                                        });
+                                        return res
+                                            .status(200)
+                                            .json({ msg: '' });
                                     })
                                     .catch(() => {
-                                        res.status(500).send('');
+                                        console.log('khong save');
+                                        return res
+                                            .status(500)
+                                            .json({ msg: 'Error' });
                                     });
                             },
                         );
                     })
                     .catch(() => {
-                        res.status(500).send('');
+                        return res.status(500).json({ msg: 'Error' });
                     });
             }
         });

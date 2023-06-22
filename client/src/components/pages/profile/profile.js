@@ -46,7 +46,7 @@ export default function Profile() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setMessage(res.data);
+            setMessage(res.data.msg);
         } catch (err) {
             if (err.response.status === 500) {
                 setMessage('There was a problem with the server');

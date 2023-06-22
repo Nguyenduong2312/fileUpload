@@ -19,27 +19,22 @@ export default function Login() {
     };
     const onSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const res = await axios.post('/account/login', formData, {
+        await axios
+            .post('/account/login', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-            });
-            console.log(res.status);
-            if (res.status === 220) {
-                setMessage(res.data);
-            }
-            if (res.status === 200) {
-                navigate('/');
-                localStorage.setItem('token', res.data.token);
-            }
-        } catch (err) {
-            if (err.response.status === 500) {
-                setMessage('There was a problem with the server');
-            } else {
-                setMessage(err.response.data.msg);
-            }
-        }
+            })
+            .then((respone) => {
+                if (respone.status === 220) {
+                    setMessage(respone.data.msg);
+                }
+                if (respone.status === 200) {
+                    navigate('/');
+                    localStorage.setItem('token', respone.data.token);
+                }
+            })
+            .catch((err) => console.log(err));
     };
     return (
         <div>

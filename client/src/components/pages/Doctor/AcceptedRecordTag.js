@@ -4,8 +4,8 @@ import axios from 'axios';
 
 export default function AcceptedRecordTag(props) {
     const handleDownload = (id, filename) => {
-        fetch(`http://localhost:5000/record/download/${id}`).then(
-            (response) => {
+        fetch(`http://localhost:5000/record/download/${id}`)
+            .then((response) => {
                 response.blob().then((blob) => {
                     const fileURL = window.URL.createObjectURL(blob);
                     let alink = document.createElement('a');
@@ -13,8 +13,8 @@ export default function AcceptedRecordTag(props) {
                     alink.download = filename;
                     alink.click();
                 });
-            },
-        );
+            })
+            .catch((err) => console.log(err));
     };
 
     const handleRejectRequest = async (e) => {

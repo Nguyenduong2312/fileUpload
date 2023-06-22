@@ -25,26 +25,19 @@ const UploadRecord = () => {
         formData.append('file', file);
         formData.append('id', id);
         console.log('form', formData);
-        try {
-            const res = await axios.post('/record', formData, {
+        await axios
+            .post('/record', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
-            });
-            console.log(res.status);
-            if (res.data && res.status === 200) {
-                console.log('true');
-                setMessage(res.data);
-            }
-            //setMessage(`File "${filename}" Uploaded`);
-        } catch (err) {
-            if (err.response.status === 500) {
-                setMessage('There was a problem with the server');
-            } else {
-                setMessage(err.response.data.msg);
-            }
-        }
+            })
+            .then((respone) => {
+                if (respone.status === 200) {
+                    setMessage(respone.data);
+                }
+            })
+            .catch((err) => console.log(err));
     };
 
     return (

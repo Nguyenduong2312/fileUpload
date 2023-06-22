@@ -27,7 +27,7 @@ class UpdateAccountController {
                 account
                     .save()
                     .then(() => {
-                        res.send('Information is updated!');
+                        res.json({ msg: 'Information is updated!' });
                     })
                     .catch(() => res.json({ status: false }));
             })

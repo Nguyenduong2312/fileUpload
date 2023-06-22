@@ -40,6 +40,7 @@ class RequestController {
     }
 
     request(req, res) {
+        console.log('request record', req.body);
         const { idReceiver, idRecord, nameRecord, idOnChain } = req.body;
         Request.findOne({
             idSender: req.user.id,
@@ -48,9 +49,9 @@ class RequestController {
             status: 'Waiting',
         }).then((request) => {
             if (request) {
-                res.send(
-                    'Request has already sent before. Waiting receiver accepted it.',
-                );
+                res.json({
+                    msg: 'Request has already been sent before. Waiting for receiver to accept it.',
+                });
             } else {
                 const request = new Request();
                 request.idReceiver = idReceiver;
@@ -60,12 +61,13 @@ class RequestController {
                 request.idOnChain = idOnChain;
                 request
                     .save()
-                    .then(() => res.send('Request sent successfully.'))
-                    .catch(() => res.send('Request sent fail.'));
+                    .then(() => res.json({ msg: 'Request sent successfully.' }))
+                    .catch(() => res.json({ msg: 'Request sent fail.' }));
             }
         });
     }
     updateRequest(req, res) {
+        console.log('update', req.body);
         Request.findOne({ _id: req.params.id }).then((request) => {
             request.status = req.body.status;
             request
@@ -84,6 +86,7 @@ class RequestController {
                     });
 
                     // Get record on blockchain
+                    console.log('record.idOnChain: ', record.idOnChain);
                     const txRecord = await getTxRecord(record.idOnChain);
 
                     // Get buffer encrypted AES key
@@ -101,14 +104,14 @@ class RequestController {
                         aesKey,
                         publicKeyA,
                     );
-                    console.log(encryptedAESKey);
+                    console.log('encryptedAESKey', encryptedAESKey);
                     // Conver AES key from buffer to string
                     const stringToken = await bufferEncryptedKeyToString(
                         encryptedAESKey,
                     );
 
-                    console.log(addressA);
-
+                    //console.log('stringToken: ',stringToken);
+                    //console.log('addressA', addressA);
                     await createRecordOnBlockchain(
                         stringToken,
                         addressB,
@@ -117,7 +120,9 @@ class RequestController {
                         txRecord.fileName,
                         copyRecord,
                         privateKeyB,
-                    );
+                    ).then(() => {
+                        console.log('done');
+                    });
 
                     // res.json({ status: true })
                 });
@@ -126,9 +131,10 @@ class RequestController {
         //
     }
     deleteRequest(req, res) {
+        console.log('delete', req.params.id);
         Request.findOneAndRemove({ _id: req.params.id })
-            .then(() => res.json({ status: true }))
-            .catch(() => res.json({ status: false }));
+            .then(() => res.json({ msg: 'Deleted' }))
+            .catch(() => res.json({ msg: 'Err' }));
     }
 }
 
