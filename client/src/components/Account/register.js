@@ -6,12 +6,19 @@ import axios from 'axios';
 import Bar from '../pages/bar/bar';
 import Message from '../Message';
 
+import { checkDoctorIsRegistered } from '../../custom_modules/accountContractModules';
+import { generatePrivate, getPublicKey } from '../../custom_modules/ECC';
+import { getAddress } from '../../custom_modules/contractModules';
+
+require('dotenv').config();
+
 export default function Register(props) {
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState('');
     const { role } = formData;
-    const [privateKey, setPrivateKey] = useState('');
     const navigate = useNavigate();
+    const [doctorPrivateKey, setDoctorPrivateKey] = useState('');
+    let patientPrivateKey;
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -20,22 +27,54 @@ export default function Register(props) {
         }));
     };
 
+    const onChangePublicKey = (e) => {
+        if (e.target.value) {
+            checkDoctorIsRegistered(e.target.value)
+                .then((publicKey) => {
+                    if (publicKey) {
+                        setFormData((prevState) => ({
+                            ...prevState,
+                            ['publicKey']: publicKey,
+                            ['blockchainAddress']: getAddress(e.target.value),
+                        }));
+                        setDoctorPrivateKey(e.target.value);
+                    } else {
+                        setMessage('Private key is not registerd as a doctor');
+                    }
+                })
+                .catch((err) => {
+                    setMessage('Private key is invalid');
+                });
+        }
+    };
+
     const onSubmit = async (e) => {
         e.preventDefault();
-
-        //gen key
-
-        //setFormData((prevState) => ({
-        //    ...prevState,
-        //    ['publicKey']: publicKey,
-        //}));
-
         try {
-            const res = await axios.post('/account/signup', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            let res;
+            if (formData.role == 'Patient') {
+                const _privateKey = generatePrivate();
+                const publicKey = getPublicKey(_privateKey);
+                const patientFormData = {
+                    ...formData,
+                    ['publicKey']: publicKey,
+                    ['blockchainAddress']: getAddress(_privateKey),
+                };
+                patientPrivateKey = _privateKey;
+                console.log(_privateKey);
+                res = await axios.post('/account/signup', patientFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+            } else {
+                console.log(formData);
+                res = await axios.post('/account/signup', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+            }
             console.log('status: ', res.status);
             if (res.status === 220) {
                 setMessage(res.data);
@@ -44,14 +83,16 @@ export default function Register(props) {
                 navigate(`/myProfile/true`);
                 console.log('data:  ', res.data.token);
                 localStorage.setItem('token', res.data.token);
-                //localStorage.setItem('key', privateKey);
+                if (formData.role == 'Patient') {
+                    console.log(patientPrivateKey);
+                    localStorage.setItem('privateKey', patientPrivateKey);
+                } else {
+                    console.log(doctorPrivateKey);
+                    localStorage.setItem('privateKey', doctorPrivateKey);
+                }
             }
         } catch (err) {
-            if (err.response.status === 500) {
-                setMessage('There was a problem with the server');
-            } else {
-                setMessage(err.response.data.msg);
-            }
+            console.log(err);
         }
     };
 
@@ -70,7 +111,7 @@ export default function Register(props) {
                         >
                             <p>REGISTER</p>
                             <section>
-                                <form onSubmit={onSubmit}>
+                                <form onSubmit={onSubmit} id="formField">
                                     <div className="inputField">
                                         <label>
                                             Username:<br></br>
@@ -129,9 +170,7 @@ export default function Register(props) {
                                                 <input
                                                     type="password"
                                                     name="privateKey"
-                                                    onChange={(e) =>
-                                                        setPrivateKey(e)
-                                                    }
+                                                    onChange={onChangePublicKey}
                                                 />
                                             </label>
                                         </div>

@@ -1,26 +1,16 @@
-const eccrypto = require('eccrypto');
+import Web3, { providers } from 'web3';
 
-const EncryptAES = require('./EncryptAES');
-const ECC = require('./ECC');
+import contractAbi from '../contracts/abi';
+import { contractAddress } from '../contracts/contractAddress';
+import { encrypt as encryptECC, decrypt as decryptECC } from './ECC';
 
-const Web3 = require('web3');
 const web3 = new Web3(
-    new Web3.providers.HttpProvider(process.env.INFURA_API_KEY),
+    new providers.HttpProvider(process.env.REACT_APP_INFURA_API_KEY),
 );
 
-const contractAbi = require('../contracts/abi');
-const contractAddress = require('../contracts/contractAddress');
 const contractInstance = new web3.eth.Contract(contractAbi, contractAddress);
 
-const privateKeyA = process.env.PRIVATE_KEY_A;
-const accountA = web3.eth.accounts.privateKeyToAccount(privateKeyA);
-const publicKeyA = eccrypto.getPublic(Buffer.from(privateKeyA, 'hex'));
-
-const privateKeyB = process.env.PRIVATE_KEY_B;
-const accountB = web3.eth.accounts.privateKeyToAccount(privateKeyB);
-const publicKeyB = eccrypto.getPublic(Buffer.from(privateKeyB, 'hex'));
-
-const getTxRecord = async (idOnChain) => {
+export const getTxRecord = async (idOnChain) => {
     const result = await contractInstance.methods.numberOfRecords().call();
     if (idOnChain < 0 || idOnChain >= result) {
         return Error('id out of range');
@@ -29,7 +19,7 @@ const getTxRecord = async (idOnChain) => {
     return txRecord;
 };
 
-const stringEncryptedKeyToBuffer = async (encryptedKey) => {
+const stringEncryptedKeyToBuffer = (encryptedKey) => {
     let encryptedContent = JSON.parse(encryptedKey);
     encryptedContent = {
         iv: Buffer.from(encryptedContent.iv, 'hex'),
@@ -40,9 +30,8 @@ const stringEncryptedKeyToBuffer = async (encryptedKey) => {
     return encryptedContent;
 };
 
-const bufferEncryptedKeyToString = async (encryptedKey) => {
+const bufferEncryptedKeyToString = (encryptedKey) => {
     // chuyen token thanh string de luu len blockchain
-    console.log('bufferEncryptedKeyToString:');
     const stringToken = JSON.stringify({
         iv: encryptedKey.iv.toString('hex'),
         ciphertext: encryptedKey.ciphertext.toString('hex'),
@@ -51,16 +40,15 @@ const bufferEncryptedKeyToString = async (encryptedKey) => {
     });
     return stringToken;
 };
-
-const createRecordOnBlockchain = async (
+export const createRecordOnBlockchain = async (
     _token,
-    _senderAddress,
     _targetAddress,
     _cid,
     _filename,
-    _recordObject,
     _privateKey,
 ) => {
+    console.log(_cid);
+    const accountA = web3.eth.accounts.privateKeyToAccount(_privateKey);
     // transaction data
     const owner = _targetAddress;
     const cid = _cid;
@@ -68,7 +56,7 @@ const createRecordOnBlockchain = async (
     const encryptedKey = _token;
     // create the transaction object
     const txObject = {
-        from: _senderAddress,
+        from: accountA.address,
         to: contractAddress,
         gas: 3000000,
         data: contractInstance.methods
@@ -93,26 +81,28 @@ const createRecordOnBlockchain = async (
         .catch((error) => {
             console.error('Error signing transaction:', error);
         });
-    contractInstance.methods
-        .numberOfRecords()
-        .call()
-        .then(async (result) => {
-            console.log('result:', result);
-            _recordObject.idOnChain = result;
-            _recordObject.save();
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+    const idOnChain = await contractInstance.methods.numberOfRecords().call();
+    return idOnChain;
 };
 
-module.exports = {
-    getTxRecord,
-    createRecordOnBlockchain,
-    stringEncryptedKeyToBuffer,
-    bufferEncryptedKeyToString,
+export const getAddress = (privateKey) => {
+    const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+    return account.address;
+};
+
+export const reEncryptAESKey = async (
+    encryptedKey,
     privateKeyB,
     publicKeyA,
-    addressA: accountA.address,
-    addressB: accountB.address,
+) => {
+    // Get buffer encrypted AES key
+    const token = stringEncryptedKeyToBuffer(encryptedKey);
+
+    // Decrypt AES key with patient private key
+    const aesKey = await decryptECC(token, Buffer.from(privateKeyB, 'hex'));
+    // Encrypt AES key
+    const encryptedAESKey = await encryptECC(aesKey, publicKeyA);
+
+    const stringToken = bufferEncryptedKeyToString(encryptedAESKey);
+    return stringToken;
 };

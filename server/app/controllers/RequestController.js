@@ -1,16 +1,5 @@
 const Request = require('../models/Request');
 const Record = require('../models/Record');
-const ECC = require('../custom_modules/ECC');
-const {
-    stringEncryptedKeyToBuffer,
-    getTxRecord,
-    createRecordOnBlockchain,
-    bufferEncryptedKeyToString,
-    privateKeyB,
-    publicKeyA,
-    addressA,
-    addressB,
-} = require('../custom_modules/contractModules');
 
 class RequestController {
     getRequest(req, res) {
@@ -82,48 +71,9 @@ class RequestController {
                         idReceiver: request.idSender,
                         idSender: request.idReceiver,
                         fileName: record.fileName,
+                        idOnChain: req.body.idOnChain,
                     });
-
-                    // Get record on blockchain
-                    console.log('record.idOnChain: ', record.idOnChain);
-                    const txRecord = await getTxRecord(record.idOnChain);
-
-                    // Get buffer encrypted AES key
-                    const token = await stringEncryptedKeyToBuffer(
-                        txRecord.encryptedKey,
-                    );
-
-                    // Decrypt AES key with patient private key
-                    const aesKey = await ECC.decrypt(
-                        token,
-                        Buffer.from(privateKeyB, 'hex'),
-                    );
-                    // Encrypt AES key
-                    const encryptedAESKey = await ECC.encrypt(
-                        aesKey,
-                        publicKeyA,
-                    );
-                    console.log('encryptedAESKey', encryptedAESKey);
-                    // Conver AES key from buffer to string
-                    const stringToken = await bufferEncryptedKeyToString(
-                        encryptedAESKey,
-                    );
-
-                    //console.log('stringToken: ',stringToken);
-                    //console.log('addressA', addressA);
-                    await createRecordOnBlockchain(
-                        stringToken,
-                        addressB,
-                        addressA,
-                        txRecord.cid,
-                        txRecord.fileName,
-                        copyRecord,
-                        privateKeyB,
-                    ).then(() => {
-                        console.log('done');
-                    });
-
-                    // res.json({ status: true })
+                    copyRecord.save();
                 });
             }
         });

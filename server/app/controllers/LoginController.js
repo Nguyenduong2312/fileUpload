@@ -1,6 +1,5 @@
 const Account = require('../models/Account');
 const bcrypt = require('bcrypt');
-var eccrypto = require('eccrypto');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
@@ -13,7 +12,7 @@ const generateToken = (id) => {
 class LoginController {
     // [POST] /login
     login(req, res, next) {
-        const { username, password, privateKey } = req.body;
+        const { username, password, publicKey } = req.body;
         if (!username) {
             return res.status(220).send('Username can be empty.');
         } else if (!req.body.password) {
@@ -21,7 +20,7 @@ class LoginController {
         }
 
         //check privateKey
-        console.log('privateKey: ', privateKey);
+        console.log('publicKey: ', publicKey);
 
         //if false
         ////retuen res.status(220).send('Private key không đúng')
@@ -37,10 +36,15 @@ class LoginController {
                         account.password,
                         function (err, result) {
                             if (result) {
-                                return res.status(200).json({
-                                    token: generateToken(account._id),
-                                    //key: privateKey,
-                                });
+                                if (publicKey == account.publicKey) {
+                                    return res.status(200).json({
+                                        token: generateToken(account._id),
+                                    });
+                                } else {
+                                    return res
+                                        .status(220)
+                                        .send('Public key is not registered.');
+                                }
                             } else {
                                 return res
                                     .status(220)
@@ -75,9 +79,14 @@ class LoginController {
     }
 
     user(req, res) {
-        Account.findOne({ _id: req.user._id }).then((account) => {
-            res.send(account);
-        });
+        Account.findOne({ _id: req.user._id })
+            .then((account) => {
+                res.send(account);
+            })
+            .catch((err) => {
+                res.send('Not authorized');
+                console.log(err);
+            });
     }
 
     createAccount(req, res) {
@@ -103,9 +112,8 @@ class LoginController {
                 const tmp = new Account();
                 tmp.username = req.body.username;
 
-                const privateKey = eccrypto.generatePrivate(); //
-                tmp.privateKey = JSON.stringify(privateKey); //
-                tmp.publicKey = JSON.stringify(eccrypto.getPublic(privateKey)); //
+                tmp.publicKey = req.body.publicKey; //
+                tmp.blockchainAddress = req.body.blockchainAddress;
                 //tmp.privateKey = JSON.stringify(req.body.privateKey)
                 tmp.role = req.body.role;
                 // Increment id

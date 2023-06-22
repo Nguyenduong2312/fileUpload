@@ -18,9 +18,9 @@
         "@babel/plugin-proposal-private-property-in-object": ""
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
+        "start": "env-cmd -f .env react-app-rewired start",
+        "build": "env-cmd -f .env react-app-rewired build",
+        "test": "react-app-rewired test",
         "eject": "react-scripts eject"
     },
     "eslintConfig": {

@@ -35,6 +35,7 @@ function DropUser(props) {
 
     const onClick = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('key');
     };
 
     return (
