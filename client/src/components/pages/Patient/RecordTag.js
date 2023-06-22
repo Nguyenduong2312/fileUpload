@@ -3,7 +3,8 @@ import { useState } from 'react';
 import axios from 'axios';
 
 export default function RecordTag(props) {
-    const auth = props.status;
+    const [auth, setAuth] = useState(false);
+
     const [formData, setFormData] = useState({
         idReceiver: props.record.idReceiver,
         idRecord: props.record._id,
@@ -21,6 +22,9 @@ export default function RecordTag(props) {
         })
             .then((res) => res.json())
             .then((account) => {
+                //console.log('check',typeof((account.id).toString()) , typeof(props.record.idReceiver));
+                //console.log('check',(account.id).toString() === props.record.idReceiver);
+                setAuth(account.id.toString() === props.record.idReceiver);
                 setFormData((prevState) => ({
                     ...prevState,
                     ['idUploader']: account.id,
@@ -52,7 +56,7 @@ export default function RecordTag(props) {
                 },
             });
 
-            props.setMessage(res.data);
+            props.setMessage(res.data.msg);
         } catch (err) {
             if (err.response.status === 500) {
                 props.setMessage('There was a problem with the server');

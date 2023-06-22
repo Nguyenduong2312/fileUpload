@@ -11,18 +11,10 @@ import SyncStorage from 'sync-storage';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import * as FileSystem from 'expo-file-system';
 export default function Basic({ route }) {
-    ///
-    const id = route.id;
-    console.log('route', route);
+    const id = route.params?.id;
     const [listData, setListData] = useState();
-    requestedCheck = true;
+    const [auth, setAuth] = useState(false);
     const [userID, setUserID] = useState('');
-    if (typeof route.params !== 'undefined') {
-        requestedCheck = route.params.isAuth;
-    }
-
-    console.log('my record: ', SyncStorage.get('token'));
-
     useEffect(() => {
         fetch('http://192.168.1.27:5000/account/user', {
             credentials: 'include',
@@ -33,11 +25,8 @@ export default function Basic({ route }) {
         })
             .then((res) => res.json())
             .then((account) => {
-                console.log('user id:', account.id);
-                console.log('id:', id);
-
                 setUserID(account.id);
-                console.log('sda', id || account.id);
+                setAuth(account.id === id);
                 fetch(`http://192.168.1.27:5000/record/${id || account.id}`, {
                     headers: {
                         authorization: `Bearer ${SyncStorage.get('token')}`,
@@ -45,7 +34,6 @@ export default function Basic({ route }) {
                 })
                     .then((res) => res.json())
                     .then((records) => {
-                        console.log('records', records);
                         setListData(records);
                     })
                     .catch((error) => console.log(error));
@@ -72,7 +60,6 @@ export default function Basic({ route }) {
     const downloadFromAPI = async (data, rowMap) => {
         const filename = 'download';
         closeRow(rowMap, data.item.key);
-        //const localhost = Platform.OS === "android" ? "10.0.2.2" : "127.0.0.1";
         const result = await FileSystem.downloadAsync(
             `http://192.168.1.27:5000/record/download/${data.item._id}`, //fetch
             FileSystem.documentDirectory + data.item.nameRecord,
@@ -143,7 +130,7 @@ export default function Basic({ route }) {
 
     const renderHiddenItem = (data, rowMap) => (
         <View style={styles.rowBack}>
-            {requestedCheck === true ? (
+            {auth === true ? (
                 <TouchableOpacity
                     style={[styles.backRightBtn, styles.backRightBtnLeft]}
                     onPress={() => downloadFromAPI(data, rowMap)}
