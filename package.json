@@ -8,6 +8,7 @@
         "start": "node server.js",
         "server": "nodemon server.js --ignore client",
         "client": "npm start --prefix client",
+        "mobile": "npm start --prefix mobile",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "prepare": "husky install"
     },
