@@ -32,7 +32,6 @@ export default LoginScreen = (props) => {
         })
             .then((res) => res.json())
             .then((account) => {
-                console.log('acc : ', account);
                 setUser(account);
             });
     }, [user.id]);
@@ -62,21 +61,19 @@ export default LoginScreen = (props) => {
         setOpenStartDatePicker(!openStartDatePicker);
     };
     const onRegisterPressed = async (e) => {
-        console.log('update: ');
         let date = selectedStartDate;
         let gender = genderValue;
         const formData = { name, address, email, date, gender };
         try {
-            console.log('formData', formData);
             fetch(`http://192.168.1.27:5000/myProfile/${user.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
-            });
-            setMessage(res.data);
-            props.navigation.navigate('Home');
+            }).then(() => alert('Information is updated!'));
+            //setMessage(res.data);
+            //props.navigation.navigate('Home');
         } catch (err) {
             if (err.response.status === 500) {
                 alert('There was a problem with the server');

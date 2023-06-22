@@ -36,7 +36,7 @@ export default LoginScreen = (props) => {
                     return response.json();
                 })
                 .then((res) => {
-                    console.log(res.msg || '');
+                    alert(res.msg);
                 })
                 .catch((error) => console.log(error));
         } catch (error) {

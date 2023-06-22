@@ -15,9 +15,7 @@ export default function SignUpScreen(props) {
 
     const onRegisterPressed = async (data) => {
         data.role = 'Patient';
-        console.log(data);
-        props.navigation.navigate('Profile');
-        fetch(`http://192.168.1.9:5000/account/signup`, {
+        fetch(`http://192.168.1.27:5000/account/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,12 +30,12 @@ export default function SignUpScreen(props) {
                 return response.json();
             })
             .then((res) => {
-                //setMessage(res.msg||'')
-                console.log('res.msg', res.msg);
-                alert('There was a problem with the server');
-                return;
+                console.log('msg:', res.msg, 'bg');
+                if (!res.msg) {
+                    alert(res.msg);
+                }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => alert(error));
     };
     return (
         <ScrollView showsVerticalScrollIndicator={false}>

@@ -29,9 +29,9 @@ class UpdateAccountController {
                     .then(() => {
                         res.json({ msg: 'Information is updated!' });
                     })
-                    .catch(() => res.json({ status: false }));
+                    .catch((err) => res.json({ msg: err }));
             })
-            .catch(() => res.json({ status: false }));
+            .catch(() => res.json({ msg: 'err' }));
     }
 }
 

@@ -1,63 +1,46 @@
 import { useForm } from 'react-hook-form';
-import React, { useState, createRef } from 'react';
-//import AsyncStorage from '@react-native-community/async-storage';
+import React, { useState } from 'react';
 import {
     StyleSheet,
-    TextInput,
     View,
     Text,
     ScrollView,
-    Image,
-    Keyboard,
     TouchableOpacity,
-    KeyboardAvoidingView,
 } from 'react-native';
 import CustomInput from './CustomInput';
-import { useNavigation } from '@react-navigation/core';
 import CustomButton from './CustomButton';
 import SyncStorage from 'sync-storage';
 export default LoginScreen = (props, { navigation }) => {
-    const [loading, setLoading] = useState(false);
-    const [errortext, setErrortext] = useState('');
     const { control, handleSubmit } = useForm();
-    const [users, setUsers] = useState([]);
-    const passwordInputRef = createRef();
+
     const onRegisterPressed = async (data) => {
-        try {
-            console.log('login', process.env.localhost);
-            console.log('data');
-            fetch(`http://192.168.1.27:5000/account/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
+        fetch(`http://192.168.1.27:5000/account/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    props.navigation.navigate('My Record');
+                }
+                return response.json();
             })
-                .then((response) => {
-                    if (response.status === 200) {
-                        props.navigation.navigate('My Record');
-                    }
-                    return response.json();
-                })
-                .then((res) => {
-                    if (res.token) {
-                        console.log('token', res.token);
-                        SyncStorage.set('token', res.token);
-                    }
-                    console.log(res.msg || '');
-                })
-                .catch((error) => console.log(error));
-        } catch (error) {
-            setLoading(false);
-            console.error(error);
-        }
+            .then((res) => {
+                if (res.token) {
+                    SyncStorage.set('token', res.token);
+                }
+                if (res.msg) {
+                    alert(res.msg);
+                }
+            })
+            .catch((error) => console.log(error));
     };
-    //console.log('rokenS',SyncStorage.get('token'));
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
                 <Text style={styles.title}>Welcome to MHR</Text>
-
                 <CustomInput
                     name="username"
                     control={control}

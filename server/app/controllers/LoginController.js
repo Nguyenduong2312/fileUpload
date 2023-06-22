@@ -124,9 +124,7 @@ class LoginController {
                                 account
                                     .save()
                                     .then(() => {
-                                        return res
-                                            .status(200)
-                                            .json({ msg: '' });
+                                        return res.status(200).json({});
                                     })
                                     .catch(() => {
                                         console.log('khong save');
