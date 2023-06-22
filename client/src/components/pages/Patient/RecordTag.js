@@ -43,7 +43,8 @@ export default function RecordTag(props) {
                     txRecord.encryptedKey,
                     localStorage.getItem('privateKey'),
                 ),
-            );
+            )
+            .then(() => setStatus('Downloaded'));
     };
     const handleRequestRecord = async (e) => {
         e.preventDefault();
@@ -55,12 +56,12 @@ export default function RecordTag(props) {
                 },
             });
 
-            //props.setMessage(res.data);
+            props.setMessage(res.data.msg);
         } catch (err) {
             if (err.response.status === 500) {
                 props.setMessage('There was a problem with the server');
             } else {
-                props.setMessage(err.response.data.msg);
+                console.log(err.response.data.msg);
             }
         }
     };

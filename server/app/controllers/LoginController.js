@@ -1,6 +1,5 @@
 const Account = require('../models/Account');
 const bcrypt = require('bcrypt');
-var eccrypto = require('eccrypto');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 

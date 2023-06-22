@@ -156,9 +156,13 @@ export default function Profile() {
                                     readOnly
                                 />
                             </div>
-                            <button type="button" onClick={toggleInputType}>
+                            <div
+                                className="viewRecord button"
+                                style={{ left: '100px' }}
+                                onClick={toggleInputType}
+                            >
                                 Toggle visibility
-                            </button>
+                            </div>
 
                             <input
                                 className="button"
