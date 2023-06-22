@@ -1,6 +1,6 @@
 .login_layout{
     display: grid;
-    grid-template-columns: 1.5fr 2fr;
+    grid-template-columns: 1.7fr 2fr;
 }
 
 .login_img img{
@@ -10,17 +10,15 @@
 
 .login_tag{
     margin: auto;
-    margin-top: -50px;
-    z-index: 10;
+    margin-top: 0px;
     width: 400px;
     height: fit-content;
     border-radius: 20px;
-    background-color: none;
     border: 3px solid black;
 }
 .login_tag_text{
-    padding: 20px 0px;
-    padding-top: 30px;
+    padding-top: 100px;
+    padding-bottom: 10px;
 }
 
 .login_tag_text p{
@@ -28,11 +26,11 @@
     font-weight: bolder;
     text-align: center;
     color: black;
-    margin-top: 50px;
+    margin-top: 0px;
 }
 
 .login_tag form{
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .login_tag_text .inputField{
@@ -66,7 +64,7 @@ input[type=submit] {
     width: 60%;
     height: 40px;
     margin-left: 20%;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 label{

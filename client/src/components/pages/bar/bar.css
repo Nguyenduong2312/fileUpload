@@ -1,11 +1,12 @@
 .bar{
     display: flex;
-    padding: 0px 50px;
+    padding: 10px 50px;
     position: relative;
 }
 
 .bar_logo img{
-    width: 150px;
+    margin-top: 10px;
+    width: 120px;
 }
 .bar_menu{
     list-style: none;

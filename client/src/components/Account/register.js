@@ -105,10 +105,7 @@ export default function Register(props) {
                 </div>
                 <div class="login_tag_cover">
                     <div class="login_tag">
-                        <div
-                            className="login_tag_text"
-                            style={{ padding: '50px 0px' }}
-                        >
+                        <div className="login_tag_text">
                             <p>REGISTER</p>
                             <section>
                                 <form onSubmit={onSubmit} id="formField">
@@ -175,10 +172,19 @@ export default function Register(props) {
                                             </label>
                                         </div>
                                     )}
-                                    <p className="login">
+                                    <p
+                                        className="login"
+                                        style={{
+                                            textDecoration: 'none',
+                                            marginTop: '0px',
+                                        }}
+                                    >
                                         Already have an account?
                                         <Link
-                                            style={{ textDecoration: 'none' }}
+                                            style={{
+                                                textDecoration: 'none',
+                                                marginTop: '0px',
+                                            }}
                                             to="/login"
                                         >
                                             <span> Login</span>{' '}
