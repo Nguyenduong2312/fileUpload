@@ -58,10 +58,7 @@ export default function Login() {
                 </div>
                 <div class="login_tag_cover" style={{ marginTop: '30px' }}>
                     <div class="login_tag">
-                        <div
-                            className="login_tag_text"
-                            style={{ padding: '50px 0px' }}
-                        >
+                        <div className="login_tag_text">
                             <p>LOGIN</p>
                             <section>
                                 <form onSubmit={onSubmit}>
@@ -100,7 +97,13 @@ export default function Login() {
                                         </label>
                                     </div>
 
-                                    <p className="login">
+                                    <p
+                                        className="login"
+                                        style={{
+                                            textDecoration: 'none',
+                                            marginTop: '0px',
+                                        }}
+                                    >
                                         Don't have account?
                                         <Link
                                             style={{ textDecoration: 'none' }}
