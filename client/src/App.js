@@ -34,7 +34,7 @@ const App = () => (
                     <Route path="register" element={<Register />} />
                     <Route path="myProfile/:status" element={<Profile />} />
 
-                    <Route path="mybranch" element={<FamilyMember />} />
+                    <Route path="family" element={<FamilyMember />} />
                     <Route path="membership/:id" element={<FamilyMember />} />
                     <Route
                         path="relationshipRequestForReceiver"

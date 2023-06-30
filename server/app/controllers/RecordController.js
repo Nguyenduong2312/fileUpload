@@ -48,6 +48,7 @@ class UploadFileController {
         record.save().catch(() => {
             res.status(400);
         });
+        res.status(200).send('ok');
     }
 
     deleteRecord(req, res) {
