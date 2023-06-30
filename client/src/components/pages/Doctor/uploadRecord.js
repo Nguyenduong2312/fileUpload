@@ -79,6 +79,7 @@ const UploadRecord = () => {
         //     privateKey,
         // );
         try {
+            console.log('ok');
             const res = await axios.post('/record', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',

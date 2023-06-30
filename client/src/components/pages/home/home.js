@@ -25,7 +25,7 @@ export default function Home() {
         <div>
             <Bar></Bar>
             <div className="main_layout">
-                <p className="main_title">MEDICAL HEALTH RECORD {auth}</p>
+                <p className="main_title">ELECTRONIC HEALTH RECORD {auth}</p>
                 {!auth && (
                     <div className="main_button">
                         <Link className="button" to="/register">

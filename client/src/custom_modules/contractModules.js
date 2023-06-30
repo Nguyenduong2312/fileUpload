@@ -65,24 +65,37 @@ export const createRecordOnBlockchain = async (
     };
     // sign the transaction
     console.log('Signing tracsaction');
-    web3.eth.accounts
-        .signTransaction(txObject, _privateKey)
-        .then((signedTx) => {
-            // send the signed transaction to the network
-            web3.eth
-                .sendSignedTransaction(signedTx.rawTransaction)
-                .on('receipt', (receipt) => {
-                    console.log('Transaction receipt:', receipt);
-                })
-                .on('error', (error) => {
-                    console.error('Error sending EHR:', error);
-                });
-        })
-        .catch((error) => {
-            console.error('Error signing transaction:', error);
-        });
-    const idOnChain = await contractInstance.methods.numberOfRecords().call();
-    return idOnChain;
+    try {
+        const signedTx = await web3.eth.accounts.signTransaction(
+            txObject,
+            _privateKey,
+        );
+        // .then((signedTx) => {
+        //     // send the signed transaction to the network
+        //     web3.eth
+        //         .sendSignedTransaction(signedTx.rawTransaction)
+        //         .on('receipt', (receipt) => {
+        //             console.log('Transaction receipt:', receipt);
+        //         })
+        //         .on('error', (error) => {
+        //             console.error('Error sending EHR:', error);
+        //         });
+        // })
+        // .catch((error) => {
+        //     console.error('Error signing transaction:', error);
+        // });
+        const receipt = await web3.eth.sendSignedTransaction(
+            signedTx.rawTransaction,
+        );
+        console.log(receipt);
+
+        const idOnChain =
+            (await contractInstance.methods.numberOfRecords().call()) - 1;
+        return idOnChain;
+    } catch (err) {
+        console.log('err: ', err);
+        return null;
+    }
 };
 
 export const getAddress = (privateKey) => {

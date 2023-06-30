@@ -33,7 +33,7 @@
     <img src="images/logoEHR.png" alt="Logo" width="150" height="80">
   </a>
 
-<h3 align="center">MEDICAL HEALTH RECORD</h3>
+<h3 align="center">ELECTRONIC HEALTH RECORD</h3>
 
   <p align="center">
     Building a Secure Biomedical Data Sharing Decentralized App
