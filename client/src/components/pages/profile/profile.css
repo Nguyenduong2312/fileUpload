@@ -71,7 +71,7 @@ form{
 
 .UpdateAccountForm .line_input .inputField{
     width: 40%;
-    grid-template-columns: 80px 200px;
+    grid-template-columns: 150px 200px;
 }
 
 .UpdateAccountForm .inputField{
@@ -79,7 +79,7 @@ form{
     margin-left : 0px;
     margin-top: 10px;
     display: grid;
-    grid-template-columns: 80px 400px;
+    grid-template-columns: 150px 400px;
 }
 
 .UpdateAccountForm .inputField input{

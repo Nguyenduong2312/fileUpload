@@ -35,7 +35,7 @@
 }
 
 .text p{
-    width: 300px;
+    width: 500px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

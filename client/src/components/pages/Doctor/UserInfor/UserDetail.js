@@ -23,39 +23,47 @@ export default function UserDetail(props) {
             <div className="userInfor">
                 <div className="img_buttons">
                     <img src="../image/userProfile.png" />
-                    <div className="buttons">
-                        <div className="button viewRecord">
-                            <Link
-                                to={`/records/${id}`}
-                                style={{
-                                    textDecorationLine: 'none',
-                                    color: 'white',
-                                }}
+                    {user.role !== 'Doctor' && (
+                        <div className="buttons">
+                            <div className="button viewRecord">
+                                <Link
+                                    to={`/records/${id}`}
+                                    style={{
+                                        textDecorationLine: 'none',
+                                        color: 'white',
+                                    }}
+                                >
+                                    Record list
+                                </Link>
+                            </div>
+                            <div
+                                className="button viewFamilyMember"
+                                style={{ marginTop: '10px' }}
                             >
-                                Record list
-                            </Link>
+                                <Link
+                                    to={`/membership/${id}`}
+                                    style={{
+                                        textDecorationLine: 'none',
+                                        color: 'white',
+                                    }}
+                                >
+                                    Relationship
+                                </Link>
+                            </div>
                         </div>
-                        <div
-                            className="button viewFamilyMember"
-                            style={{ marginTop: '10px' }}
-                        >
-                            <Link
-                                to={`/membership/${id}`}
-                                style={{
-                                    textDecorationLine: 'none',
-                                    color: 'white',
-                                }}
-                            >
-                                Relationship
-                            </Link>
-                        </div>
-                    </div>
+                    )}
                 </div>
                 <div className="infor">
                     <div className="inforTag">
                         <h5 style={{ fontWeight: '700' }}>Information</h5>
                         <div className="inforContent">
                             <p>Full name: {user.name}</p>
+                            {user.role === 'Doctor' && (
+                                <p>Speciality: {user.speciality}</p>
+                            )}
+                            {user.role === 'Doctor' && (
+                                <p>Health Organization: {user.organization}</p>
+                            )}
                             <p>Gender: {user.gender}</p>
                             <p>Birthday: {user.birthday}</p>
                             <p>Address: {user.address}</p>

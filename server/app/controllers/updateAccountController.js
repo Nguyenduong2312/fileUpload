@@ -24,6 +24,13 @@ class UpdateAccountController {
                 if (req.body.date) {
                     account.birthday = req.body.date;
                 }
+                if (req.body.organization) {
+                    account.organization = req.body.organization;
+                }
+                if (req.body.speciality) {
+                    account.speciality = req.body.speciality;
+                }
+
                 account
                     .save()
                     .then(() => {

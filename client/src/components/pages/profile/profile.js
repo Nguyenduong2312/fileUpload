@@ -12,7 +12,7 @@ export default function Profile() {
     const [formData, setFormData] = useState({});
 
     const [message, setMessage] = useState('');
-    const { name, address, email, date } = formData;
+    const { name, address, email, date, organization, speciality } = formData;
     const isFirstLogin = useParams();
     const [privateKey, setPrivateKey] = useState('');
     const [inputType, setInputType] = useState('password');
@@ -76,7 +76,7 @@ export default function Profile() {
                 {isFirstLogin.status === 'true' && (
                     <Message
                         msg={
-                            'This is your private key. Please save it for future use when logging in again.'
+                            'Please save your private key for future use when logging in again.'
                         }
                     />
                 )}
@@ -95,6 +95,30 @@ export default function Profile() {
                                     onChange={onChange}
                                 />
                             </div>
+                            {user.role === 'Doctor' && (
+                                <div className="inputField">
+                                    <label>Health Organization:</label>
+                                    <input
+                                        type="text"
+                                        name="organization"
+                                        value={
+                                            organization || user.organization
+                                        }
+                                        onChange={onChange}
+                                    />
+                                </div>
+                            )}
+                            {user.role === 'Doctor' && (
+                                <div className="inputField">
+                                    <label>Speciality:</label>
+                                    <input
+                                        type="text"
+                                        name="speciality"
+                                        value={speciality || user.speciality}
+                                        onChange={onChange}
+                                    />
+                                </div>
+                            )}
                             <div className="line_input">
                                 <div className="inputField">
                                     <label>Gender:</label>

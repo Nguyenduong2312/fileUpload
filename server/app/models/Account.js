@@ -8,6 +8,8 @@ const Account = new Schema(
         name: { type: String, default: '' },
         gender: { type: String, default: '' },
         address: { type: String, default: '' },
+        organization: { type: String, default: '' },
+        speciality: { type: String, default: '' },
         email: { type: String, default: '' },
         phoneNumber: { type: String, default: '' },
         birthday: { type: String },
